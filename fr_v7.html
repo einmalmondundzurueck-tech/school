@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Die Französische Revolution 1789–1799</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e121a;--p:#161b26;--p2:#1f2633;--p3:#273041;--ln:#2e384b;--t:#ece6da;--m:#a4acba;--ac:#d9a64a;--ac2:#f0c56e;--bleu:#2f5ea8;--rouge:#c8363f;--ok:#4caf7a;--no:#e5534b;
+ --serif:"Playfair Display",Georgia,"Times New Roman",serif;--sans:"Source Sans 3",system-ui,"Segoe UI",sans-serif;
+ --ph0:#8a909c;--ph1:#5b93dd;--ph2:#d9534f;--ph3:#c27f25;--s1:#9b7fd4;--s2:#c27f25;--s3:#5b93dd}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font:15px/1.6 var(--sans);background:var(--bg);color:var(--t)}
+#app{display:flex;height:100%}#main{flex:1;display:flex;flex-direction:column;min-width:0}
+#mapw{flex:1;position:relative;background:radial-gradient(ellipse at 45% 40%,#bcd6dc 0%,#9dbfca 60%,#86abb9 100%);overflow:hidden;min-height:0;cursor:grab}#mapw.g{cursor:grabbing}
+#mapw::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.32;mix-blend-mode:multiply;
+ background:radial-gradient(ellipse at center,transparent 55%,rgba(60,40,15,.55) 100%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .38 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+svg{width:100%;height:100%;display:block;touch-action:none;user-select:none}
+#cam{transition:transform 1.2s cubic-bezier(.4,0,.2,1)}#cam.drag{transition:none}
+.c{stroke:#fbf6ea;stroke-width:1.2;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .6s}.c:hover{filter:brightness(1.08)}.c.sel{stroke:#1a1a1a;stroke-width:2.5}
+.fr{fill:#3f6fb5}.ne{fill:#e8dfc4}.oc{fill:#8db0d9}.mp{fill:#d6452f;animation:glow 1.5s ease-in-out infinite alternate}@keyframes glow{from{filter:drop-shadow(0 0 2px #ff5a3c)}to{filter:drop-shadow(0 0 10px #ff1a00) brightness(1.1)}}
+.cl{font:italic 600 10px var(--serif);fill:#3a3326;opacity:.7;pointer-events:none;text-anchor:middle;letter-spacing:.04em}
+svg[data-z="1"] .cl{display:none}
+.ct{cursor:pointer}.ct circle{fill:#fffaf0;stroke:#3a3326;stroke-width:1.5;vector-effect:non-scaling-stroke;filter:drop-shadow(0 1px 2px #0005)}
+.ct text{font:700 11.5px var(--sans);fill:#221d14;paint-order:stroke;stroke:#fbf6ea;stroke-width:3.5px}.ct:hover circle{fill:var(--ac2)}
+.ln{fill:none;stroke:#1a1a1a;stroke-width:3;stroke-dasharray:9 6;opacity:0;transition:opacity .6s;vector-effect:non-scaling-stroke;animation:fl 1s linear infinite;pointer-events:none}
+.ln.on{opacity:1}.ln.en{stroke:#1d4f93}.ln.mp{stroke:#9c2a14}
+@keyframes fl{to{stroke-dashoffset:-15}}
+#tools{position:absolute;left:12px;top:12px;display:flex;flex-direction:column;gap:6px;z-index:3}
+button{font:inherit;cursor:pointer;border:0;border-radius:9px;background:var(--p);color:var(--t);padding:7px 12px;transition:background .15s,transform .15s}button:hover{background:var(--p3)}button:disabled{opacity:.35;cursor:default}
+button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+#tools button{width:40px;height:40px;padding:0;font-size:18px;background:#161b26e6;backdrop-filter:blur(6px);box-shadow:0 3px 10px #0006}
+#tools .sep{height:4px}
+#leg{position:absolute;left:12px;bottom:12px;background:#0e121add;backdrop-filter:blur(6px);padding:9px 13px;border-radius:10px;font-size:12.5px;z-index:3;box-shadow:0 3px 10px #0005}
+#leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin:0 6px -2px 0}
+#compass{position:absolute;right:14px;bottom:14px;width:62px;height:62px;z-index:2;opacity:.75;pointer-events:none}
+#bar{background:linear-gradient(180deg,#161b26,#121721);padding:6px 12px 10px;display:flex;align-items:center;gap:8px;border-top:1px solid var(--ln);position:relative}
+#bar::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:linear-gradient(90deg,var(--bleu) 0 33.3%,#f4f1ea 33.3% 66.6%,var(--rouge) 66.6%)}
+#tl{flex:1;position:relative;padding-top:22px;min-width:0}
+#phases{position:absolute;left:0;right:0;top:2px;height:16px;display:flex}
+#phases div{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px;border-bottom:2px solid;line-height:13px;text-align:center;margin:0 2px}
+#trk{position:absolute;left:calc(100%/24);right:calc(100%/24);top:39px;height:4px;background:var(--ln);border-radius:3px}
+#fill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--bleu),#f4f1ea,var(--rouge));border-radius:3px;transition:width .9s}
+#steps{display:flex;position:relative}
+#steps button{flex:1;min-width:0;background:none;padding:0 1px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--m);line-height:1.2;position:relative}
+.nd{width:38px;height:38px;border-radius:50%;background:var(--p2);border:3px solid var(--ln);display:grid;place-items:center;font-size:17px;transition:.35s;position:relative}
+#steps button:hover .nd{transform:translateY(-2px)}
+#steps .d .nd{border-color:var(--ac)}#steps .a .nd{background:var(--ac);transform:scale(1.18);box-shadow:0 0 0 6px #d9a64a33}#steps .a{color:var(--ac2)}
+#steps .ok .nd::after{content:"✓";position:absolute;right:-5px;top:-5px;width:16px;height:16px;border-radius:50%;background:var(--ok);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;border:2px solid var(--p)}
+.nl{font-weight:600;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:3px}
+#bar>button{width:38px;height:38px;padding:0;border-radius:50%;background:var(--p2);font-size:15px}
+#panel{width:460px;background:var(--p);overflow-y:auto;border-left:1px solid var(--ln);position:relative;scroll-behavior:smooth}#panel.hide{display:none}
+#panel{padding:20px 22px 30px}#panel.st{padding:0}
+#panel h2{margin:.15em 0 .45em;font:700 26px/1.2 var(--serif);color:#fff}#panel p{margin:.65em 0}
+.date{color:var(--ac);font-weight:700;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase}
+.hd{padding:20px 22px 0;background:linear-gradient(180deg,#1d2433,var(--p));border-bottom:1px solid var(--ln)}
+.hd .kick{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--m)}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.03em;border:1px solid}
+.goal{display:flex;gap:10px;align-items:flex-start;background:#d9a64a14;border:1px solid #d9a64a40;border-radius:10px;padding:9px 12px;margin:4px 0 14px;font-size:14px}.goal b{color:var(--ac2)}
+.tabs{display:flex;gap:2px;position:sticky;top:0;z-index:2;background:var(--p);padding:0 12px;border-bottom:1px solid var(--ln);box-shadow:0 6px 12px -8px #0008}
+.tabs button{background:none;border-radius:0;padding:10px 10px 9px;color:var(--m);font-weight:600;font-size:14px;border-bottom:3px solid transparent;flex:1;white-space:nowrap}
+.tabs button:hover{background:none;color:var(--t)}.tabs button.on{color:var(--ac2);border-bottom-color:var(--ac)}
+.pane{display:none;padding:16px 22px 34px}.pane.on{display:block}
+.pane>p:first-child{margin-top:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:14px 0}
+.fact{background:var(--p2);border-radius:10px;padding:9px 12px;border-top:3px solid var(--ac)}.fact b{display:block;font-size:11.5px;color:var(--ac);letter-spacing:.04em;text-transform:uppercase}.fact span{font-size:14px}
+dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;background:var(--p2);padding:10px 12px;border-radius:8px}dt{color:var(--m)}dd{margin:0}
+.box{background:var(--p2);border-left:4px solid var(--ac);padding:11px 14px;border-radius:8px;margin:14px 0}.box h4{margin:0 0 6px;color:var(--ac2);font-size:14.5px}
+.box a{color:#8cc0ff;display:block;margin:3px 0}
+h3.sec{font:600 18px var(--serif);color:#fff;margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+.gl{background:none;border:0;padding:0;color:inherit;font:inherit;border-bottom:1.5px dotted var(--ac);border-radius:0;cursor:help}.gl:hover{background:none;color:var(--ac2)}
+#gpop{position:fixed;z-index:30;max-width:300px;background:#f4ecd8;color:#221d14;border-radius:10px;padding:10px 13px;font-size:13.5px;line-height:1.45;box-shadow:0 8px 28px #000a;display:none}#gpop b{font-family:var(--serif);font-size:15px;display:block;margin-bottom:2px}
+.src{position:relative;background:#f4ecd8;color:#2a2318;border-radius:4px 14px 4px 14px;padding:18px 20px 14px 40px;margin:4px 0 14px;box-shadow:0 6px 20px #0006;font:italic 600 17px/1.5 var(--serif)}
+.src::before{content:"“";position:absolute;left:8px;top:6px;font-size:54px;line-height:1;color:#a8873f;font-family:var(--serif)}
+.src cite{display:block;margin-top:10px;font:normal 600 12.5px var(--sans);color:#6b5a3a}
+.ctx{font-size:14px;color:var(--m)}
+.wq{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin:8px 0}.wq div{background:var(--p2);border-radius:8px;padding:6px 9px;font-size:13px}.wq b{color:var(--ac2)}
+.task{background:var(--p2);border-radius:12px;padding:12px 14px;margin:10px 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+.afb{grid-row:span 2;width:66px;padding:6px 2px;border-radius:10px;font:700 15px var(--sans);color:#111;text-align:center;line-height:1.1}
+.afb small{display:block;font-size:10px;font-weight:600;margin-top:2px}
+.task p{margin:0!important}.task details{font-size:13.5px;color:var(--m)}.task summary{cursor:pointer;color:#8cc0ff}
+textarea{width:100%;min-height:110px;background:#0f141d;color:var(--t);border:1px solid var(--ln);border-radius:10px;padding:10px;font:14px/1.5 var(--sans);resize:vertical}textarea:focus{outline:2px solid #d9a64a80;border-color:var(--ac)}
+.lf{background:linear-gradient(135deg,#2f5ea833,#c8363f33);border:1px solid #ffffff22;border-radius:12px;padding:12px 14px;margin:0 0 12px}.lf b{color:#fff;font-family:var(--serif);font-size:16px}
+.qb{display:block;width:100%;text-align:left;margin:8px 0;background:var(--p2);border:2px solid transparent;padding:10px 14px;border-radius:10px}.qb:hover{border-color:#4a5974}.qb:disabled{opacity:1;color:var(--m)}.qb.ok,.qb.no{color:var(--t)}.qb.ok{border-color:var(--ok);background:#1f3a2a}.qb.no{border-color:var(--no);background:#3d2020}
+.qbar{height:6px;background:var(--ln);border-radius:3px;margin:8px 0}.qbar i{display:block;height:100%;background:var(--ac);border-radius:3px;transition:width .4s}
+.big{display:block;width:100%;padding:14px 16px;margin:10px 0;text-align:left;background:var(--p2);border-radius:12px;border:1px solid var(--ln)}.big b{display:block;font:600 17px var(--serif);color:#fff}.big span{color:var(--m);font-size:13.5px}.big:hover{border-color:var(--ac)}
+.prim{background:var(--ac);color:#1a1408;font-weight:700}.prim:hover{background:var(--ac2)}
+.ord{display:flex;align-items:center;gap:10px;width:100%;text-align:left;margin:7px 0;background:var(--p2);border:2px solid transparent;padding:9px 12px;border-radius:10px}
+.ord .n{width:26px;height:26px;border-radius:50%;background:var(--p3);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}.ord.pk{opacity:.45}.ord.pk .n{background:var(--ac);color:#111}.ord.ok{border-color:var(--ok)}.ord.no{border-color:var(--no)}.ord small{color:var(--m);margin-left:auto;white-space:nowrap}
+figure{margin:14px 0}figure img{width:100%;border-radius:10px;background:#0d121a;min-height:90px;object-fit:cover;max-height:320px;box-shadow:0 4px 16px #0006}figcaption{font-size:12.5px;color:var(--m);margin-top:4px}figcaption a{color:#8cc0ff}
+.ph{padding:16px;text-align:center;border:1px dashed #44536b;border-radius:10px;color:var(--m);font-size:12.5px;background:repeating-linear-gradient(135deg,#ffffff05 0 10px,transparent 10px 20px)}
+.chart{background:var(--p2);border-radius:12px;padding:12px 14px 10px;margin:14px 0;position:relative}.chart h4{margin:0 0 2px;font-size:14.5px;color:#fff}.chart .sub{font-size:12px;color:var(--m);margin-bottom:8px}
+.lgd{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;margin-bottom:8px}.lgd i{display:inline-block;width:11px;height:11px;border-radius:3px;margin:0 5px -1px 0}
+#tip{position:fixed;z-index:31;pointer-events:none;background:#0b0f16;color:var(--t);border:1px solid var(--ln);border-radius:8px;padding:6px 9px;font-size:12.5px;display:none;box-shadow:0 4px 14px #0008;max-width:240px}
+.lvs{position:absolute;left:0;top:0;opacity:0;pointer-events:none;transition:opacity .6s}.lvs.on{opacity:1;pointer-events:auto}.lvc{transition:transform 1.2s cubic-bezier(.4,0,.2,1)}.lvc.drag{transition:none}.pl text{font:italic 600 10px var(--serif);fill:#4d5a3a;stroke:#fbf6ea;stroke-width:3px;paint-order:stroke;pointer-events:none}
+#cap{position:absolute;top:12px;left:200px;right:12px;background:#0e121ae6;backdrop-filter:blur(6px);padding:9px 14px;border-radius:10px;font-size:14px;pointer-events:none;z-index:3;border-left:4px solid var(--rouge);box-shadow:0 3px 10px #0006}#cap:empty{display:none}.fxs text{font-size:22px;stroke:none;pointer-events:none}.fire{animation:fire .45s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center bottom}@keyframes fire{to{transform:scale(1.35) rotate(-7deg);opacity:.85}}
+#drawer{position:absolute;left:62px;top:56px;width:310px;max-height:calc(100% - 140px);overflow:auto;background:#0e121af2;backdrop-filter:blur(8px);border-radius:12px;padding:12px 14px;display:none;z-index:5;box-shadow:0 6px 20px #0008;border:1px solid var(--ln)}#drawer.on{display:block}#drawer h3{margin:0 0 8px;font:600 17px var(--serif);color:var(--ac2)}#drawer a{display:block;padding:3px 0;color:#9cc7ff;text-decoration:none}#drawer a:hover{color:#fff}#drawer small{color:var(--m)}.dg{margin:12px 0 2px;color:var(--ac);font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+#drawer dl{display:block;background:none;padding:0}#drawer dt{color:var(--ac2);font-weight:700;margin-top:8px}#drawer dd{font-size:13.5px;color:var(--t)}
+#snav{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:none;gap:6px;z-index:3;max-width:92%;flex-wrap:wrap;justify-content:center}#snav button{box-shadow:0 2px 8px #0007;font-size:12.5px}
+#pback{z-index:3}
+.tag{display:inline-block;padding:1px 9px;border-radius:99px;font-size:12px;color:#111}
+.prog{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--m);margin:6px 0 12px}.prog .qbar{flex:1;margin:0}
+/* Startbildschirm */
+#intro{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at 50% 30%,#1f2a40ee,#0b0e15f5);backdrop-filter:blur(3px);transition:opacity .5s}
+#intro.out{opacity:0;pointer-events:none}
+#intro .card{max-width:720px;width:100%;max-height:100%;overflow:auto;background:var(--p);border:1px solid var(--ln);border-radius:18px;box-shadow:0 20px 60px #000c}
+#intro .flag{height:8px;background:linear-gradient(90deg,var(--bleu) 0 33.3%,#f4f1ea 33.3% 66.6%,var(--rouge) 66.6%)}
+#intro .in{padding:26px 30px 28px}
+#intro .mot{font:italic 600 14px var(--serif);color:var(--ac);letter-spacing:.12em;text-transform:uppercase}
+#intro h1{font:700 clamp(28px,5vw,42px)/1.1 var(--serif);margin:8px 0 6px;color:#fff}
+#intro .lead{color:var(--m);font-size:16px;margin:0 0 16px}
+#intro .how{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:16px 0}
+#intro .how div{background:var(--p2);border-radius:12px;padding:12px 14px;font-size:13.5px}#intro .how b{display:block;color:#fff;margin:4px 0 2px}#intro .how span.ic{font-size:22px}
+#intro .act{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}#intro .act button{padding:11px 18px;font-size:15px}
+@media(max-width:820px){#app{flex-direction:column}#main{flex:0 0 56%}#panel{width:100%;flex:1;border-left:0;border-top:1px solid var(--ln)}#leg,.nl,#phases div span,#compass{display:none}#cap{left:62px;font-size:12.5px}
+ #tools button{width:36px;height:36px;font-size:16px}#tools{gap:4px}.nd{width:30px;height:30px;font-size:14px}#trk{top:35px}#bar>button{width:32px;height:32px}#panel h2{font-size:22px}.tabs button{font-size:13px;padding:9px 4px}}
+@media print{#main,#intro,.tabs,#gpop,#tip,.noprint{display:none!important}#app{display:block}#panel{width:auto;overflow:visible;background:#fff;color:#000;border:0}.hd{background:none}.pane{display:block!important;padding-top:0}#panel h2,h3.sec,.box h4{color:#000}.box,.task,.fact,.chart{background:#f3f3f3;color:#000}textarea{border:1px solid #999;min-height:200px;background:#fff}body{background:#fff;color:#000}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body><div id="app"><div id="main">
+<div id="mapw"><svg id="svg" viewBox="0 0 900 680" preserveAspectRatio="xMidYMid meet"><g id="cam"><g id="cs"></g><g id="ls"></g><g id="ts"></g></g></svg>
+<div id="cap"></div><div id="drawer"></div><div id="snav"></div><div id="tools"><button id="zi" title="Vergrößern" aria-label="Vergrößern">+</button><button id="zo" title="Verkleinern" aria-label="Verkleinern">−</button><button id="zr" title="Übersicht" aria-label="Übersicht">⌂</button><span class="sep"></span><button id="pk" title="Stadtplan Paris &amp; Versailles ein/aus" aria-label="Stadtplan">🏙</button><button id="ob" title="Orte der Revolution" aria-label="Orte">📍</button><button id="gb" title="Glossar: Begriffe erklärt" aria-label="Glossar">📚</button><button id="rp" title="Animation erneut abspielen" style="display:none">▶</button><span class="sep"></span><button id="qz" title="Quiz &amp; Zeitstrahl-Puzzle" aria-label="Quiz">🎓</button><button id="tp" title="Info-Panel ein/aus" aria-label="Info-Panel">ℹ</button><button id="hl" title="Startbildschirm / Hilfe" aria-label="Hilfe">?</button></div>
+<button id="pback" style="position:absolute;left:62px;top:12px;display:none;box-shadow:0 2px 8px #0006">← Frankreich</button><div id="leg"><div><i style="background:#3f6fb5"></i>Frankreich</div><div><i style="background:#d6452f;box-shadow:0 0 6px #d6452f"></i>Kriegsgegner Frankreichs</div><div><i style="background:#8db0d9"></i>Von Frankreich erobert</div><div><i style="background:#e8dfc4"></i>Andere Staaten</div><div style="margin-top:4px;color:var(--m)">Symbole anklicken für Details</div></div>
+<svg id="compass" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="44" fill="#fbf6ea" fill-opacity=".55" stroke="#3a3326" stroke-width="1.5"/><circle r="36" fill="none" stroke="#3a3326" stroke-width=".7" stroke-dasharray="2 3"/><path d="M0-40 7 0 0 40-7 0Z" fill="#3a3326"/><path d="M0-40 7 0-7 0Z" fill="#c8363f"/><path d="M-40 0 0-6 40 0 0 6Z" fill="#3a3326" opacity=".55"/><text y="-28" text-anchor="middle" font-size="11" font-weight="700" fill="#fbf6ea" font-family="Georgia">N</text></svg></div>
+<div id="bar"><button id="pv" aria-label="Vorherige Station">◀</button><div id="tl"><div id="phases"></div><div id="trk"><i id="fill"></i></div><div id="steps"></div></div><button id="nx" aria-label="Nächste Station">▶</button></div>
+</div><aside id="panel" aria-live="polite"></aside></div>
+<div id="gpop" role="tooltip"></div><div id="tip"></div>
+<div id="intro"><div class="card"><div class="flag"></div><div class="in">
+<div class="mot">Liberté · Égalité · Fraternité</div>
+<h1>Die Französische Revolution<br>1789 – 1799</h1>
+<p class="lead">Eine interaktive Reise in 12 Stationen – vom Prunk in Versailles bis zum Sturz Robespierres.</p>
+<div class="lf"><div class="date" style="margin-bottom:2px">Leitfrage</div><b>Wie konnte aus einer Finanzkrise eine Revolution werden, die Frankreich und Europa grundlegend veränderte – und warum verriet sie zeitweise ihre eigenen Ideale?</b></div>
+<div class="how"><div><span class="ic">🧭</span><b>Zeitleiste & Karte</b>Gehe Station für Station vor (◀ ▶ oder Pfeiltasten). Die Karte zeigt, wo es passiert ist – zoome bis in die Straßen von Paris.</div>
+<div><span class="ic">📖</span><b>Lesen & Quellen</b>Jede Station hat ein Lernziel, einen Darstellungstext, eine historische Quelle und Begriffe zum Nachschlagen (gepunktet unterstrichen).</div>
+<div><span class="ic">✍️</span><b>Aufgaben & Check</b>Bearbeite Aufgaben in drei Stufen und mache den Kurz-Check. Geschaffte Stationen bekommen ein ✓.</div></div>
+<div id="iprog"></div>
+<div class="act"><button class="prim" id="istart">Reise beginnen ▶</button><button id="icont" style="display:none">Weiter bei Station …</button></div>
+</div></div></div>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const P=(lo,la)=>[(lo+11)*16,(63-la)*24];
+const pts=a=>a.map(p=>P(p[0],p[1]).map(v=>v.toFixed(1)).join(",")).join(" ");
+/* Staaten um 1789: id, Name, Polygone [lon,lat], Labelposition, Info */
+const C=[
+["fr","Königreich Frankreich",[[[-4.7,48.3],[-1.5,48.7],[-1.5,49.7],[2,51],[4,50],[6,49.5],[8.2,49],[7.6,47.6],[6,46.2],[5.8,45.5],[6.8,44.2],[7.2,43.7],[3,42.5],[-1.8,43.4],[-1.2,45.5],[-2.5,47.3]],[[8.6,42.5],[9.4,43],[9.5,41.9],[8.8,41.4]]],[2.5,46.8],"Mit ca. 28 Mio. Einwohnern das bevölkerungsreichste Land Europas, aber hoch verschuldet. Absolutistische Monarchie unter Ludwig XVI., ab 1791 konstitutionelle Monarchie, ab 22.9.1792 Republik."],
+["gb","Großbritannien",[[[-5.5,50],[1.5,51],[1.7,53],[-0.5,55],[-2,57.5],[-3,58.6],[-5.5,58.5],[-6,56],[-5,54.8],[-3.2,54],[-4.5,53],[-5,51.7]],[[-10,51.5],[-6,52],[-6,54.5],[-8,55.2],[-10,54]]],[-2.6,53.5],"Parlamentarische Monarchie, Rivale Frankreichs. Schloss sich 1793 der Ersten Koalition an."],
+["es","Spanien",[[[-9.2,43.2],[-1.8,43.4],[3,42.5],[0.5,40.5],[-0.5,38.5],[-2,36.7],[-5.6,36],[-7.4,37.2],[-7,39],[-6.9,42],[-8.8,42]]],[-3.5,40],"Bourbonenmonarchie, trat 1793 gegen Frankreich in den Krieg ein, wechselte aber 1795 die Seite."],
+["pt","Portugal",[[[-9.5,42],[-6.9,42],[-7,39],[-7.4,37.2],[-9,37],[-9.5,39]]],[-8,39.8],"Traditionell eng an Großbritannien gebunden."],
+["it","Italien (Kleinstaaten)",[[[7,44],[6.8,45.9],[8.5,46],[10.4,46.5],[12.2,47],[13.7,46.5],[13.7,45.6],[12.3,45.3],[13.6,43.6],[16,41.9],[18.5,40.2],[16.5,39.5],[17,38.9],[15.7,37.9],[15.8,38.7],[15.6,40],[13,41.3],[10.5,43],[8.5,44.4]],[[12.5,38],[15.6,38.2],[15.2,36.7],[12.5,37.6]]],[12,43.3],"Zersplittert in viele Staaten (Piemont-Sardinien, Kirchenstaat, Neapel …). Ab 1796 Schauplatz von Bonapartes Italienfeldzug."],
+["ch","Schweiz",[[[6,46.2],[7.6,47.6],[10,47.5],[10.4,46.5],[8.5,46],[7,45.9]]],[8.2,46.8],"Eidgenossenschaft; 1798 von Frankreich zur Helvetischen Republik gemacht."],
+["be","Österr. Niederlande",[[[2.5,51.1],[4,51.4],[6,50.5],[6,49.5],[4,50],[2.5,50.8]]],[4.4,50.4],"Habsburgisch; 1792/93 von Frankreich erobert, 1795 annektiert."],
+["nl","Niederlande",[[[3.5,51.4],[5,53.4],[7,53.3],[7,51.8],[6,50.8],[4,51.4]]],[5.5,52.4],"Republik der Vereinigten Provinzen; 1795 als „Batavische Republik“ französischer Satellitenstaat."],
+["de","Preußen & Hl. Röm. Reich",[[[6,51.8],[7,53.5],[8.5,54],[8.6,55],[10,54.8],[11,54],[14,54],[18.5,54.8],[22.8,54.4],[22.8,53.8],[18.5,53],[18,51.5],[15,51],[12.5,50.2],[13.5,48.8],[13,47.7],[10,47.5],[7.6,47.6],[8.2,49],[6,49.5],[6,50.5],[6,51.2]]],[10.5,51.8],"Preußen (Friedrich Wilhelm II.) und viele deutsche Fürstentümer. Preußen führte 1792 die Invasion an, die bei Valmy scheiterte."],
+["at","Habsburgermonarchie",[[[10,47.5],[13,47.7],[13.5,48.8],[12.5,50.2],[15,51],[16.5,50.5],[18.5,50.4],[21,50.5],[23,50.4],[24,50.8],[26.3,50.2],[26.5,48.3],[26.5,47.5],[25.5,45.8],[24,45.7],[22.7,45.3],[22.5,44.7],[20.3,44.9],[19.2,44.5],[19.2,43.5],[18.5,42.4],[17.5,42.7],[16,43.5],[14.5,44.8],[13.7,45.6],[13.7,46.5],[12.2,47],[10.4,46.5]]],[19,47.6],"Kaiser Leopold II., ab 1792 Franz II. Marie Antoinette war Tochter Maria Theresias. Österreich erklärte Frankreich nicht den Krieg, wurde aber 1792 angegriffen."],
+["ru","Russland (mit Polen)",[[[22.8,54.4],[21,56.2],[21.1,57.5],[24,57.2],[24,59.3],[28,59.5],[30,60],[28,62],[45,62],[45,45],[38,45.2],[35,45],[33.5,46],[31,46.6],[30,45.5],[28.2,45.5],[26.5,48.3],[26.3,50.2],[24,50.8],[23,50.4],[21,50.5],[18.5,50.4],[18,51.5],[18.5,53],[22.8,53.8]]],[36,56],"Zarin Katharina II., ab 1796 Paul I. Griff erst 1798/99 in die Koalitionskriege ein."]
+];
+const CI=[
+["Paris",2.3522,48.8566,0,"Hauptstadt und mit ca. 600.000 Einwohnern eine der größten Städte Europas. Hier fielen die entscheidenden Schläge der Revolution; ab Oktober 1789 residierten König und Nationalversammlung in der Stadt. Klicke auf das Symbol und öffne den Stadtplan mit den Orten der Revolution.",null,"🏙️"],
+["Menschenrechte",2.1325,48.8062,0,"Am 26. August 1789 verabschiedete die Nationalversammlung in Versailles die Erklärung der Menschen- und Bürgerrechte.",[5],"📖"],
+["John Locke",-2.76,51.36,0,"(1632–1704) Geboren in Wrington bei Bristol. In den „Zwei Abhandlungen über die Regierung“ (1689) begründete er natürliche Rechte auf Leben, Freiheit und Eigentum, die Herrschaft nur mit Zustimmung der Regierten und ein Widerstandsrecht. Seine Ideen prägten die Amerikanische Revolution und die Menschenrechtserklärung von 1789.",[1],"💡",[-34,24],"John_Locke"],
+["Montesquieu",-0.53,44.68,0,"(1689–1755) Parlamentspräsident in Bordeaux, Schloss La Brède. In „Vom Geist der Gesetze“ (1748) forderte er die Gewaltenteilung in Gesetzgebung, Regierung und Rechtsprechung. Artikel 16 der Erklärung von 1789 greift den Gedanken auf.",[1],"💡",[0,0],"Montesquieu"],
+["Voltaire",6.11,46.26,0,"(1694–1778) Geboren in Paris, lebte ab 1759 auf seinem Gut in Ferney nahe Genf. Er kämpfte gegen religiösen Fanatismus und Justizwillkür (Fall Calas) und für Toleranz und freie Meinung. 1791 wurde sein Leichnam in das Panthéon überführt.",[1],"💡",[34,-24],"Voltaire"],
+["Jean-Jacques Rousseau",6.15,46.2,0,"(1712–1778) Geboren in Genf. Im „Gesellschaftsvertrag“ (1762) beschrieb er die Volkssouveränität und den allgemeinen Willen (volonté générale). Die Jakobiner beriefen sich auf ihn. 1794 wurde er ins Panthéon überführt.",[1],"💡",[-30,22],"Jean-Jacques_Rousseau"],
+["Immanuel Kant",20.51,54.71,0,"(1724–1804) Professor in Königsberg (Preußen), der kaum je verreiste. 1784 beantwortete er die Frage „Was ist Aufklärung?“: der Ausgang aus selbstverschuldeter Unmündigkeit, Wahlspruch „Sapere aude“. Die Revolution begrüßte er zunächst, ein Recht auf gewaltsamen Umsturz lehnte er aber ab.",[1],"💡",[0,0],"Immanuel_Kant"],
+["Jemappes",3.89,50.45,0,"6. November 1792: Das französische Revolutionsheer schlägt die Österreicher und erobert danach die Österreichischen Niederlande (Belgien).",[8],"⚔️",[-34,-24]],
+["Longwy & Verdun",5.55,49.36,0,"Im August und September 1792 fielen die Festungen Longwy und Verdun an die Preußen, der Weg nach Paris schien offen.",[8],"🔥",[34,6]],
+["Neerwinden",5.0,50.77,0,"18. März 1793: Niederlage der Franzosen gegen die Österreicher. General Dumouriez lief danach zu den Österreichern über.",[8],"⚔️",[10,-36]],
+["Fleurus",4.54,50.48,0,"26. Juni 1794: Sieg der Revolutionsarmee über die Österreicher. Er öffnete den Weg nach Belgien und ins Rheinland.",[11],"⚔️",[-16,-10]],
+["Amsterdam",4.9,52.37,0,"Im Winter 1794/95 eroberten französische Truppen die Niederlande. Daraus wurde die Batavische Republik, ein Schwesterstaat Frankreichs.",[11],"🏴"],
+["Basel",7.59,47.56,0,"Im Frieden von Basel (1795) schlossen Preußen und Spanien Frieden mit Frankreich; Österreich und Großbritannien blieben Gegner.",[11],"📜"],
+["Schloss Versailles",2.1204,48.8049,0,"Residenz Ludwigs XIV. seit 1682 und Sitz von Hof und Regierung, Sinnbild des Absolutismus. Hier begann 1789 die Revolution; am 6. Oktober 1789 wurde die Königsfamilie von hier nach Paris geholt.",[0,6],"👑"],
+["Generalstände",2.1325,48.8062,0,"Am 5. Mai 1789 eröffnete Ludwig XVI. in Versailles (Salle des Menus-Plaisirs) die ersten Generalstände seit 1614. Der Streit über die Abstimmungsart lähmte sie sofort.",[2],"📜"],
+["Ballhaus (Jeu de Paume)",2.1305,48.8035,0,"Das Ballhaus (Tennisspielhalle) in Versailles: Hier schworen die Abgeordneten am 20. Juni 1789, nicht auseinanderzugehen, bis Frankreich eine Verfassung hat. Die Lage ist auf der Karte ungefähr eingetragen.",[3],"🎾"],
+["Varennes",5.04,49.23,4,"Kleinstadt in der Argonne. Hier wurde die Königsfamilie am 21. Juni 1791 auf der Flucht angehalten.",[7],"🐎"],
+["Valmy",4.78,49.08,4,"Hier stoppte das französische Heer am 20. September 1792 in einer Kanonade den preußischen Vormarsch auf Paris.",[8],"💥",[-18,26]],
+["Koblenz",7.6,50.35,3,"Sammelpunkt der adligen Emigranten, die mit fremder Hilfe die alte Ordnung wiederherstellen wollten.",[8,11]],
+["Lyon",4.84,45.76,3,"Zweitgrößte Stadt; 1793 Aufstand gegen den Konvent, danach blutig niedergeschlagen.",[10],"⚔️"],
+["Toulon",5.93,43.12,3,"Kriegshafen; 1793 an die Briten übergeben und von Artilleriehauptmann Bonaparte zurückerobert.",[10],"⚓"],
+["Nantes",-1.55,47.22,3,"Hafenstadt am Rand der Vendée; 1793/94 Schauplatz von Massenhinrichtungen (Ertränkungen).",[10],"🌊"],
+["Vendée",-1,46.8,2.5,"Bauernland im Westen; ab März 1793 Aufstand gegen Zwangsrekrutierung und die Kirchenpolitik, brutal niedergeschlagen (Schätzungen: 100.000–200.000 Tote).",[10],"⚔️"],
+["Wien",16.4,48.2,0,"Residenz der Habsburger; 1805 von Napoleon besetzt."],
+["Berlin",13.4,52.5,0,"Hauptstadt Preußens; 1806 nach Jena und Auerstedt von Napoleon besetzt."],
+["London",-0.1,51.5,0,"Hauptfeind Frankreichs; finanzierte fast alle Koalitionen."],
+["Madrid",-3.7,40.4,0,"1808 besetzte Napoleon Spanien: Beginn des zermürbenden Guerillakrieges."],
+["Moskau",37.6,55.75,0,"Ziel von Napoleons Russlandfeldzug 1812, dessen Scheitern sein Ende einleitete.",[99],"❄️"],
+["Mailand",9.2,45.5,2,"Hauptstadt von Bonapartes Italienfeldzug 1796/97.",[99]]
+];
+const CP={};CI.forEach(c=>CP[c[0]]=[c[1],c[2]]);CP.Versailles=CP["Schloss Versailles"];
+const LN={fw:["Paris","Versailles","x"],fl:["Paris","Varennes","x"],rt:["Varennes","Paris","en"],kv:["Koblenz","Valmy","mp"],
+tl:["Paris","Lyon","x"],tv:["Paris","Vendée","x"],tt:["Paris","Toulon","x"],
+jm:["Valmy","Jemappes","en"],f1:["Paris","Fleurus","en"],f2:["Fleurus","Amsterdam","en"],f3:["Fleurus","Koblenz","en"]};
+const YT=q=>["🎬 Video-Suche: "+q,"https://www.youtube.com/results?search_query="+encodeURIComponent(q)];
+const LA=q=>["🧩 LearningApps-Suche: "+q,"https://learningapps.org/index.php?s="+encodeURIComponent(q)];
+const WK=q=>["📄 Wikipedia: "+q,"https://de.wikipedia.org/w/index.php?search="+encodeURIComponent(q)];
+const ST=[
+{t:"Absolutismus",sd:"1661–1789",ic:"👑",d:"1661 – 1789",cam:[2.1204,48.8049,60],ln:[],en:[],
+tx:["Seit 1661 regierte Ludwig XIV. selbst und machte Frankreich zum Musterstaat des Absolutismus: Beamte (Intendanten) statt mächtiger Adliger, ein stehendes Heer, Merkantilismus (Colbert). Der Adel wurde im Prachtschloss Versailles (Hof ab 1682) gebunden und vom Hofzeremoniell abhängig.","Die Gesellschaft war in drei Stände gegliedert: Klerus und Adel (zusammen unter 3 % der Bevölkerung) besaßen Steuerprivilegien und Ämter, der Dritte Stand (97 %, vom Bauern bis zum reichen Bürger) trug die Lasten. Dazu kamen Zehnt, Frondienste und Grundherrschaft auf dem Land. Unter Ludwig XVI. (König seit 1774) war der Staat kaum noch zu finanzieren."],
+f:[["Herrscher","Ludwig XIV. (1643–1715), Ludwig XVI. (1774–92)"],["Ordnung","Ancien Régime: drei Stände"],["Residenz","Schloss Versailles"]],
+task:"Erkläre, was „absolutistisch“ bedeutet, und beschreibe, welche Gruppen im Ancien Régime Vorteile und Nachteile hatten.",
+mat:[YT("Absolutismus Ludwig XIV. Versailles erklärt"),LA("Absolutismus"),WK("Ancien Régime")]},
+{t:"Aufklärung",sd:"1748–1789",ic:"💡",d:"1748 – 1789",cam:[9,49.5,1.5],ln:[],en:[],
+tx:["In den Pariser Salons und Cafés diskutierte das gebildete Bürgertum neue Ideen: Montesquieu forderte in „Vom Geist der Gesetze“ (1748) die Gewaltenteilung, Voltaire kämpfte für Toleranz und gegen Kirchen- und Willkürherrschaft, Rousseau begründete im „Gesellschaftsvertrag“ (1762) die Volkssouveränität. Diderot und d’Alembert sammelten das Wissen der Zeit in der Encyclopédie.","Die Amerikanische Revolution (Unabhängigkeitserklärung 1776) zeigte, dass diese Ideen umsetzbar waren; französische Offiziere wie Lafayette hatten dort mitgekämpft. Im Januar 1789 fragte Abbé Sieyès in einer Flugschrift „Was ist der Dritte Stand?“ und antwortete: alles. Die Ideen kamen aus ganz Europa: Klicke auf der Karte die fünf Denker in ihrer Heimat an (Locke, Montesquieu, Voltaire, Rousseau, Kant) und zoome bei Bedarf heraus."],
+f:[["Locke","Naturrechte, Widerstandsrecht"],["Montesquieu","Gewaltenteilung"],["Voltaire","Toleranz, Kritik an Willkür"],["Rousseau","Volkssouveränität"],["Kant","Mündigkeit, „Sapere aude“"]],
+task:"Klicke die fünf Denker an und ordne ihre Ideen den Forderungen der Revolution zu (Gewaltenteilung, Volkssouveränität, Menschenrechte, Toleranz).",
+mat:[YT("Aufklärung Montesquieu Voltaire Rousseau erklärt"),LA("Aufklärung Philosophen"),WK("Aufklärung")]},
+{t:"Krise & Generalstände",sd:"1788–5. Mai 1789",ic:"🏛️",d:"1788 – 5. Mai 1789",cam:[2.24,48.83,24],ln:[],en:[],
+tx:["Die Staatsschulden waren durch Kriege (auch den Beistand für die USA) so hoch, dass etwa die Hälfte der Einnahmen in den Schuldendienst floss. Reformen scheiterten am Widerstand der Privilegierten. Missernten und ein harter Winter 1788/89 ließen die Brotpreise steigen. Der König berief schließlich erstmals seit 1614 die Generalstände ein.","In ganz Frankreich schrieben die Menschen Beschwerdehefte (Cahiers de doléances). Der Dritte Stand erhielt doppelt so viele Abgeordnete (ca. 600 von 1.200), doch ob nach Ständen oder nach Köpfen abgestimmt wird, blieb offen. Am 5. Mai 1789 eröffnete Ludwig XVI. die Versammlung in Versailles, ohne die Streitfrage zu klären."],
+f:[["Finanzminister","Turgot, Necker, Calonne, Brienne"],["Eröffnung","5. Mai 1789, Versailles"],["Streitfrage","Abstimmung nach Ständen oder Köpfen"]],
+task:"Warum wurde die Abstimmungsfrage (nach Ständen oder nach Köpfen) zum Kern des Konflikts?",
+mat:[YT("Generalstände 1789 Versailles erklärt"),LA("Generalstände 1789"),WK("Generalstände 1789")]},
+{t:"Nationalversammlung & Ballhausschwur",sd:"17.–20. Juni 1789",ic:"✊",d:"17. – 20. Juni 1789",cam:[2.24,48.83,24],ln:[],en:[],
+tx:["Nach wochenlangem Streit erklärte sich der Dritte Stand am 17. Juni auf Antrag von Sieyès zur Nationalversammlung, weil er 96 % der Nation vertrete. Damit stellte er die Volkssouveränität über die Ständeordnung. Am 20. Juni fanden die Abgeordneten ihren Saal verschlossen und wichen in das nahe Ballhaus (Jeu de Paume) aus.","Dort schworen sie, nicht auseinanderzugehen, bis Frankreich eine Verfassung hat. Ein Abgeordneter verweigerte den Eid. Der König versuchte noch, die Beschlüsse für ungültig zu erklären (23. Juni), gab aber am 27. Juni nach und forderte auch Klerus und Adel auf, sich anzuschließen. Am 9. Juli nannte sich die Versammlung Verfassunggebende Nationalversammlung."],
+f:[["17. Juni","Dritter Stand = Nationalversammlung"],["20. Juni","Ballhausschwur"],["9. Juli","Verfassunggebende Versammlung"]],
+task:"Begründe, warum die Gründung der Nationalversammlung bereits ein revolutionärer Akt war.",
+mat:[YT("Ballhausschwur 1789 erklärt"),LA("Französische Revolution Ballhausschwur"),WK("Ballhausschwur")]},
+{t:"Sturm auf die Bastille",sd:"14. Juli 1789",ic:"🏰",d:"14. Juli 1789",cam:[2.3522,48.8566,40],ln:[],en:[],
+tx:["Am 11. Juli entließ der König den beliebten Minister Necker und ließ Truppen um Paris zusammenziehen. Die Pariser fürchteten einen Gewaltstreich gegen die Versammlung. Am 14. Juli holten sich Tausende Waffen aus dem Invalidendom und zogen vor die Bastille, wo Pulver lagerte.","Nach Verhandlungen und Schüssen ergab sich die Besatzung; Gouverneur de Launay wurde getötet. Es gab nur sieben Gefangene, doch die Festung galt als Symbol der Willkür. Der Sturm rettete die Nationalversammlung. Paris bekam eine Stadtregierung und eine Bürgerwehr (Nationalgarde unter Lafayette) mit der Kokarde in Blau-Rot und Weiß, der späteren Trikolore. Der 14. Juli ist heute Nationalfeiertag."],
+f:[["Auslöser","Entlassung Neckers, Truppenaufmarsch"],["Opfer","ca. 100 Angreifer, 7 Gefangene befreit"],["Folge","Nationalgarde, Trikolore, Emigration beginnt"]],
+task:"Warum war der Sturm auf die Bastille militärisch unbedeutend, politisch aber ein Wendepunkt?",
+mat:[YT("Sturm auf die Bastille 14. Juli 1789 erklärt"),LA("Sturm auf die Bastille"),WK("Sturm auf die Bastille")]},
+{t:"Menschenrechte",sd:"4./26. August 1789",ic:"📜",d:"Juli – August 1789",cam:[2.24,48.83,24],ln:[],en:[],
+tx:["Im Sommer erfasste die „Große Furcht“ das Land: Bauern fürchteten Räuberbanden und Adelsrache, stürmten Schlösser und verbrannten Urkunden über Abgaben. In der Nacht vom 4. August erklärte die Versammlung die Feudalrechte und Standesprivilegien für abgeschafft, in der Praxis mussten viele Lasten aber noch abgelöst werden.","Am 26. August verabschiedete sie die Erklärung der Menschen- und Bürgerrechte: Alle Menschen sind frei und gleich an Rechten, Ziel der Politik ist der Schutz von Freiheit, Eigentum, Sicherheit und Widerstand gegen Unterdrückung, die Souveränität liegt bei der Nation, Gesetze gelten für alle, Gewaltenteilung sichert die Rechte (Art. 16). Frauen blieben ausgeschlossen. Olympe de Gouges forderte deshalb 1791 eine „Erklärung der Rechte der Frau“."],
+f:[["4. August","Abschaffung des Feudalsystems"],["26. August","Menschen- und Bürgerrechte"],["Vorbild","Virginia Bill of Rights 1776"]],
+task:"Vergleiche die Erklärung von 1789 mit dem Grundgesetz: Welche Rechte finden sich wieder, welche Gruppen waren 1789 nicht gemeint?",
+mat:[YT("Erklärung der Menschen- und Bürgerrechte 1789 erklärt"),LA("Menschenrechte 1789"),WK("Erklärung der Menschen- und Bürgerrechte 1789")]},
+{t:"Marsch der Frauen",sd:"5./6. Oktober 1789",ic:"🥖",d:"5. – 6. Oktober 1789",cam:[2.24,48.825,30],ln:["fw"],en:[],
+tx:["Der König zögerte, die Beschlüsse vom August zu bestätigen, und in Paris fehlte das Brot. Am 5. Oktober zogen Tausende Marktfrauen von den Hallen zu Fuß im Regen die rund 20 km nach Versailles, um Brot und die Bestätigung der Beschlüsse zu fordern. Die Nationalgarde unter Lafayette folgte am Abend.","Der König gab nach. Am Morgen des 6. Oktober drang die Menge ins Schloss ein, Leibgardisten wurden getötet. Die königliche Familie wurde in einem Zug mit der Menge nach Paris in die Tuilerien gebracht, die Nationalversammlung folgte. Damit stand der Hof unter der Kontrolle der Hauptstadt."],
+f:[["Strecke","Paris – Versailles, ca. 20 km"],["Forderung","Brot, Bestätigung der Dekrete"],["Folge","König und Versammlung in Paris"]],
+task:"Warum waren Frauen die Haupttragenden des Protests, und was veränderte der Umzug des Hofes nach Paris?",
+mat:[YT("Marsch der Frauen nach Versailles 1789 erklärt"),LA("Marsch auf Versailles"),WK("Marsch auf Versailles")]},
+{t:"Flucht nach Varennes",sd:"20./21. Juni 1791",ic:"🚪",d:"20. – 25. Juni 1791",cam:[3.9,49.0,6],ln:["fl","rt"],en:[],
+tx:["Der König lehnte die Kirchenpolitik der Revolution ab und sah sich als Gefangener. In der Nacht vom 20. auf den 21. Juni floh die Königsfamilie verkleidet aus den Tuilerien Richtung Montmédy, wo der Marquis de Bouillé Truppen sammelte. Ludwig hinterließ eine Erklärung, in der er die Revolution verurteilte.","Postmeister Drouet erkannte ihn, in Varennes wurde die Kutsche am Abend des 21. Juni angehalten, am 25. Juni war die Familie zurück in Paris. Der Vertrauensverlust war enorm: Viele sahen den König nun als Verräter. Trotzdem erklärte die Versammlung ihn zum Entführten. Die Verfassung vom September 1791 machte Frankreich zur konstitutionellen Monarchie."],
+f:[["Ziel","Montmédy, Grenze zu den Österr. Niederlanden"],["Gescheitert","Varennes, 21. Juni 1791"],["Verfassung","3. September 1791"]],
+task:"Erkläre, warum die Flucht das Verhältnis zwischen König und Nation dauerhaft zerstörte.",
+mat:[YT("Flucht nach Varennes 1791 erklärt"),LA("Flucht nach Varennes"),WK("Flucht nach Varennes")]},
+{t:"Krieg & Republik",sd:"1792",ic:"⚔️",d:"April – September 1792",cam:[4.2,48.9,6],ln:["kv"],en:["at","de"],
+tx:["Am 20. April 1792 erklärte Frankreich Österreich den Krieg: Der Hof hoffte auf eine Niederlage, die Girondisten auf die Verbreitung der Revolution. Das Heer war schlecht geführt, ein preußisch-österreichisches Heer rückte vor. Im Juli drohte das Manifest des Herzogs von Braunschweig Paris mit Vergeltung, falls der Königsfamilie etwas geschehe.","Daraufhin stürmten am 10. August Pariser Sansculotten und Föderierte aus den Provinzen die Tuilerien. Der König wurde abgesetzt, im September kam es zu den Septembermorden an Gefangenen. Am 20. September stoppte das Revolutionsheer die Preußen bei Valmy. Am 21./22. September 1792 schaffte der neue Nationalkonvent das Königtum ab; es begann Jahr I der Republik. Die Marseillaise (Rouget de Lisle, Straßburg 1792) wurde zum Kriegslied."],
+f:[["20.4.","Kriegserklärung an Österreich"],["10.8.","Sturm auf die Tuilerien"],["20.9.","Kanonade von Valmy"],["22.9.","Ausrufung der Republik"]],
+task:"Warum wollten verschiedene Gruppen (Hof, Girondisten, Jakobiner) 1792 den Krieg?",
+mat:[YT("Valmy 1792 Tuileriensturm Republik erklärt"),LA("Französische Revolution 1792"),WK("Kanonade von Valmy")]},
+{t:"Tod des Königs",sd:"21. Januar 1793",ic:"🔪",d:"Dezember 1792 – Januar 1793",cam:[2.3522,48.8566,40],ln:[],en:["at","de","gb","es","nl"],
+tx:["Im November 1792 fand man in den Tuilerien einen geheimen Schrank mit Briefen des Königs an Gegner der Revolution. Der Konvent stellte „Bürger Louis Capet“ vor Gericht: Er wurde des Hochverrats schuldig gesprochen und mit knapper Mehrheit zum Tod verurteilt, ein Aufschub wurde abgelehnt.","Am 21. Januar 1793 wurde Ludwig XVI. auf dem Place de la Révolution (heute Place de la Concorde) mit der Guillotine hingerichtet, Marie-Antoinette folgte im Oktober. Die Hinrichtung vertiefte die Spaltung im Land und trieb die Monarchien Europas zusammen: Großbritannien, Niederlande und Spanien traten der Ersten Koalition gegen Frankreich bei."],
+f:[["Prozess","Dezember 1792 – Januar 1793"],["Hinrichtung","21. Januar 1793, Paris"],["Folge","Erste Koalition gegen Frankreich"]],
+task:"Diskutiere: War die Hinrichtung des Königs ein Bruch mit dem Rechtsstaat oder Konsequenz der Revolution?",
+mat:[YT("Hinrichtung Ludwig XVI. 1793 erklärt"),LA("Ludwig XVI. Hinrichtung"),WK("Ludwig XVI.")]},
+{t:"Terreur",sd:"1793–1794",ic:"🩸",d:"Juni 1793 – Juli 1794",cam:[2.5,46.8,2.7],ln:["tl","tv","tt"],en:["at","de","gb","es","nl","pt"],
+tx:["Frankreich stand 1793 vor Invasion, Wirtschaftskrise und Bürgerkrieg: In der Vendée erhob sich der Westen, in Lyon, Marseille und Toulon die „Föderalisten“. Der Konvent stärkte den Wohlfahrtsausschuss (ab Juli 1793 mit Robespierre), schuf das Revolutionstribunal, das „Gesetz der Verdächtigen“ (Sept. 1793) und die Massenaushebung (levée en masse).","In der Terreur (Schreckensherrschaft) wurden mindestens 17.000 Menschen offiziell hingerichtet, darunter die Königin, Girondisten und 1794 auch Danton. Mehr Menschen starben ohne Urteil in Gefängnissen und im Vendée-Krieg. Robespierre rechtfertigte den Terror als Tugend der Republik. Die Republik hielt militärisch stand, kostete aber Freiheitsrechte, die sie 1789 verkündet hatte."],
+f:[["Organe","Wohlfahrtsausschuss, Revolutionstribunal"],["Opfer","mind. 17.000 Hinrichtungen, weit mehr Tote insgesamt"],["Rechtfertigung","Verteidigung der Republik"]],
+task:"Wie lässt sich der Widerspruch zwischen den Idealen von 1789 und der Terreur erklären?",
+mat:[YT("Terreur Robespierre Schreckensherrschaft erklärt"),LA("Terror Französische Revolution"),WK("Terrorherrschaft Robespierre")]},
+{t:"Thermidor & Napoleon",sd:"1794–1799",ic:"🌍",d:"Juli 1794 – November 1799",cam:[17,49,1],ln:["n1","n2","n3","n4","n5"],en:["at","de","gb","ru"],
+tx:["Am 9. Thermidor (27. Juli 1794) stürzte der Konvent Robespierre, der am nächsten Tag hingerichtet wurde. Das Direktorium (ab 1795) regierte schwach, abhängig von Armee und wechselnden Mehrheiten. Der junge General Napoleon Bonaparte stieg auf, erst durch Toulon 1793, dann durch den Italienfeldzug (1796/97) und die Ägyptenexpedition (1798).","Am 18. Brumaire (9. November 1799) stürzte er mit einem Staatsstreich das Direktorium und wurde Erster Konsul, 1804 Kaiser. Die Revolutionskriege gingen in die napoleonischen Kriege über. Zoome auf der Karte heraus: Wien, Berlin, Madrid und Moskau markieren, wie Napoleon bis 1812 fast ganz Europa neu ordnete."],
+f:[["27.7.1794","Sturz Robespierres"],["9.11.1799","Staatsstreich Napoleons"],["1804","Kaiserkrönung"]],
+task:"Beurteile: Hat Napoleon die Revolution vollendet oder beendet? Nenne Argumente für beide Positionen.",
+mat:[YT("Napoleon Aufstieg Brumaire 1799 erklärt"),LA("Napoleon Bonaparte"),WK("Napoleonische Kriege")]}
+];
+const ROUTE=[[2.3470,48.8625],[2.3522,48.8566],[2.3212,48.8656],[2.3050,48.8650],[2.2770,48.8560],[2.2480,48.8370],[2.2100,48.8240],[2.1900,48.8070],[2.1700,48.8030],[2.1265,48.8049]];
+const RED="#c0392b",ORG="#e67e22",BLU="#1d4f93";
+ST[0].lv=[["p",11,1]];ST[0].lz=[2.1204,48.8049,3.2];
+ST[2].lv=[["p",13,1]];ST[2].lz=[2.1285,48.8052,4.5];ST[3].lv=[["p",14,1]];ST[3].lz=[2.1285,48.8052,4.5];ST[5].lv=[["p",13,1]];ST[5].lz=[2.1285,48.8052,4.5];
+ST[4].lv=[["p",2,1]];ST[4].lz=[2.341,48.8560,1.25];
+ST[4].fx={p:[["c","12.–14. Juli 1789: Die Menge holt Waffen im Invalidendom (orange) und zieht von allen Seiten zur Bastille (rot). An den Zollschranken brennen Feuer."],
+["l",[[2.3522,48.8566],[2.3400,48.8600],[2.3270,48.8610],[2.3126,48.8562]],ORG],
+["l",[[2.3126,48.8562],[2.3212,48.8640],[2.3371,48.8640],[2.3470,48.8618],[2.3600,48.8553],[2.3691,48.8532]],RED],
+["l",[[2.3957,48.8483],[2.3830,48.8505],[2.3691,48.8532]],RED],["l",[[2.3633,48.8675],[2.3660,48.8600],[2.3691,48.8532]],RED],
+["s",2.3660,48.8550,"🔥",1],["s",2.3722,48.8547,"💥"],["s",2.3662,48.8516,"⚔️"],["s",2.3722,48.8517,"🔥",1],
+["s",2.3957,48.8483,"🔥",1],["s",2.3665,48.8830,"🔥",1],["s",2.3050,48.8410,"🔥",1]]};
+ST[6].lv=[["p",4,1],["p",16]];ST[6].lz=[2.3470,48.8625,2.6];
+ST[6].fx={p:[["c","5. Oktober 1789: Tausende Frauen ziehen im Regen von Paris nach Versailles (ca. 20 km). Abends folgt Lafayette mit der Nationalgarde."],["march",ROUTE,{dur:24000,K:2.6,K2:4.5,end:"Abends erreichen die Frauen Versailles. Lafayette trifft in der Nacht mit der Nationalgarde ein."}]]};
+ST[7].lv=[["p",5]];ST[8].lv=[["p",5]];
+ST[8].fx={p:[["c","10. August 1792: Föderierte und Sansculotten aus den Vierteln stürmen die Tuilerien."],["l",[[2.3957,48.8483],[2.3691,48.8532],[2.3522,48.8566],[2.3400,48.8610],[2.3320,48.8632]],RED],["l",[[2.3459,48.8462],[2.3400,48.8575],[2.3320,48.8632]],RED],["s",2.3312,48.8638,"💥"],["s",2.3326,48.8626,"🔥",1],["s",2.3318,48.8632,"⚔️"]]};
+ST[9].lv=[["p",8,1]];ST[9].lz=[2.341,48.8648,2.6];
+ST[9].fx={p:[["c","21. Januar 1793: Der König wird vom Temple über die Boulevards zur Guillotine auf dem Place de la Révolution gefahren."],["l",[[2.3612,48.8641],[2.3560,48.8690],[2.3430,48.8712],[2.3316,48.8719],[2.3245,48.8700],[2.3212,48.8656]],"#333"],["s",2.3205,48.8661,"🔪"]]};
+ST[10].lv=[["p",10]];
+ST[11].lv=[["p",3]];
+ST[11].fx={p:[["c","27./28. Juli 1794: Truppen des Konvents (rot) stürmen das Hôtel de Ville und nehmen Robespierre fest. 20. Mai 1795: Das Faubourg Saint-Antoine marschiert zum Konvent (blau), das Militär schlägt den Aufstand nieder."],["l",[[2.3320,48.8632],[2.3470,48.8618],[2.3522,48.8566]],RED],["l",[[2.3957,48.8483],[2.3691,48.8532],[2.3522,48.8566],[2.3400,48.8610],[2.3320,48.8632]],BLU],["s",2.3522,48.8572,"💥"],["s",2.3320,48.8636,"⚔️"]]};
+/* Krieg (Europa) */
+ST[8].cam=[9,49.8,1.6];ST[8].ln=["kv","jm"];ST[8].d="April 1792 – März 1793";
+ST[8].waves=[[0,["at","be","de"],"20. April 1792: Frankreich erklärt Österreich den Krieg, Preußen schließt sich an."],[4500,["gb","nl","es","pt","it"],"Nach der Hinrichtung des Königs: Frankreich erklärt Großbritannien und den Niederlanden (1. Feb. 1793) sowie Spanien (7. März 1793) den Krieg. Die Erste Koalition entsteht."]];
+ST[8].tx[1]+=" Nach der Hinrichtung des Königs erklärte Frankreich im Februar 1793 Großbritannien und den Niederlanden, im März Spanien den Krieg. Die Erste Koalition gegen Frankreich entstand.";
+/* Terreur */
+ST[10].tx[1]+=" Die Aufstände wurden niedergeschlagen: Lyon fiel im Oktober 1793, Toulon im Dezember 1793, die Vendée-Armee wurde bei Savenay (23. Dezember 1793) besiegt.";
+/* Thermidor und Revolutionskriege */
+Object.assign(ST[11],{t:"Thermidor & Revolutionskriege",sd:"1794–1795",ic:"🕊️",d:"Juli 1794 – Oktober 1795",cam:[6,49.8,2.2],ln:["f1","f2","f3"],en:["at","gb"],oc:["be","nl"],cap:"1794/95: Frankreich erobert Belgien, das Rheinland und die Niederlande. 1795 schließen Preußen und Spanien Frieden (Basel).",
+tx:["Am 9. Thermidor (27. Juli 1794) stürzte der Konvent Robespierre, der am nächsten Tag hingerichtet wurde. Die Terreur endete: Gefangene kamen frei, der Jakobinerclub wurde 1794 geschlossen. Hunger und Preise trieben die Sansculotten 1795 zu Aufständen (1. April, 20. Mai), die das Militär niederschlug. Am 5. Oktober 1795 (13. Vendémiaire) beschoss die Armee einen royalistischen Aufstand. Die Verfassung des Jahres III schuf das Direktorium.","Militärisch drehte sich das Blatt: Nach dem Sieg bei Fleurus (26. Juni 1794) eroberten die Revolutionsheere die Österreichischen Niederlande, das linke Rheinufer und im Winter 1794/95 die Niederlande (Batavische Republik). 1795 schlossen Preußen und Spanien im Frieden von Basel Frieden. Österreich und Großbritannien blieben Gegner. Der Aufstieg Napoleons folgt in einem späteren Abschnitt."],
+f:[["27.7.1794","Sturz Robespierres (9. Thermidor)"],["26.6.1794","Sieg bei Fleurus"],["1795","Aufstände niedergeschlagen, Direktorium"],["1795","Frieden von Basel"]],
+task:"Erkläre, warum mit dem Ende der Terreur noch keine Ruhe einkehrte und welche Rolle die Armee für die Republik spielte.",
+mat:[YT("Thermidor Sturz Robespierres erklärt"),LA("Thermidor Direktorium"),WK("Thermidorianische Reaktion")]});
+/* ---------- Karte ---------- */
+const NS="http://www.w3.org/2000/svg";
+const E=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const CM={},paths={};
+C.forEach(c=>{CM[c[0]]=c;const g=E("g",{},$("cs"));c[2].forEach(pl=>{const p=E("polygon",{points:pts(pl)},g);p.onclick=()=>{if(!moved)showC(c[0])};(paths[c[0]]=paths[c[0]]||[]).push(p);E("title",{},p).textContent=c[1]});
+ const [x,y]=P(c[3][0],c[3][1]);E("text",{x,y,class:"cl"},$("cs")).textContent=c[1].split(" ")[0]});
+const lines={};
+for(const id in LN){const l=LN[id],a=P(...CP[l[0]]),b=P(...CP[l[1]]),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2-Math.hypot(b[0]-a[0],b[1]-a[1])*.12;lines[id]=E("path",{d:`M${a} Q${mx},${my} ${b}`,class:"ln "+l[2]},$("ls"))}
+const cg=CI.map(c=>{const g=E("g",{class:"ct"},$("ts"));
+ if(c[6]){E("circle",{r:12},g);E("text",{x:0,y:5,"text-anchor":"middle",style:"font-size:15px;stroke:none"},g).textContent=c[6];E("text",{x:17,y:4},g).textContent=c[0]}
+ else{E("circle",{r:4},g);E("text",{x:7,y:4},g).textContent=c[0]}g.onclick=()=>{if(!moved)showCity(c)};return[g,c]});
+/* ---------- Kamera ---------- */
+const svg=$("svg"),cam=$("cam");let X=0,Y=0,K=1,moved=0;
+let cur=0;
+function setCam(x,y,k){X=x;Y=y;K=k;cam.style.transform=`translate(${x}px,${y}px) scale(${k})`;svg.dataset.z=k>5?1:0;
+ cg.forEach(([g,c])=>{const p=P(c[1],c[2]);g.setAttribute("transform",`translate(${p[0]} ${p[1]}) scale(${1/k}) translate(${c[7]?c[7][0]:0} ${c[7]?c[7][1]:0})`);g.style.display=(c[5]?c[5].includes(cur):k>=c[3])?"":"none"})}
+const focus=(lo,la,k)=>{const p=P(lo,la);setCam(450-p[0]*k,340-p[1]*k,k)};
+const zoomAt=(sx,sy,f)=>{const nk=Math.min(70,Math.max(.8,K*f)),nx=sx-(sx-X)*nk/K,ny=sy-(sy-Y)*nk/K;
+ if(mode=="f"&&f>1&&nk>=55){let b=null,bd=160;for(const id in LVS){const o=LVS[id],q=P(o.fr[0],o.fr[1]),d=Math.hypot(nx+q[0]*nk-450,ny+q[1]*nk-340);if(d<bd){bd=d;b=id}}if(b){enterLevel(b,null);return}}
+ setCam(nx,ny,nk)};
+const toVB=e=>{const m=svg.getScreenCTM();return[(e.clientX-m.e)/m.a,(e.clientY-m.f)/m.d]};
+svg.addEventListener("wheel",e=>{e.preventDefault();cam.classList.add("drag");const[a,b]=toVB(e);zoomAt(a,b,e.deltaY<0?1.2:1/1.2);clearTimeout(svg.t);svg.t=setTimeout(()=>cam.classList.remove("drag"),150)},{passive:false});
+let dr=null;
+svg.addEventListener("pointerdown",e=>{dr={x:e.clientX,y:e.clientY,X,Y};moved=0});
+addEventListener("pointermove",e=>{if(!dr)return;const dx=e.clientX-dr.x,dy=e.clientY-dr.y;if(!moved&&Math.hypot(dx,dy)<5)return;moved=1;cam.classList.add("drag");$("mapw").classList.add("g");const m=svg.getScreenCTM();setCam(dr.X+dx/m.a,dr.Y+dy/m.d,K)});
+addEventListener("pointerup",()=>{dr=null;cam.classList.remove("drag");$("mapw").classList.remove("g");setTimeout(()=>moved=0,0)});
+
+$("tp").onclick=()=>$("panel").classList.toggle("hide");
+/* ---------- Panel ---------- */
+const pn=$("panel");
+const PN={set h(v){pn.classList.remove("st");pn.innerHTML=v}};
+const dl=a=>"<dl>"+a.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")+"</dl>";
+const mats=a=>`<div class="box"><h4>Weiterführend</h4>`+a.map(m=>`<a href="${m[1]}" target="_blank" rel="noopener">${m[0]} ↗</a>`).join("")+`</div>`;
+const IM=[
+[["Louis_XIV_of_France","Ludwig XIV., der „Sonnenkönig“"],["Palace_of_Versailles","Schloss Versailles"]],
+[],
+[["Estates_General_of_1789","Eröffnung der Generalstände in Versailles, 5. Mai 1789"]],
+[["Tennis_Court_Oath","Der Ballhausschwur (Entwurf von Jacques-Louis David)"]],
+[["Storming_of_the_Bastille","Sturm auf die Bastille, 14. Juli 1789"]],
+[["Declaration_of_the_Rights_of_Man_and_of_the_Citizen","Erklärung der Menschen- und Bürgerrechte, 1789"]],
+[["Women's_March_on_Versailles","Der Marsch der Frauen nach Versailles"]],
+[["Flight_to_Varennes","Die Festnahme der Königsfamilie in Varennes"]],
+[["Battle_of_Valmy","Die Kanonade von Valmy, 20. September 1792"],["Insurrection_of_10_August_1792","Sturm auf die Tuilerien, 10. August 1792"]],
+[["Execution_of_Louis_XVI","Hinrichtung Ludwigs XVI., 21. Januar 1793"]],
+[["Reign_of_Terror","Terreur: Hinrichtungen auf der Guillotine"],["Maximilien_Robespierre","Maximilien Robespierre"]],
+[["Thermidorian_Reaction","Der 9. Thermidor: Sturz Robespierres"],["Battle_of_Fleurus_(1794)","Schlacht bei Fleurus, 26. Juni 1794"]]];
+const WC={};
+const jsonp=t=>new Promise((res,rej)=>{const n="wp"+Math.random().toString(36).slice(2),sc=document.createElement("script");
+ window[n]=j=>{try{res(Object.values(j.query.pages)[0].original.source)}catch(e){rej(e)}sc.remove();delete window[n]};
+ sc.onerror=()=>rej(new Error("blockiert"));sc.src="https://en.wikipedia.org/w/api.php?action=query&redirects=1&prop=pageimages&piprop=original&format=json&titles="+encodeURIComponent(t)+"&callback="+n;document.head.appendChild(sc)});
+const getImg=t=>WC[t]||(WC[t]=fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(t)).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(j=>(j.originalimage||j.thumbnail).source)
+ .catch(()=>fetch("https://en.wikipedia.org/w/api.php?action=query&redirects=1&prop=pageimages&piprop=original&format=json&origin=*&titles="+encodeURIComponent(t)).then(r=>r.json()).then(j=>Object.values(j.query.pages)[0].original.source))
+ .catch(()=>jsonp(t)));
+const imgs=a=>a.map(i=>`<figure data-w="${i[0]}"><img referrerpolicy="no-referrer" alt="${i[1]}"><figcaption>${i[1]} · <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/${i[0]}">Quelle: Wikipedia</a></figcaption></figure>`).join("");
+const ph=(fg,why)=>{const m=fg.querySelector("img");if(!m)return;const d=document.createElement("div");d.className="ph";d.innerHTML=`<div style="font-size:30px">🖼</div><b>${m.alt}</b><br>${why}<br><a style="color:#7db7ff" target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/${fg.dataset.w}">Artikel öffnen ↗</a>`;m.replaceWith(d)};
+function fix(){pn.querySelectorAll("figure[data-w]").forEach(fg=>{const im=fg.querySelector("img");
+ getImg(fg.dataset.w).then(u=>{const c=[u,"https://wsrv.nl/?w=640&url="+encodeURIComponent(u)];let n=0;const nx=()=>{n<c.length?im.src=c[n++]:ph(fg,"Bild konnte nicht geladen werden.")};im.onerror=nx;nx()}).catch(()=>ph(fg,"Keine Verbindung zu Wikipedia."))})}
+function showC(id){const c=CM[id];Object.values(paths).flat().forEach(p=>p.classList.remove("sel"));paths[id].forEach(p=>p.classList.add("sel"));
+ PN.h=`<span class="tag" style="background:${id=="fr"?"#4d86cf":"#cfc9ad"}">${id=="fr"?"Frankreich":"Nachbar/Gegner"}</span><h2>${c[1]}</h2><p>${c[4]}</p><p><button onclick="showS(cur)">← Zurück zur Station</button></p>`;pn.scrollTop=0}
+const LK={"Paris":["p",null],"Schloss Versailles":["p",11],"Generalstände":["p",13],"Ballhaus (Jeu de Paume)":["p",14],"Menschenrechte":["p",13]};
+function showCity(c){const k=LK[c[0]],x=PHX[c[0]];if(k){enterLevel(k[0],k[1]);return}
+ PN.h=`<h2>${c[0]}</h2><p>${c[4]}</p>${x?`<div class="box"><h4>Wichtigste Idee: ${x.i}</h4><p style="font-style:italic;margin:4px 0">„${x.q}“</p><div style="color:var(--m);font-size:12px">${x.s}</div></div><div class="box"><h4>Das Neue daran</h4>${x.n}</div><div class="box"><h4>Wirkung auf die Revolution</h4>${x.w}</div>`:""}${c[8]?imgs([[c[8],c[0]]]):""}${mats([["📄 Wikipedia: "+c[0],"https://de.wikipedia.org/w/index.php?search="+encodeURIComponent(c[0])]])}`;snavHide();fix();pn.scrollTop=0}
+/* ---------- Zeitleiste ---------- */
+const sb=$("steps");
+ST.forEach((s,i)=>{const b=document.createElement("button");b.innerHTML=`<span class="nd">${s.ic}</span><span class="nl">${s.t}</span>`;b.title=s.t+" ("+s.d+")";b.onclick=()=>go(i);sb.appendChild(b)});
+/* ---------- Didaktik: Phasen, Lernziele, Quellen, Aufgaben, Glossar ---------- */
+const PH=[["Vorgeschichte & Krise","1661–1789","var(--ph0)",[0,1,2]],["Gemäßigte Phase","1789–1792","var(--ph1)",[3,4,5,6,7]],["Radikale Phase","1792–1794","var(--ph2)",[8,9,10]],["Thermidor","1794/95","var(--ph3)",[11]]];
+const phOf=i=>PH.find(p=>p[3].includes(i));
+/* Deutungsmodell „Fieberkurve“: Grad der Radikalisierung je Station (0–1) */
+const RAD=[.08,.15,.25,.42,.55,.5,.58,.62,.8,.88,1,.45];
+const LZ=["erklären, wie Ludwig XIV. absolut herrschte und wer in der Ständegesellschaft Vor- und Nachteile hatte.",
+"die zentralen Ideen von fünf Aufklärern nennen und mit Forderungen der Revolution verbinden.",
+"die Ursachen der Staatskrise erklären und den Streit um die Abstimmungsart erläutern.",
+"erklären, warum die Gründung der Nationalversammlung ein revolutionärer Akt war.",
+"den Sturm auf die Bastille als Symbol und Wendepunkt einordnen.",
+"wesentliche Inhalte der Menschenrechtserklärung nennen und ihre Grenzen erkennen.",
+"die Rolle der Pariser Frauen und die Folgen ihres Marsches erklären.",
+"erklären, warum die Flucht des Königs das Vertrauen in die Monarchie zerstörte.",
+"erklären, wie Krieg und Radikalisierung 1792 zur Republik führten.",
+"Ursachen und Folgen der Hinrichtung Ludwigs XVI. erläutern.",
+"die Terreur beschreiben und ihren Widerspruch zu den Idealen von 1789 beurteilen.",
+"das Ende der Terreur und die wachsende Macht der Armee erklären."];
+/* Quellen: Text, Herkunft, Kontext, Arbeitsfrage, [1 = Inhalt zusammengefasst] */
+const QU=[
+["Der Staat bin ich.","Ludwig XIV. zugeschrieben („L’État, c’est moi“)","Der berühmte Satz ist in keiner zeitgenössischen Quelle belegt. Er wurde dem König erst später in den Mund gelegt, fasst aber zusammen, wie man den Absolutismus wahrnahm.","Warum hält sich ein Zitat so hartnäckig, obwohl es vermutlich nie gesagt wurde? Was verrät das über die Wirkung des Absolutismus?"],
+["Sapere aude! Habe Mut, dich deines eigenen Verstandes zu bedienen! ist also der Wahlspruch der Aufklärung.","Immanuel Kant: Beantwortung der Frage: Was ist Aufklärung? (1784)","Kant schrieb in einer Berliner Zeitschrift für ein gebildetes Publikum. Er lebte im absolutistisch regierten Preußen unter Friedrich II.","Was bedeutet dieser Wahlspruch für das Verhältnis zwischen Untertanen und Herrscher?"],
+["Was ist der Dritte Stand? Alles. Was ist er bis jetzt in der politischen Ordnung gewesen? Nichts. Was verlangt er? Etwas zu werden.","Abbé Emmanuel Joseph Sieyès: Was ist der Dritte Stand? (Januar 1789)","Sieyès war selbst Geistlicher, schrieb aber für den Dritten Stand. Die Flugschrift verbreitete sich in wenigen Wochen in ganz Frankreich.","Mit welchen sprachlichen Mitteln überzeugt Sieyès? Für wen spricht er eigentlich: für die Bauern oder für das Bürgertum?"],
+["… dass alle Mitglieder dieser Versammlung auf der Stelle feierlich schwören, sich niemals zu trennen und sich überall zu versammeln, wo die Umstände es erfordern, bis die Verfassung des Königreichs geschaffen und auf festen Grundlagen gesichert ist.","Beschluss der Nationalversammlung im Ballhaus von Versailles, 20. Juni 1789 (übersetzt)","Präsident Bailly las den Eid vor. Fast alle anwesenden Abgeordneten unterschrieben, nur einer verweigerte sich.","Gegen wen richtet sich der Schwur, obwohl der König gar nicht genannt wird?"],
+["Rien.","Tagebuch Ludwigs XVI., Eintrag vom 14. Juli 1789","„Nichts.“ In diesem Heft notierte der König vor allem seine Jagden; der Eintrag meint wohl: keine Jagdbeute. Trotzdem wird er oft als Beweis seiner Ahnungslosigkeit zitiert.","Darf man aus diesem Eintrag schließen, dass der König die Lage nicht verstand? Was muss man über die Quelle wissen, bevor man urteilt?"],
+["Die Menschen werden frei und gleich an Rechten geboren und bleiben es. Soziale Unterschiede dürfen nur im allgemeinen Nutzen begründet sein.","Erklärung der Menschen- und Bürgerrechte, Artikel 1 (26. August 1789)","Zwei Jahre später schrieb Olympe de Gouges: „Die Frau wird frei geboren und bleibt dem Manne gleich an Rechten.“ (Erklärung der Rechte der Frau und Bürgerin, 1791, Art. 1). Sie wurde 1793 hingerichtet.","Vergleiche die beiden Artikel. Was kritisiert Olympe de Gouges, ohne es offen auszusprechen?"],
+["Wir bringen den Bäcker, die Bäckerin und den kleinen Bäckerjungen!","Ruf der Menge beim Zug nach Paris, 6. Oktober 1789 (überliefert)","Gemeint sind König, Königin und Kronprinz. Man erwartete, dass mit dem König in Paris auch das Brot zurückkommt.","Was verrät der Spottname über das Bild, das die Pariser vom König hatten?"],
+["Der König erklärt, er sei seit Oktober 1789 in Paris praktisch ein Gefangener gewesen. Den Gesetzen, die er seitdem unterzeichnet habe, habe er nicht aus freiem Willen zugestimmt.","Ludwig XVI.: Erklärung an alle Franzosen, 20. Juni 1791 (Inhalt zusammengefasst)","Der König ließ die Erklärung bei seiner Flucht in den Tuilerien zurück. Am nächsten Tag wurde sie in der Nationalversammlung verlesen.","Wie musste dieses Schreiben auf Abgeordnete wirken, die gerade eine Verfassung mit dem König als Staatsoberhaupt fertigstellten?",1],
+["Von hier und heute geht eine neue Epoche der Weltgeschichte aus, und ihr könnt sagen, ihr seid dabei gewesen.","Johann Wolfgang von Goethe: Campagne in Frankreich 1792 (veröffentlicht 1822)","Goethe begleitete den Herzog von Sachsen-Weimar im preußischen Heer. Seinen Bericht schrieb er erst rund 30 Jahre später, als er wusste, wie die Geschichte weitergegangen war.","Warum muss man bei diesem berühmten Satz vorsichtig sein? Was spricht trotzdem dafür, dass Goethe recht hatte?"],
+["Ludwig muss sterben, weil das Vaterland leben muss.","Maximilien Robespierre, Rede im Nationalkonvent, 3. Dezember 1792","Robespierre lehnte einen ordentlichen Prozess ab: Der König sei kein Angeklagter, sondern ein Feind, über den nicht geurteilt, sondern entschieden werden müsse.","Welches Rechtsverständnis steckt hinter diesem Satz? Vergleiche mit den Artikeln 7 bis 9 der Menschenrechtserklärung."],
+["Wenn die Triebfeder der Volksregierung im Frieden die Tugend ist, so ist sie in der Revolution zugleich die Tugend und der Terror: die Tugend, ohne die der Terror verhängnisvoll, der Terror, ohne den die Tugend machtlos ist.","Maximilien Robespierre, Rede im Nationalkonvent, 5. Februar 1794","Die Rede „Über die Grundsätze der politischen Moral“ hielt Robespierre auf dem Höhepunkt seiner Macht, wenige Monate vor seinem Sturz.","Wie begründet Robespierre den Terror? Prüfe, ob die Argumentation schlüssig ist."],
+["Bürger, die Revolution ist auf die Grundsätze festgelegt, mit denen sie begonnen hat. Sie ist beendet.","Proklamation der Konsuln (u. a. Napoleon Bonaparte), 15. Dezember 1799","Ausblick: Fünf Jahre nach dem Sturz Robespierres übernahm General Bonaparte die Macht. Mit diesem Satz stellte er seine Herrschaft als Abschluss der Revolution dar.","Wem nützte die Behauptung, die Revolution sei „beendet“? Nimm Stellung."]];
+/* Aufgaben: [AFB I, AFB II (null = ST.task), AFB III (null = ST.task), Tipp] */
+const AF=[
+["Nenne die drei Stände und ihren ungefähren Anteil an der Bevölkerung (Grafik).",null,"Beurteile aus Sicht eines Bauern und aus Sicht eines Adligen, ob die Ständeordnung 1789 noch gerecht erscheinen konnte.","„Absolut“ heißt „losgelöst“: Von welchen Gesetzen und Einrichtungen war der König unabhängig?"],
+["Nenne zu jedem der fünf Denker seine wichtigste Idee.",null,"Beurteile, welche Idee der Aufklärung für die Revolution am folgenreichsten war. Begründe deine Wahl.","Öffne die Denker auf der Karte: Jeder hat einen Kasten „Wirkung auf die Revolution“."],
+["Nenne drei Ursachen für die Krise des französischen Staates 1788/89.",null,"Beurteile Sieyès’ Aussage „Der Dritte Stand ist alles“ (Quelle). Ist sie übertrieben?","Rechne: Wie viele Stimmen hatte der Dritte Stand bei einer Abstimmung nach Ständen, wie viele Stimmen bei einer nach Köpfen?"],
+["Beschreibe, was am 17. und am 20. Juni 1789 geschah.",null,"Beurteile, ob die Abgeordneten mit dem Ballhausschwur rechtmäßig oder rechtswidrig handelten.","Wer hatte bisher allein das Recht, Gesetze zu machen? Wer beansprucht dieses Recht nun?"],
+["Beschreibe den Ablauf des 14. Juli 1789 mithilfe des Stadtplans.",null,"Beurteile, warum heute der 14. Juli und nicht der 17. Juni französischer Nationalfeiertag ist.","Unterscheide die militärische Bedeutung (Gefangene, Waffen) von der symbolischen."],
+["Nenne vier Rechte aus der Erklärung von 1789.",null,"Beurteile die Kritik von Olympe de Gouges an der Erklärung (Quelle).","Lies Art. 1 und Art. 3 des Grundgesetzes und vergleiche mit Art. 1 der Erklärung (Quelle)."],
+["Beschreibe Weg und Forderungen des Frauenmarsches (Karte).",null,"Beurteile die Rolle der Pariser Bevölkerung für den Verlauf der Revolution bis Oktober 1789.","Denke an den Brotpreis: Wer kauft ein und spürt die Teuerung zuerst?"],
+["Beschreibe den Verlauf der Flucht mithilfe der Karte.",null,"Beurteile, warum die Nationalversammlung den König offiziell als „entführt“ darstellte.","Lies die Quelle: Was gibt der König selbst als Grund an?"],
+["Nenne die wichtigsten Ereignisse des Jahres 1792 in der richtigen Reihenfolge.",null,"Beurteile Goethes Aussage über Valmy (Quelle). Hatte er recht?","Unterscheide die Hoffnungen des Hofes, der Girondisten und Robespierres (der gegen den Krieg war)."],
+["Beschreibe, wie es zum Prozess gegen Ludwig XVI. kam.","Erkläre, warum die Hinrichtung die Monarchien Europas gegen Frankreich vereinte.",null,"Wer ist nach der Menschenrechtserklärung souverän, und wer war es für die anderen Könige Europas?"],
+["Nenne die wichtigsten Einrichtungen und Maßnahmen der Terreur.",null,"Beurteile Robespierres Rechtfertigung von „Tugend und Terror“ (Quelle).","Sammle die äußeren und inneren Bedrohungen von 1793 und vergleiche mit den Artikeln 7 bis 9 der Menschenrechte."],
+["Nenne drei Ereignisse zwischen Juli 1794 und Oktober 1795.",null,"Beurteile Napoleons Behauptung von 1799: „Die Revolution ist beendet.“ (Quelle). Beziehe die Leitfrage ein.","Wer schlug 1795 die Aufstände nieder? Was folgt daraus für die Macht der Generäle?"]];
+const AFB=[["I","Wiedergeben","#7fc8a9","Nenne, beschreibe"],["II","Erklären","#f0c56e","Erkläre, vergleiche, ordne zu"],["III","Beurteilen","#ef8a7f","Beurteile, nimm Stellung, diskutiere"]];
+const LEIT="Wie konnte aus einer Finanzkrise eine Revolution werden, die Frankreich und Europa grundlegend veränderte, und warum verriet sie zeitweise ihre eigenen Ideale?";
+/* Glossar: Begriff, Suchmuster im Text, Erklärung (längere Begriffe zuerst) */
+const GL=[
+["Cahiers de doléances",/Cahiers de doléances/,"Beschwerdehefte: 1789 schrieben Gemeinden, Zünfte und Stände ihre Klagen und Wünsche für die Generalstände auf. Es entstanden Zehntausende Hefte."],
+["Konstitutionelle Monarchie",/konstitutionellen? Monarchie/,"Monarchie, in der die Macht des Königs durch eine Verfassung (Konstitution) begrenzt ist. Gesetze beschließt ein gewähltes Parlament."],
+["Erste Koalition",/Ersten? Koalition/,"Bündnis europäischer Monarchien (u. a. Österreich, Preußen, Großbritannien, Spanien) gegen das revolutionäre Frankreich, 1792–1797."],
+["Wohlfahrtsausschuss",/Wohlfahrtsausschuss(es)?/,"Regierungsausschuss des Konvents (ab April 1793), der 1793/94 unter Robespierre fast diktatorisch regierte."],
+["Revolutionstribunal",/Revolutionstribunal/,"Sondergericht in Paris (ab März 1793) für „Feinde der Revolution“ ohne wirksame Verteidigung. Die Urteile lauteten meist Tod oder Freispruch."],
+["Nationalversammlung",/(Verfassunggebende )?Nationalversammlung/,"Die vom Dritten Stand am 17. Juni 1789 gegründete Versammlung, die beanspruchte, die ganze Nation zu vertreten. Sie arbeitete bis 1791 die erste Verfassung aus."],
+["Volkssouveränität",/Volkssouveränität/,"Grundsatz, dass alle Staatsgewalt vom Volk ausgeht und nicht von Gott oder einem Herrscher."],
+["Gewaltenteilung",/Gewaltenteilung/,"Aufteilung der Staatsgewalt in Gesetzgebung (Legislative), Regierung (Exekutive) und Rechtsprechung (Judikative), die sich gegenseitig kontrollieren."],
+["Generalstände",/Generalstände(n)?/,"Versammlung von Vertretern der drei Stände, die nur der König einberufen konnte. Vor 1789 tagte sie zuletzt 1614."],
+["Absolutismus",/Absolutismus/,"Herrschaftsform, in der der Monarch „losgelöst“ (lat. absolutus) von Gesetzen, Ständen und Parlamenten regiert. Seine Macht gilt als von Gott gegeben."],
+["Ancien Régime",/Ancien Régime/,"„Alte Ordnung“: Staat und Gesellschaft Frankreichs vor 1789 mit absolutem König und Ständeordnung."],
+["Dritter Stand",/Dritten? Stand(es)?/,"Alle, die weder Geistliche (1. Stand) noch Adlige (2. Stand) waren: rund 97 % der Bevölkerung, vom Tagelöhner bis zum reichen Bankier."],
+["Merkantilismus",/Merkantilismus/,"Wirtschaftspolitik des Absolutismus: Der Staat fördert Manufakturen und Export und beschränkt Importe, um möglichst viel Geld ins Land zu holen."],
+["Frondienste",/Frondienste?/,"Unbezahlte Arbeit, die Bauern für ihren Grundherrn leisten mussten, z. B. auf dessen Feldern oder beim Wegebau."],
+["Zehnt",/Zehnt/,"Abgabe an die Kirche, ursprünglich ein Zehntel der Ernte."],
+["Salons",/Salons/,"Gesprächskreise in Privathäusern, oft von gebildeten Frauen geleitet, in denen über Literatur, Wissenschaft und Politik diskutiert wurde."],
+["Encyclopédie",/Encyclopédie/,"Große Enzyklopädie (1751–1772) von Diderot und d’Alembert, die das Wissen der Zeit kritisch und vernunftorientiert darstellte."],
+["Feudalrechte",/Feudal(rechte|systems?)/,"Rechte der Grundherren gegenüber den Bauern: Abgaben, Frondienste, eigene Gerichtsbarkeit, Jagdrecht."],
+["Nationalgarde",/Nationalgarde/,"Bürgerwehr, im Juli 1789 in Paris gegründet (Kommandant: Lafayette), um Ordnung und Revolution zu schützen."],
+["Emigranten",/Emigra(nten|tion)/,"Adlige und Geistliche, die ab 1789 ins Ausland flohen und von dort gegen die Revolution arbeiteten."],
+["Girondisten",/Girondisten/,"Gemäßigte Republikaner, viele aus dem Département Gironde (Bordeaux). Sie befürworteten 1792 den Krieg und wurden 1793 von den Jakobinern entmachtet."],
+["Jakobiner",/Jakobiner(club|n)?/,"Politischer Club, benannt nach seinem Versammlungsort, einem früheren Kloster. Ab 1792 der radikale Flügel um Robespierre."],
+["Sansculotten",/Sansculotten/,"„Ohne Kniebundhosen“: Handwerker, Ladenbesitzer und Arbeiter in Paris, die lange Hosen statt der Kniehosen der Oberschicht trugen. Sie trieben die Revolution 1792–94 voran."],
+["Föderierte",/Föderierte(n)?/,"Nationalgardisten aus den Provinzen, die 1792 nach Paris kamen, z. B. aus Marseille (daher der Name „Marseillaise“)."],
+["Konvent",/(National)?[Kk]onvents?/,"Nationalkonvent: das 1792 gewählte Parlament der Republik (1792–1795)."],
+["Republik",/Republik/,"Staatsform ohne Monarchen; die Regierung wird direkt oder indirekt vom Volk bestimmt."],
+["Guillotine",/Guillotine/,"Fallbeil zur Hinrichtung, ab 1792 eingesetzt. Sie galt als schnell und „gleich für alle“ und wurde zum Symbol der Terreur."],
+["levée en masse",/levée en masse/,"Massenaushebung (August 1793): Alle unverheirateten Männer von 18 bis 25 Jahren wurden zum Militär eingezogen."],
+["Terreur",/Terreur/,"„Schrecken“: Schreckensherrschaft des Wohlfahrtsausschusses 1793/94 mit Massenverhaftungen und Hinrichtungen."],
+["Thermidor",/Thermidor/,"Monat im Revolutionskalender. Am 9. Thermidor des Jahres II (27. Juli 1794) wurde Robespierre gestürzt."],
+["Direktorium",/Direktorium/,"Regierung aus fünf Direktoren (1795–1799) nach der Verfassung des Jahres III."]];
+const GLX=a=>{const used=new Set();return a.map(p=>{const tok=[];GL.forEach((g,k)=>{if(used.has(k))return;const m=p.match(g[1]);if(!m)return;used.add(k);tok.push(`<button class="gl" data-g="${k}">${m[0]}</button>`);p=p.slice(0,m.index)+"\u0001"+(tok.length-1)+"\u0002"+p.slice(m.index+m[0].length)});return p.replace(/\u0001(\d+)\u0002/g,(_,n)=>tok[n])})};
+const gpop=$("gpop");
+document.addEventListener("click",e=>{const b=e.target.closest(".gl");if(!b){gpop.style.display="none";return}e.stopPropagation();const g=GL[+b.dataset.g],r=b.getBoundingClientRect();
+ gpop.innerHTML=`<b>${g[0]}</b>${g[2]}`;gpop.style.display="block";const w=gpop.offsetWidth,h=gpop.offsetHeight;
+ gpop.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2))+"px";gpop.style.top=(r.bottom+8+h>innerHeight?r.top-h-8:r.bottom+8)+"px"});
+pn.addEventListener("scroll",()=>gpop.style.display="none");
+addEventListener("keydown",e=>{if(e.key==="Escape"){gpop.style.display="none";closeIntro()}});
+/* Tooltip für Grafiken */
+const tip=$("tip");
+document.addEventListener("pointerover",e=>{const t=e.target.closest&&e.target.closest("[data-tip]");if(!t){tip.style.display="none";return}tip.innerHTML=t.dataset.tip;tip.style.display="block"});
+document.addEventListener("pointermove",e=>{if(tip.style.display!="block")return;const w=tip.offsetWidth;tip.style.left=Math.min(innerWidth-w-8,e.clientX+14)+"px";tip.style.top=(e.clientY+16)+"px"});
+/* Fortschritt (nur in diesem Browser gespeichert) */
+const SV=(()=>{const d={done:[],notes:{},last:0};try{Object.assign(d,JSON.parse(localStorage.getItem("fr7")||"{}"))}catch(e){}return d})();
+const save=()=>{try{localStorage.setItem("fr7",JSON.stringify(SV))}catch(e){}};
+const badges=()=>[...sb.children].forEach((b,n)=>b.classList.toggle("ok",SV.done.includes(n)));
+/* Grafik: Ständegesellschaft */
+function standChart(){const S=[["Klerus (1. Stand)","var(--s1)"],["Adel (2. Stand)","var(--s2)"],["Dritter Stand","var(--s3)"]],
+ R=[["Bevölkerung",[.5,2,97.5],["ca. 0,5 %","ca. 2 %","ca. 97 %"]],["Grundbesitz",[10,25,65],["ca. 10 %","ca. 25 %","ca. 65 %"]],["Hauptsteuer",[0,0,100],["befreit","befreit","100 %"]]];
+ const X0=118,BW=278,RH=24,G=16;let h="";
+ R.forEach((r,ri)=>{const y=ri*(RH+G)+4,nz=r[1].filter(v=>v>0).length;let x=X0;const avail=BW-(nz-1)*2;
+  h+=`<text x="0" y="${y+RH/2+4}" font-size="12.5" fill="var(--t)">${r[0]}</text><clipPath id="sc${ri}"><rect x="${X0}" y="${y}" width="${BW}" height="${RH}" rx="4"/></clipPath><g clip-path="url(#sc${ri})">`;
+  r[1].forEach((v,k)=>{if(!v)return;const w=v/100*avail;h+=`<rect x="${x.toFixed(1)}" y="${y}" width="${Math.max(w,2).toFixed(1)}" height="${RH}" fill="${S[k][1]}" data-tip="<b>${r[0]}</b><br>${S[k][0]}: ${r[2][k]}"/>`;
+   if(w>56)h+=`<text x="${(x+w/2).toFixed(1)}" y="${y+RH/2+4}" text-anchor="middle" font-size="12" font-weight="700" fill="#10141c" pointer-events="none">${r[2][k]}</text>`;x+=Math.max(w,2)+2});h+="</g>"});
+ return `<div class="chart"><h4>Die Ständegesellschaft um 1789</h4><div class="sub">Anteile in Prozent, gerundete Schätzungen. Fahre über die Balken für Details.</div>
+ <div class="lgd">${S.map(s=>`<span><i style="background:${s[1]}"></i>${s[0]}</span>`).join("")}</div>
+ <svg viewBox="0 0 400 ${3*(RH+G)}" style="height:auto" role="img" aria-label="Klerus ca. 0,5 % der Bevölkerung, 10 % Grundbesitz, von der Taille befreit; Adel ca. 2 %, 25 % Grundbesitz, befreit; Dritter Stand ca. 97 %, 65 % Grundbesitz, zahlt die gesamte Taille.">${h}</svg>
+ <div class="sub" style="margin:2px 0 0">Klerus und Adel waren von der Taille befreit. Der Klerus zahlte nur eine „freiwillige Gabe“, der Adel einzelne neuere Steuern.</div></div>`}
+/* Grafik: Revolutionskurve */
+function curveChart(i){const SH=["VORGESCHICHTE","GEMÄSSIGT","RADIKAL","THERM."],L=46,Rr=392,T=26,B=112,dx=(Rr-L)/11,xs=n=>L+n*dx,ys=v=>B-v*(B-T);let h="";
+ PH.forEach((p,pi)=>{const a=xs(p[3][0])-dx/2,b=xs(p[3][p[3].length-1])+dx/2;h+=`<rect x="${Math.max(L-8,a)}" y="${T-14}" width="${Math.min(Rr+8,b)-Math.max(L-8,a)}" height="${B-T+14}" fill="${p[2]}" opacity=".12"/><text x="${pi==3?Rr+7:(a+b)/2}" y="${T-4}" text-anchor="${pi==3?"end":"middle"}" font-size="8.5" font-weight="700" fill="${p[2]}" letter-spacing=".3">${SH[pi]}</text>`});
+ h+=`<line x1="${L-8}" x2="${Rr+8}" y1="${B}" y2="${B}" stroke="var(--ln)"/><text x="${L-12}" y="${T+4}" font-size="9" fill="var(--m)" text-anchor="end">radikal</text><text x="${L-12}" y="${B}" font-size="9" fill="var(--m)" text-anchor="end">ruhig</text>`;
+ h+=`<path d="${RAD.map((v,n)=>(n?"L":"M")+xs(n).toFixed(1)+","+ys(v).toFixed(1)).join("")}" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linejoin="round"/>`;
+ RAD.forEach((v,n)=>{const c=n===i;h+=`<g style="cursor:pointer" onclick="go(${n})" data-tip="<b>${n+1}. ${ST[n].t}</b><br>${ST[n].d}"><rect x="${xs(n)-dx/2}" y="${T-14}" width="${dx}" height="${B-T+30}" fill="transparent"/>${c?`<circle cx="${xs(n)}" cy="${ys(v)}" r="9" fill="none" stroke="var(--ac2)" stroke-width="2"/>`:""}<circle cx="${xs(n)}" cy="${ys(v)}" r="${c?5.5:4}" fill="${phOf(n)[2]}" stroke="var(--p2)" stroke-width="2"/><text x="${xs(n)}" y="${B+13}" text-anchor="middle" font-size="9.5" font-weight="${c?700:400}" fill="${c?"var(--ac2)":"var(--m)"}">${n+1}</text></g>`});
+ return `<div class="chart"><h4>📈 Wo stehen wir? Die „Fieberkurve“ der Revolution</h4><div class="sub">Deutungsmodell, keine Messung: Wie stark wurde die bestehende Ordnung in Frage gestellt? Klicke einen Punkt, um zur Station zu springen.</div>
+ <svg viewBox="0 0 400 130" style="height:auto" role="img" aria-label="Kurve: Die Revolution radikalisiert sich von 1789 bis zur Terreur 1793/94 und flacht nach dem Thermidor wieder ab.">${h}</svg></div>`}
+/* ---------- Stationsansicht mit Reitern ---------- */
+let tab="d";
+const TABS=[["d","📖 Darstellung"],["q","📜 Quelle"],["a","✍️ Aufgaben"],["c","❓ Check"]];
+function showS(i){const s=ST[i],ph=phOf(i),q=QU[i],a=AF[i],done=SV.done.includes(i);snavHide();
+ const tk=(n,t,extra)=>`<div class="task"><div class="afb" style="background:${AFB[n][2]}">${AFB[n][0]}<small>${AFB[n][1]}</small></div><p>${t}</p>${extra||"<span></span>"}</div>`;
+ PN.h=`<div class="hd"><div class="kick"><span>Station ${i+1} / ${ST.length}</span><span class="chip" style="color:${ph[2]};border-color:${ph[2]}">${ph[0]} · ${ph[1]}</span>${done?'<span class="chip" style="color:var(--ok);border-color:var(--ok)">✓ geschafft</span>':""}</div>
+ <div class="date" style="margin-top:10px">${s.d}</div><h2>${s.t}</h2><div class="goal"><span>🎯</span><div><b>Lernziel:</b> Ich kann ${LZ[i]}</div></div></div>
+ <div class="tabs" role="tablist">${TABS.map(t=>`<button role="tab" data-t="${t[0]}">${t[0]=="c"&&done?"✅ Check":t[1]}</button>`).join("")}</div>
+ <div class="pane" data-p="d">${GLX(s.tx).map(p=>`<p>${p}</p>`).join("")}
+  <div class="facts">${s.f.map(f=>`<div class="fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join("")}</div>
+  ${i==0?standChart():""}${i==1?phBox():""}${imgs(IM[i])}${curveChart(i)}${mode!="f"?`<details class="box"><summary style="cursor:pointer;color:var(--ac2);font-weight:700">${LVS[mode].ic} Alle Orte auf dem Stadtplan</summary>${parisBox(i)}</details>`:parisBox(i)}
+  <p class="noprint"><button class="prim" onclick="setTab('q')">Weiter zur Quelle ▶</button></p></div>
+ <div class="pane" data-p="q"><h3 class="sec">📜 Historische Quelle</h3><div class="src"${q[4]?' style="font-style:normal"':""}>${q[0]}<cite>${q[1]}</cite></div>
+  <p class="ctx"><b style="color:var(--t)">Hintergrund:</b> ${q[2]}</p>
+  <div class="box"><h4>🔎 Quellen-Check</h4><div class="wq"><div><b>Wer</b> spricht oder schreibt?</div><div><b>Wann & wo</b> entstand der Text?</div><div><b>An wen</b> richtet er sich?</div><div><b>Mit welcher Absicht?</b></div></div></div>
+  <div class="box" style="border-left-color:var(--rouge)"><h4>Arbeitsfrage zur Quelle</h4>${q[3]}</div>
+  <p class="noprint"><button class="prim" onclick="setTab('a')">Weiter zu den Aufgaben ▶</button></p></div>
+ <div class="pane" data-p="a"><div class="lf"><div class="date" style="margin-bottom:2px">Leitfrage der Einheit</div><b>${LEIT}</b></div>
+  <h3 class="sec">✍️ Aufgaben in drei Stufen</h3>
+  ${tk(0,a[0])}${tk(1,a[1]||s.task,`<details><summary>💡 Tipp anzeigen</summary>${a[3]}</details>`)}${tk(2,a[2]||s.task)}
+  <h3 class="sec">🗒️ Meine Notizen</h3><textarea id="note" placeholder="Stichpunkte und Antworten … (werden nur in diesem Browser gespeichert)">${(SV.notes[i]||"").replace(/</g,"&lt;")}</textarea>
+  <p class="noprint"><button onclick="print()">🖨 Als Arbeitsblatt drucken</button> <button class="prim" onclick="setTab('c')">Zum Kurz-Check ▶</button></p>${mats(s.mat)}</div>
+ <div class="pane noprint" data-p="c" id="chk"></div>`;
+ pn.classList.add("st");
+ pn.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>setTab(b.dataset.t));
+ $("note").oninput=e=>{SV.notes[i]=e.target.value;save()};
+ check(i);setTab(tab,1);bindSites();fix();pn.scrollTop=0}
+function setTab(t,keep){tab=t;pn.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t==t));pn.querySelectorAll(".pane").forEach(p=>p.classList.toggle("on",p.dataset.p==t));
+ if(!keep){const hd=pn.querySelector(".hd");if(hd&&pn.scrollTop>hd.offsetHeight)pn.scrollTop=hd.offsetHeight}gpop.style.display="none"}
+/* Kurz-Check: eine Frage pro Station */
+function check(i){const d=QZ[i],el=$("chk"),opts=shuf(d[1].map((t,k)=>[t,k]));
+ el.innerHTML=`<h3 class="sec">❓ Kurz-Check</h3><p style="color:var(--m)">Beantworte die Frage richtig, um die Station abzuhaken.</p><h2 style="font-size:20px">${d[0]}</h2>`+opts.map(o=>`<button class="qb" data-i="${o[1]}">${o[0]}</button>`).join("")+`<div id="cf"></div>`;
+ el.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const ok=b.dataset.i==="0";el.querySelectorAll(".qb").forEach(x=>{x.disabled=true;if(x.dataset.i==="0")x.classList.add("ok")});if(!ok)b.classList.add("no");
+  if(ok&&!SV.done.includes(i)){SV.done.push(i);save();badges()}
+  $("cf").innerHTML=`<div class="box" style="border-left-color:${ok?"var(--ok)":"var(--no)"}"><h4>${ok?"Richtig! Station geschafft ✓":"Leider falsch."}</h4>${d[2]}</div>${ok?"":`<button id="cr">🔁 Noch einmal</button> `}${i<ST.length-1?`<button class="prim" id="cn">Nächste Station: ${ST[i+1].t} ▶</button>`:`<button class="prim" id="cn">🎓 Zum Abschlussquiz</button>`}`;
+  if($("cr"))$("cr").onclick=()=>check(i);$("cn").onclick=()=>i<ST.length-1?go(i+1):quizMenu()})}
+$("phases").innerHTML=PH.map(p=>`<div style="flex:${p[3].length};color:${p[2]};border-color:${p[2]}" title="${p[0]} (${p[1]})"><span>${p[0]}</span></div>`).join("");
+function go(i){cur=Math.max(0,Math.min(ST.length-1,i));tab="d";SV.last=cur;save();badges();const s=ST[cur],au=(s.lv||[]).find(l=>l[2]);if(mode!="f"&&!(au&&au[0]==mode))exitLevel();
+ [...sb.children].forEach((b,n)=>{b.classList.toggle("a",n===cur);b.classList.toggle("d",n<=cur)});
+ $("fill").style.width=(cur/(ST.length-1)*100)+"%";
+ for(const id in lines)lines[id].classList.toggle("on",s.ln.includes(id));
+ wt.forEach(clearTimeout);wt=[];const en=s.waves?[]:s.en;
+ for(const id in paths)paths[id].forEach(p=>p.setAttribute("class","c "+(id=="fr"?"fr":(s.oc||[]).includes(id)?"oc":en.includes(id)?"mp":"ne")));
+ cap(s.cap||"");if(s.waves)s.waves.forEach(w=>wt.push(setTimeout(()=>{w[1].forEach(id=>paths[id].forEach(p=>p.setAttribute("class","c mp")));cap(w[2])},w[0])));
+ if(lvl)lvl.clearFx();$("rp").style.display="none";
+ cam.classList.remove("drag");focus(...s.cam);if(au){const same=mode==au[0];enterLevel(au[0],au[1],1);if(same)applyFx(1400)}showS(cur);$("pv").disabled=cur===0;$("nx").disabled=cur===ST.length-1}
+$("pv").onclick=()=>go(cur-1);$("nx").onclick=()=>go(cur+1);
+addEventListener("keydown",e=>{if(/TEXTAREA|INPUT/.test(document.activeElement.tagName)||!$("intro").classList.contains("out"))return;if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1)});
+/* ---------- Quiz (erste Antwort = richtig) ---------- */
+const QZ=[
+["Welche drei Stände gab es im Ancien Régime?",["Klerus, Adel, Dritter Stand","Adel, Militär, Bürger","König, Adel, Bauern","Kirche, Staat, Volk"],"Die ersten beiden Stände waren steuerlich privilegiert, der Dritte Stand umfasste rund 97 % der Bevölkerung."],
+["Wer forderte in „Vom Geist der Gesetze“ die Gewaltenteilung?",["Montesquieu","Rousseau","Voltaire","Diderot"],"Montesquieu (1748). Rousseau schrieb den „Gesellschaftsvertrag“ über die Volkssouveränität."],
+["Wo und wann wurden die Generalstände 1789 eröffnet?",["Versailles, 5. Mai","Paris, 14. Juli","Versailles, 20. Juni","Paris, 4. August"],"Sie tagten erstmals seit 1614 wieder."],
+["Was schworen die Abgeordneten am 20. Juni 1789 im Ballhaus?",["Nicht auseinanderzugehen, bis eine Verfassung besteht","Den König zu stürzen","Die Bastille zu stürmen","Den Adel zu enteignen"],"Der Ballhausschwur folgte auf die Gründung der Nationalversammlung am 17. Juni."],
+["Warum war die Bastille ein wichtiges Symbol?",["Sie stand für königliche Willkür","Sie war die größte Festung Frankreichs","Dort saß der König","Dort lagerte die Staatskasse"],"Es gab 1789 nur sieben Gefangene, doch das Gefängnis galt als Zeichen der Willkür."],
+["Was passierte in der Nacht vom 4. August 1789?",["Abschaffung der Feudalrechte","Erklärung der Menschenrechte","Hinrichtung des Königs","Beginn des Krieges"],"Die Menschenrechte folgten am 26. August."],
+["Wohin zog der „Marsch der Frauen“ am 5. Oktober 1789?",["Von Paris nach Versailles","Von Versailles nach Paris","Von Paris nach Varennes","Von Lyon nach Paris"],"Danach zog der Hof in die Tuilerien nach Paris."],
+["Wo wurde die Königsfamilie 1791 auf der Flucht gestoppt?",["Varennes","Valmy","Versailles","Montmédy"],"Montmédy war das Ziel, in Varennes wurde Ludwig XVI. erkannt und festgehalten."],
+["Was geschah am 22. September 1792?",["Ausrufung der Republik","Hinrichtung des Königs","Sturz Robespierres","Sturm auf die Tuilerien"],"Einen Tag zuvor hatte der neue Konvent das Königtum abgeschafft; am 20. September war die Kanonade von Valmy."],
+["Wann wurde Ludwig XVI. hingerichtet?",["21. Januar 1793","14. Juli 1789","10. August 1792","27. Juli 1794"],"Danach schlossen sich weitere Mächte der Ersten Koalition an."],
+["Wer bestimmte ab 1793 maßgeblich den Wohlfahrtsausschuss?",["Maximilien Robespierre","Marquis de Lafayette","Abbé Sieyès","Jacques Necker"],"Robespierre stürzte am 9. Thermidor (27. Juli 1794)."],
+["Was geschah am 9. Thermidor (27. Juli 1794)?",["Robespierre wurde gestürzt","Die Republik wurde ausgerufen","Danton wurde hingerichtet","Preußen schloss Frieden"],"Robespierre wurde am Tag darauf hingerichtet; die Terreur endete."],
+["Wer forderte 1791 eine „Erklärung der Rechte der Frau und Bürgerin“?",["Olympe de Gouges","Marie-Antoinette","Madame de Staël","Charlotte Corday"],"Olympe de Gouges kritisierte, dass die Menschenrechte von 1789 Frauen ausschlossen. Sie wurde 1793 hingerichtet."],
+["Was war die „levée en masse“ (1793)?",["Eine Massenaushebung von Soldaten","Eine neue Steuer auf Brot","Die Abschaffung des Adels","Ein Aufstand in der Vendée"],"Alle unverheirateten Männer von 18 bis 25 Jahren wurden eingezogen; so entstand ein Massenheer."],
+["Was bedeutet „Volkssouveränität“?",["Alle Staatsgewalt geht vom Volk aus","Der König herrscht von Gottes Gnaden","Das Volk zahlt alle Steuern","Jeder Stand hat eine Stimme"],"Rousseau begründete die Idee; die Nationalversammlung berief sich 1789 darauf."],
+["Woher hat die Nationalhymne „Marseillaise“ ihren Namen?",["Von Föderierten aus Marseille, die sie 1792 in Paris sangen","Vom Komponisten Marseille","Von einer Schlacht bei Marseille","Vom Hafen, in dem die Flotte lag"],"Komponiert hat sie Rouget de Lisle 1792 in Straßburg als Kriegslied der Rheinarmee."],
+["Wer zahlte im Ancien Régime die Hauptsteuer (Taille)?",["Nur der Dritte Stand","Nur der Adel","Alle drei Stände gleich","Nur die Kirche"],"Klerus und Adel waren von der Taille befreit."]];
+let qi=0,sc=0,qo=[];
+const shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+function quiz(){qi=0;sc=0;qo=shuf(QZ.map((_,i)=>i)).slice(0,8);pn.classList.remove("hide");qq()}
+function qq(){
+ if(qi>=qo.length){PN.h=`<div class="date">Quiz beendet</div><h2>${sc} von ${qo.length} Punkten</h2><p>${sc>=7?"Hervorragend!":sc>=5?"Gut gemacht!":"Schau dir die Stationen noch einmal an und versuche es erneut."}</p><p><button id="qr">🔁 Neues Quiz</button> <button id="qp">🧩 Zeitstrahl-Puzzle</button> <button id="qb2">← Zur Station</button></p>`;$("qr").onclick=quiz;$("qp").onclick=puzzle;$("qb2").onclick=()=>showS(cur);return}
+ const d=QZ[qo[qi]],opts=shuf(d[1].map((t,i)=>[t,i]));
+ PN.h=`<div class="date">Quiz · Frage ${qi+1}/${qo.length} · ${sc} Punkte</div><div class="qbar"><i style="width:${qi/qo.length*100}%"></i></div><h2>${d[0]}</h2>`+opts.map(o=>`<button class="qb" data-i="${o[1]}">${o[0]}</button>`).join("")+`<div id="qf"></div>`;
+ pn.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const ok=b.dataset.i==="0";if(ok)sc++;pn.querySelectorAll(".qb").forEach(x=>{x.disabled=true;if(x.dataset.i==="0")x.classList.add("ok")});if(!ok)b.classList.add("no");
+  $("qf").innerHTML=`<div class="box"><h4>${ok?"Richtig!":"Leider falsch."}</h4>${d[2]}</div><button id="qn">${qi+1<qo.length?"Nächste Frage ▶":"Ergebnis anzeigen"}</button>`;$("qn").onclick=()=>{qi++;qq()}})}
+$("qz").onclick=quizMenu;
+function quizMenu(){pn.classList.remove("hide");PN.h=`<div class="date">Wissen testen</div><h2>Quiz & Puzzle</h2><div class="prog"><span>${SV.done.length} / ${ST.length} Stationen geschafft</span><div class="qbar"><i style="width:${SV.done.length/ST.length*100}%"></i></div></div>
+ <button class="big" id="m1"><b>🎓 Wissensquiz</b><span>8 zufällige Fragen aus allen Stationen, mit Erklärung nach jeder Antwort.</span></button>
+ <button class="big" id="m2"><b>🧩 Zeitstrahl-Puzzle</b><span>Bringe sechs Ereignisse in die richtige zeitliche Reihenfolge.</span></button>
+ <p><button id="m3">← Zur Station</button></p>`;$("m1").onclick=quiz;$("m2").onclick=puzzle;$("m3").onclick=()=>showS(cur)}
+/* Zeitstrahl-Puzzle: Ereignisse in der richtigen Reihenfolge antippen */
+const EV=[["Ludwig XIV. verlegt den Hof nach Versailles",1682,"1682"],["Kant: „Was ist Aufklärung?“",1784,"1784"],["Eröffnung der Generalstände",1789.0505,"5.5.1789"],["Ballhausschwur",1789.062,"20.6.1789"],["Sturm auf die Bastille",1789.0714,"14.7.1789"],["Abschaffung der Feudalrechte",1789.0804,"4.8.1789"],["Erklärung der Menschen- und Bürgerrechte",1789.0826,"26.8.1789"],["Marsch der Frauen nach Versailles",1789.1005,"5.10.1789"],["Flucht nach Varennes",1791.062,"20./21.6.1791"],["Erklärung der Rechte der Frau (Olympe de Gouges)",1791.09,"Sept. 1791"],["Kriegserklärung an Österreich",1792.042,"20.4.1792"],["Sturm auf die Tuilerien",1792.081,"10.8.1792"],["Kanonade von Valmy",1792.092,"20.9.1792"],["Hinrichtung Ludwigs XVI.",1793.0121,"21.1.1793"],["Gesetz über die Verdächtigen",1793.0917,"17.9.1793"],["Hinrichtung Marie-Antoinettes",1793.1016,"16.10.1793"],["Sieg bei Fleurus",1794.0626,"26.6.1794"],["Sturz Robespierres (9. Thermidor)",1794.0727,"27.7.1794"],["Frieden von Basel mit Preußen",1795.0405,"April 1795"]];
+function puzzle(){pn.classList.remove("hide");const set=shuf(EV).slice(0,6),pick=[];
+ const draw=()=>{const fin=pick.length==set.length,sol=[...set].sort((a,b)=>a[1]-b[1]);let ok=0;
+  PN.h=`<div class="date">Zeitstrahl-Puzzle</div><h2>Was geschah zuerst?</h2><p style="color:var(--m)">${fin?"Auflösung: grün = richtige Position.":"Tippe die Ereignisse in der richtigen Reihenfolge an, das früheste zuerst. Nochmal tippen nimmt die Auswahl zurück."}</p>`+
+  (fin?sol.map((e,k)=>{const r=pick[k]===e;ok+=r;return `<div class="ord ${r?"ok":"no"}"><span class="n">${k+1}</span>${e[0]}<small>${e[2]}</small></div>`}).join(""):set.map((e,k)=>{const n=pick.indexOf(e);return `<button class="ord${n>=0?" pk":""}" data-k="${k}"><span class="n">${n>=0?n+1:"·"}</span>${e[0]}</button>`}).join(""))+`<div id="pf"></div>`;
+  if(fin){$("pf").innerHTML=`<div class="box"><h4>${ok} von ${set.length} an der richtigen Stelle</h4>${ok==set.length?"Perfekt, du hast den Überblick!":"Tipp: Schau dir die Zeitleiste unten und die Fieberkurve noch einmal an."}</div><button class="prim" id="pr">🔁 Neue Runde</button> <button id="pm">← Menü</button>`;$("pr").onclick=puzzle;$("pm").onclick=quizMenu;return}
+  pn.querySelectorAll(".ord").forEach(b=>b.onclick=()=>{const e=set[+b.dataset.k],n=pick.indexOf(e);n>=0?pick.splice(n):pick.push(e);draw()})};draw()}
+/* ---------- Detail-Ebene Paris & Versailles (1 Einheit = 10 m) ---------- */
+let mode="f",tk=0,lvl=null,fxT=0,wt=[];const LVS={},LEG0=$("leg").innerHTML;
+const cap=t=>{$("cap").innerHTML=t||""};
+function mkLevel(id,c){
+ const o=Object.assign({id,X:0,Y:0,K:1,pm:[],fx:[]},c);LVS[id]=o;const n=o.S.length;
+ const sv=E("svg",{viewBox:"0 0 900 680",preserveAspectRatio:"xMidYMid meet",class:"lvs"});sv.style.background=o.bg;$("mapw").insertBefore(sv,$("tools"));
+ const cm=E("g",{class:"lvc"},sv);o.sv=sv;o.cm=cm;o.pb=E("g",{},cm);o.fxg=E("g",{},cm);const pmg=E("g",{},cm);o.fxm=E("g",{},cm);
+ o.L=(lo,la)=>[450+(lo-o.o[0])*73300/o.u,340-(la-o.o[1])*111200/o.u];
+ o.pt=a=>a.map(p=>o.L(p[0],p[1]).map(v=>v.toFixed(2)).join(",")).join(" ");
+ o.D=(t,a)=>E(t,a,o.pb);
+ o.bd=(lo,la,w,h,fill)=>{if(!w)return;const p=o.L(lo,la);o.D("rect",{x:p[0]-w/o.u/2,y:p[1]-h/o.u/2,width:w/o.u,height:h/o.u,fill,stroke:"#6e5a3a","stroke-width":1,"vector-effect":"non-scaling-stroke"})};
+ c.draw(o);
+ o.PL.forEach(l=>{const p=o.L(l[1],l[2]),g=E("g",{class:"pl"},pmg);E("text",{x:0,y:0,"text-anchor":"middle"},g).textContent=l[0];o.pm.push([g,p[0],p[1],l[3],0])});
+ const mkm=(sym,name,lo,la,mk,mx,left,fn)=>{const p=o.L(lo,la),g=E("g",{class:"ct"},pmg);E("circle",{r:12},g);E("text",{x:0,y:5,"text-anchor":"middle",style:"font-size:15px;stroke:none"},g).textContent=sym;E("text",left?{x:-17,y:4,"text-anchor":"end"}:{x:17,y:4},g).textContent=name;g.onclick=()=>{if(!moved)fn()};o.pm.push([g,p[0],p[1],mk,mx])};
+ o.CL.forEach(k=>mkm(k[3],k[0],k[1],k[2],0,k[4],0,()=>{o.mt=null;o.fo(...k[5])}));
+ o.S.forEach((s,i)=>mkm(s[3],s[0],s[1],s[2],s[11]=="Paris"?.85:1.3,0,s[10]=="l",()=>o.show(i)));
+ o.set=(x,y,k)=>{o.X=x;o.Y=y;o.K=k;cm.style.transform=`translate(${x}px,${y}px) scale(${k})`;[...o.pm,...o.fx].forEach(e=>{const g=e[0];g.setAttribute("transform",`translate(${e[1]} ${e[2]}) scale(${1/k}) rotate(${g.dataset.rot||0})`);g.style.display=!e[6]&&k>=e[3]&&(!e[4]||k<e[4])?"":"none"})};
+ o.fo=(lo,la,k)=>{const p=o.L(lo,la),d=Math.hypot(p[0]-(450-o.X)/o.K,p[1]-(340-o.Y)/o.K);cm.style.transitionDuration=Math.min(4.5,Math.max(1.2,d/350))+"s";o.set(450-p[0]*k,340-p[1]*k,k)};
+ o.OV=()=>o.fo(...o.ov);
+ o.zoom=(sx,sy,f)=>{const nk=o.K*f;if(nk<o.min*.9&&f<1){exitLevel();showS(cur);return}const k=Math.min(o.mk,Math.max(o.min,nk));o.set(sx-(sx-o.X)*k/o.K,sy-(sy-o.Y)*k/o.K,k)};
+ sv.addEventListener("wheel",e=>{e.preventDefault();o.mt=null;cm.style.transitionDuration="";cm.classList.add("drag");const m=sv.getScreenCTM();o.zoom((e.clientX-m.e)/m.a,(e.clientY-m.f)/m.d,e.deltaY<0?1.2:1/1.2);clearTimeout(sv.t);sv.t=setTimeout(()=>cm.classList.remove("drag"),150)},{passive:false});
+ let d=null;sv.addEventListener("pointerdown",e=>{o.mt=null;d={x:e.clientX,y:e.clientY,X:o.X,Y:o.Y};moved=0});
+ addEventListener("pointermove",e=>{if(!d)return;const dx=e.clientX-d.x,dy=e.clientY-d.y;if(!moved&&Math.hypot(dx,dy)<5)return;moved=1;cm.classList.add("drag");$("mapw").classList.add("g");const m=sv.getScreenCTM();o.set(d.X+dx/m.a,d.Y+dy/m.d,o.K)});
+ addEventListener("pointerup",()=>{d=null;cm.classList.remove("drag")});
+ o.showIntro=()=>{snavHide();PN.h=`<div class="date">${o.date}</div><h2>${o.title}</h2><p>${o.txt}</p>`;pn.scrollTop=0};
+ o.show=i=>{const s=o.S[i];o.mt=null;o.fo(s[1],s[2],o.fk[s[11]]);pn.classList.remove("hide");
+  PN.h=`<div class="date">${s[11]} · ${s[4]}</div><h2>${s[3]} ${s[0]}</h2><p>${s[7]}</p>${s[8]?imgs([[s[8],s[0]]]):""}${mats([["📄 Wikipedia: "+s[0],"https://de.wikipedia.org/w/index.php?search="+encodeURIComponent(s[0])]])}`;
+  snav(o,i);fix();pn.scrollTop=0};
+ /* Effekte: Pfeile, Symbole, Beschriftung, Marsch */
+ o.clearFx=()=>{o.mt=null;o.fxg.replaceChildren();o.fxm.replaceChildren();o.fx=[];cap("")};
+ o.setFx=list=>list.forEach(f=>{
+  if(f[0]=="l"){const a=f[1],col=f[2]||"#c0392b";E("polyline",{points:o.pt(a),class:"ln on",style:"stroke:"+col},o.fxg);
+   const p1=o.L(...a[a.length-2]),p2=o.L(...a[a.length-1]),g=E("g",{},o.fxm);g.dataset.rot=Math.atan2(p2[1]-p1[1],p2[0]-p1[0])*180/Math.PI;E("polygon",{points:"-14,-8 4,0 -14,8",fill:col,stroke:"#fff","stroke-width":1.5},g);o.fx.push([g,p2[0],p2[1],0,0])}
+  else if(f[0]=="s"){const p=o.L(f[1],f[2]),g=E("g",{class:"fxs"},o.fxm);E("text",{x:0,y:7,"text-anchor":"middle",class:f[4]?"fire":""},g).textContent=f[3];o.fx.push([g,p[0],p[1],0,0])}
+  else if(f[0]=="c")cap(f[1]);
+  else if(f[0]=="march")o.march(f[1],f[2]);o.set(o.X,o.Y,o.K)});
+ o.march=(route,op)=>{const t=o.mt=Symbol(),pts=route.map(p=>o.L(p[0],p[1])),cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));const T=cum[cum.length-1];
+  const at=s=>{s=Math.max(0,Math.min(T,s));let i=1;while(i<cum.length-1&&cum[i]<s)i++;const f=(s-cum[i-1])/((cum[i]-cum[i-1])||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*f,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*f]};
+  E("polyline",{points:pts.map(p=>p.join(",")).join(" "),fill:"none",stroke:"#8a6d3b","stroke-width":2,"stroke-dasharray":"4 4","vector-effect":"non-scaling-stroke",opacity:.6},o.fxg);
+  const tr=E("polyline",{fill:"none",stroke:"#c0392b","stroke-width":4,"stroke-linecap":"round","stroke-linejoin":"round","vector-effect":"non-scaling-stroke"},o.fxg);
+  const mk=(sym,k,gap,back)=>Array.from({length:k},(_,i)=>{const g=E("g",{class:"fxs"},o.fxm);E("text",{x:0,y:7,"text-anchor":"middle"},g).textContent=sym;const e=[g,0,0,0,0,gap*i+back,1];o.fx.push(e);return e});
+  const W=mk("👩",6,.014,0),G=mk("💂",5,.014,.2);cm.style.transitionDuration="";cm.classList.add("drag");const t0=performance.now();
+  const step=now=>{if(o.mt!==t)return;const u=Math.min(1,(now-t0)/op.dur),s=u*u*(3-2*u),d=T*s,H=at(d),sub=[];
+   for(let i=0;i<pts.length&&cum[i]<d;i++)sub.push(pts[i].join(","));sub.push(H[0].toFixed(2)+","+H[1].toFixed(2));tr.setAttribute("points",sub.join(" "));
+   [W,G].forEach(a=>a.forEach(e=>{const q=d-T*e[5];e[6]=q<0?1:0;if(!e[6]){const p=at(q);e[1]=p[0];e[2]=p[1]}}));
+   const K=op.K+(op.K2-op.K)*s;o.set(450-H[0]*K,340-H[1]*K,K);
+   if(u<1)requestAnimationFrame(step);else{cm.classList.remove("drag");if(op.end)cap(op.end)}};
+  requestAnimationFrame(step)};
+}
+const siteList=(o,sel)=>{let h="",g="";o.S.forEach((p,n)=>{if(p[11]!=g){g=p[11];h+=`<div style="margin:8px 0 2px;color:var(--ac);font-weight:600">${g}</div>`}h+=`<a href="#" data-l="${o.id}" data-n="${n}" style="${n===sel?"color:var(--ac);font-weight:700":""}">${p[3]} ${p[0]} · ${p[4]}</a>`});return `<div class="box"><h4>${o.ic} ${o.h4}</h4>${h}</div>`};
+function bindSites(){pn.querySelectorAll("a[data-n]").forEach(a=>a.onclick=e=>{e.preventDefault();const l=a.dataset.l,n=+a.dataset.n;mode==l?LVS[l].show(n):enterLevel(l,n)})}
+const parisBox=i=>{const s=ST[i];if(mode!="f")return siteList(LVS[mode],-1)+(s.fx&&s.fx[mode]?`<p><button onclick="applyFx(0)">▶ Animation erneut abspielen</button></p>`:"");return (s.lv||[]).map(l=>`<p><button onclick="enterLevel('${l[0]}',${l[1]})">${LVS[l[0]].ic} ${LVS[l[0]].btn}: ${LVS[l[0]].S[l[1]][0]}</button></p>`).join("")};
+function applyFx(d){const t=++fxT;setTimeout(()=>{if(t!=fxT||!lvl)return;lvl.clearFx();const f=(ST[cur].fx||{})[lvl.id];$("rp").style.display=f?"block":"none";if(f)lvl.setFx(f)},d||0)}
+function enterLevel(id,i,keep){const o=LVS[id],at=()=>{if(i==null)return o.showIntro();if(keep){const z=ST[cur].lz,s=o.S[i];z?o.fo(...z):o.fo(s[1],s[2],o.fk[s[11]])}else o.show(i)};
+ if(mode==id){if(i==null){o.OV();o.showIntro()}else at();return}
+ if(mode!="f")exitLevel();
+ const t=++tk;mode=id;lvl=o;cam.classList.remove("drag");focus(...o.fr);$("pback").style.display="block";$("leg").innerHTML=o.leg;
+ o.cm.classList.add("drag");o.OV();
+ setTimeout(()=>{if(t!=tk)return;o.sv.classList.add("on");setTimeout(()=>{if(t!=tk)return;o.cm.classList.remove("drag");at();applyFx(500)},650)},900)}
+function exitLevel(){tk++;fxT++;$("rp").style.display="none";snavHide();if(lvl){lvl.clearFx();lvl.sv.classList.remove("on")}lvl=null;mode="f";$("pback").style.display="none";$("leg").innerHTML=LEG0}
+function backF(){exitLevel();cam.classList.remove("drag");focus(...ST[cur].cam);cap(ST[cur].cap||"");showS(cur)}
+/* ---- Daten Paris ---- */
+const PS=[
+["Palais-Royal",2.3371,48.8638,"🗣️","12. Juli 1789",220,150,"Der Palais-Royal gehörte dem Herzog von Orléans und war durch seine Arkaden ein Treffpunkt von Journalisten, Rednern und Händlern, den die Polizei kaum kontrollieren konnte. Am 12. Juli 1789, einen Tag nach der Entlassung Neckers, rief Camille Desmoulins hier zu den Waffen. Die Menge steckte sich grüne Blätter als Zeichen an.","Palais-Royal","#b89e78"],
+["Invalidendom",2.3126,48.8560,"🛡️","14. Juli 1789",430,220,"Am Morgen des 14. Juli holten sich Tausende Pariser rund 30.000 Gewehre aus dem Invalidenhaus. Es fehlte aber Munition, und Pulver vermutete man in der Bastille. Das war der Anlass, dorthin zu ziehen.","Les_Invalides","#c9b56a"],
+["Bastille",2.3691,48.8532,"🏰","14. Juli 1789",75,55,"Die Festung am Rand des Faubourg Saint-Antoine diente als Staatsgefängnis und war Symbol der Willkür. Nach Verhandlungen und Schüssen ergab sich die Besatzung, Gouverneur de Launay wurde getötet. Es gab nur sieben Gefangene. Die Bastille wurde ab Juli 1789 abgerissen, der Platz heißt bis heute Place de la Bastille.","Bastille","#6b6b73"],
+["Hôtel de Ville",2.3522,48.8566,"🏛️","15. Juli 1789 – 28. Juli 1794",100,70,"Nach dem 14. Juli wurde hier der Astronom Bailly zum Bürgermeister gewählt, Lafayette übernahm die Nationalgarde. Später tagte hier die radikale Pariser Kommune. In der Nacht zum 28. Juli 1794 (9. Thermidor) wurde Robespierre im Hôtel de Ville festgenommen.","H%C3%B4tel_de_Ville,_Paris","#b89e78"],
+["Les Halles",2.3470,48.8625,"🥖","5. Oktober 1789",250,140,"Der Zentralmarkt und seine Viertel: Von hier und aus den Nachbarvierteln brachen am 5. Oktober 1789 die Frauen auf, die Brot forderten, und zogen nach Versailles. Marktfrauen galten als besonders resolut und genossen eine Sonderstellung gegenüber dem König.","Les_Halles","#b89e78"],
+["Tuilerien",2.3320,48.8632,"🏯","Okt. 1789 – 10. Aug. 1792",55,260,"Nach dem Frauenmarsch zog die Königsfamilie am 6. Oktober 1789 in das Stadtschloss. Im benachbarten Reitsaal (Manège) tagte die Nationalversammlung. Von hier floh die Familie in der Nacht zum 21. Juni 1791. Am 10. August 1792 wurde das Schloss gestürmt, viele Schweizergardisten starben. Das Gebäude brannte 1871 ab.","Tuileries_Palace","#c9a15a"],
+["Marsfeld",2.3010,48.8570,"🎪","14. Juli 1790 / 17. Juli 1791",0,0,"Auf dem Marsfeld feierten am 14. Juli 1790 Hunderttausende das Föderationsfest mit Eid auf Nation, Gesetz und König. Am 17. Juli 1791 schoss die Nationalgarde hier auf eine Menge, die nach der Flucht des Königs die Republik forderte (Marsfeld-Massaker, mehrere Dutzend Tote).","Champ_de_Mars","#bcd6a0"],
+["Temple",2.3612,48.8641,"⛓️","13. Aug. 1792 – Jan. 1793",120,100,"Die frühere Templerburg diente nach dem Sturz des Königs als Gefängnis: Am 13. August 1792 wurde die Königsfamilie hier eingesperrt. Am 21. Januar 1793 führte man Ludwig XVI. von hier zur Hinrichtung. Sein Sohn (Ludwig XVII.) starb 1795 in der Haft.","Tour_du_Temple","#8c7a5a"],
+["Place de la Révolution",2.3212,48.8656,"🔪","21. Jan. 1793",260,200,"Der heutige Place de la Concorde war Hinrichtungsplatz. Hier fiel am 21. Januar 1793 der Kopf Ludwigs XVI., später folgten Marie-Antoinette (16. Oktober 1793), Danton (April 1794) und Robespierre (28. Juli 1794). Der Platz heißt seit 1795 Place de la Concorde.","Place_de_la_Concorde","none"],
+["Notre-Dame",2.3499,48.8530,"⛪","10. Nov. 1793",130,45,"Im Zuge der Entchristlichung wurde die Kathedrale 1793 zum „Tempel der Vernunft“. Am 10. November 1793 fand hier ein Fest der Vernunft statt. Statuen der Königsgalerie wurden abgeschlagen, weil man sie für französische Könige hielt (es waren biblische Könige).","Notre-Dame_de_Paris","#b89e78"],
+["Conciergerie",2.3457,48.8559,"⚖️","März 1793 – 1794",220,70,"Der Justizpalast auf der Île de la Cité war Sitz des Revolutionstribunals (ab März 1793), die Conciergerie das Gefängnis. Hier wartete Marie-Antoinette bis zu ihrer Hinrichtung am 16. Oktober 1793, ebenso Danton. Tausende Gefangene gingen von hier zur Guillotine.","Conciergerie","#8c7a5a"]];
+const WALL=[[2.2950,48.8738],[2.3090,48.8805],[2.3270,48.8828],[2.3500,48.8840],[2.3665,48.8830],[2.3880,48.8780],[2.3950,48.8640],[2.3957,48.8490],[2.3880,48.8420],[2.3750,48.8330],[2.3500,48.8320],[2.3325,48.8337],[2.3050,48.8410],[2.2870,48.8470],[2.2760,48.8560],[2.2790,48.8680]];
+const GARD=[[[2.3222,48.8655],[2.3320,48.8640],[2.3320,48.8618],[2.3222,48.8633]],[[2.2968,48.8612],[2.3080,48.8572],[2.3034,48.8516],[2.2922,48.8556]],[[2.3325,48.8482],[2.3425,48.8482],[2.3425,48.8445],[2.3325,48.8445]]];
+const STR=[[[[2.3225,48.8672],[2.3320,48.8660],[2.3380,48.8640],[2.3470,48.8618]],2.2],[[[2.3500,48.8570],[2.3600,48.8553],[2.3691,48.8532],[2.3830,48.8505],[2.3957,48.8483]],2.6],[[[2.3470,48.8580],[2.3490,48.8650],[2.3530,48.8760],[2.3545,48.8830]],2.2],[[[2.3440,48.8535],[2.3430,48.8470],[2.3380,48.8400]],2.2],[[[2.3212,48.8656],[2.3060,48.8700],[2.2950,48.8738]],2.6],[[[2.3691,48.8532],[2.3633,48.8675],[2.3544,48.8707],[2.3480,48.8714],[2.3316,48.8719],[2.3245,48.8700]],3.2]];
+const RIV=[[[2.2700,48.8420],[2.2740,48.8470],[2.2810,48.8520],[2.2900,48.8565],[2.2980,48.8610],[2.3050,48.8640],[2.3130,48.8638],[2.3200,48.8625],[2.3270,48.8610],[2.3330,48.8600],[2.3390,48.8575]],[[2.3390,48.8575],[2.3440,48.8584],[2.3480,48.8574],[2.3525,48.8559],[2.3568,48.8543],[2.3600,48.8520],[2.3615,48.8505]],[[2.3390,48.8575],[2.3425,48.8552],[2.3470,48.8532],[2.3510,48.8517],[2.3560,48.8510],[2.3615,48.8505]],[[2.3615,48.8505],[2.3650,48.8460],[2.3700,48.8430]]];
+const BX=[[2.3376,48.8606,180,180,"#b89e78"],[2.3322,48.8598,650,45,"#b89e78"],[2.3057,48.8544,200,110,"#b89e78"],[2.3459,48.8462,110,80,"#b89e78"]];
+
+
+const PL=[["Seine",2.2985,48.8630,.5],["Zollmauer der Generalpächter",2.3300,48.8850,.8],["Faubourg Saint-Antoine",2.3820,48.8520,1.2],["Louvre",2.3376,48.8592,2.5],["Île de la Cité",2.3440,48.8541,3],["École Militaire",2.3057,48.8532,2.5],["Panthéon",2.3459,48.8450,2.5],["Jardin des Tuileries",2.3270,48.8636,2.5],["Bois de Boulogne",2.2540,48.8640,.6],["Sèvres",2.2260,48.8210,.7],["Saint-Cloud",2.2120,48.8480,.7],["Viroflay",2.1700,48.8005,.9]];
+/* ---- Daten Versailles ---- */
+const M=(dx,dy)=>[2.1204+dx/73400,48.8049+dy/111200];
+const VS=[
+["Spiegelsaal",...M(-60,0),"🪞","ab 1682",0,0,"Die 73 m lange Spiegelgalerie an der Gartenfront wurde ab 1682 zum Schauplatz der Hofhaltung Ludwigs XIV. Der Adel lebte hier nach strengem Zeremoniell (etwa beim „Lever“ des Königs) und war so an den Monarchen gebunden, statt in den Provinzen eigene Macht aufzubauen. Das war der Kern des Absolutismus.","Hall_of_Mirrors",null,"l"],
+["Gärten & Grand Canal",2.0978,48.8045,"🌳","ab 1661",0,0,"André Le Nôtre legte die Gärten ab 1661 streng geometrisch an. Alles ordnet sich der Mittelachse unter, die vom Schloss über den Tapis Vert zum Grand Canal (rund 1,5 km) führt. Das Wasserkreuz diente auch für Bootsfahrten und Feste des Hofes. Der Park gilt als Sinnbild für die Herrschaft über Natur und Untertanen.","Gardens_of_Versailles",null],
+["Salle des Menus-Plaisirs",2.1325,48.8062,"📜","5. Mai – 26. Aug. 1789",90,35,"Im Hôtel des Menus-Plaisirs, dem Lager des Hofes für Feste und Bühnentechnik, wurde die große Versammlungshalle eingerichtet. Hier eröffnete Ludwig XVI. am 5. Mai 1789 die Generalstände. Danach tagte hier die Nationalversammlung, am 26. August 1789 beschloss sie die Erklärung der Menschen- und Bürgerrechte. Die Lage ist auf dem Plan angenähert.","Estates_General_of_1789","#b89e78"],
+["Ballhaus (Jeu de Paume)",2.1305,48.8035,"🎾","20. Juni 1789",40,22,"Am 20. Juni 1789 fanden die Abgeordneten des Dritten Standes ihren Saal verschlossen und wichen in die nahe Tennishalle des Königs aus. Hier schworen sie, nicht auseinanderzugehen, bis Frankreich eine Verfassung hat. Jacques-Louis David plante ein Monumentalgemälde, das unvollendet blieb. Die Lage ist auf dem Plan angenähert.","Tennis_Court_Oath","#b89e78"],
+["Petit Trianon",2.1095,48.8155,"🌸","5. Okt. 1789",40,40,"Das Petit Trianon war der private Rückzugsort Marie-Antoinettes, ein Geschenk Ludwigs XVI. Hier erreichte sie am 5. Oktober 1789 die Nachricht vom Marsch der Frauen auf Versailles. Sie kehrte ins Schloss zurück. Zum Park gehört auch das Hameau de la Reine, ein künstliches Dörfchen.","Petit_Trianon","#d8c9a0"],
+["Place d'Armes",...M(450,0),"🐎","5. Okt. 1789",0,0,"Vor dem Schloss laufen die drei Avenuen nach Paris, Saint-Cloud und Sceaux zusammen. Dieser Aufbau der Stadt sollte die Macht des Königs sichtbar machen. Am Abend des 5. Oktober 1789 sammelte sich hier die Menge der Frauen. Lafayette traf in der Nacht mit der Nationalgarde ein.","Palace_of_Versailles",null],
+["Marmorhof",...M(120,0),"👑","6. Okt. 1789",0,0,"In den Morgenstunden des 6. Oktober drang die Menge ins Schloss ein, Leibgardisten starben. Auf Drängen der Menge trat die königliche Familie auf den Balkon über dem Marmorhof, Lafayette küsste der Königin die Hand. Am Mittag fuhren sie nach Paris, wo sie in die Tuilerien zogen.","Palace_of_Versailles",null]];
+
+PS.forEach(s=>s[11]="Paris");VS.forEach(s=>s[11]="Versailles");
+const PLV=[["Grand Canal",2.1000,48.8058,1.5],["Tapis Vert",2.1128,48.8058,4],["Orangerie",...M(-30,-520),4],["Grand Trianon",2.1040,48.8165,3],["Schlosspark",2.1040,48.8110,1],["Avenue de Paris",2.1450,48.8118,2.5],["Grande Écurie",...M(480,-340),4],["Petite Écurie",...M(480,340),4]];
+mkLevel("p",{ic:"🏙",btn:"Stadtplan Paris & Versailles öffnen",h4:"Orte der Revolution",title:"Paris & Versailles",date:"Île-de-France 1789–1794",o:[2.3522,48.8566],u:10,ov:[2.236,48.832,.37],min:.3,fk:{Paris:3.5,Versailles:6},mk:70,fr:[2.236,48.83,28],bg:"#d9e3c0",
+ txt:"Paris und Versailles liegen nur rund 20 km auseinander. Du kannst durchgehend hinein- und herauszoomen, ohne die Frankreichkarte zu verlassen. Klicke einen Ort an oder wähle ihn in der Liste. Die Kamera fährt dann von Ort zu Ort. Der Plan ist schematisch, Lage und Größe der Gebäude sind angenähert.",
+ leg:`<div><i style="background:#8cc4e8"></i>Seine, Grand Canal</div><div><i style="background:#d8c9a0"></i>Gebäude (schematisch)</div><div><i style="background:#bcd6a0"></i>Gärten, Parks</div><div>┄ Zollmauer Paris 1789</div>`,
+ S:PS.concat(VS),PL:PL.concat(PLV),
+ CL:[["Paris",2.3522,48.8566,"🏙",.85,[2.3522,48.8566,1.15]],["Versailles",2.1204,48.8049,"🏰",1.3,[2.1204,48.8049,2.2]]],
+ draw(o){const D=o.D,pt=o.pt,B=(dx,dy,w,h,f)=>o.bd(...M(dx,dy),w,h,f),el=(lo,la,rx,ry,f)=>{const p=o.L(lo,la);D("ellipse",{cx:p[0],cy:p[1],rx,ry,fill:f})};
+  D("rect",{x:-2400,y:-900,width:4400,height:2700,fill:"#d9e3c0"});
+  D("polygon",{points:pt([[2.2400,48.8650],[2.2520,48.8760],[2.2640,48.8760],[2.2690,48.8640],[2.2640,48.8520],[2.2500,48.8480],[2.2400,48.8520]]),fill:"#bcd6a0"});
+  D("polygon",{points:pt([[2.1190,48.7955],[2.1480,48.7960],[2.1500,48.8150],[2.1190,48.8200]]),fill:"#e7dfc6"});
+  D("polygon",{points:pt(WALL),fill:"#ede5cf",stroke:"#8a6d3b","stroke-width":2,"stroke-dasharray":"8 5","vector-effect":"non-scaling-stroke"});
+  GARD.forEach(g=>D("polygon",{points:pt(g),fill:"#bcd6a0"}));
+  D("polygon",{points:pt([[2.1180,48.7985],[2.0870,48.7985],[2.0870,48.8115],[2.1000,48.8115],[2.1000,48.8200],[2.1180,48.8200]]),fill:"#bcd6a0"});
+  D("polygon",{points:pt([[2.1165,48.8075],[2.1195,48.8075],[2.1195,48.8023],[2.1165,48.8023]]),fill:"#cfe3b0"});
+  D("polygon",{points:pt([[2.1110,48.8051],[2.1150,48.8051],[2.1150,48.8043],[2.1110,48.8043]]),fill:"#d5ecb8"});
+  const road=(a,w)=>D("polyline",{points:pt(a),fill:"none",stroke:"#cdbf9a","stroke-width":w,"stroke-linejoin":"round","vector-effect":"non-scaling-stroke"});
+  STR.forEach(s=>road(s[0],s[1]));
+  [[[2.1268,48.8055],[2.1330,48.8068],[2.1450,48.8100],[2.1560,48.8135]],[[2.1268,48.8055],[2.1310,48.8110],[2.1360,48.8180]],[[2.1268,48.8055],[2.1330,48.7990],[2.1400,48.7920]]].forEach(a=>road(a,3.5));
+  road(ROUTE,2.4);
+  const riv=(a,w)=>D("polyline",{points:pt(a),fill:"none",stroke:"#8cc4e8","stroke-width":w,"stroke-linecap":"round","stroke-linejoin":"round"});
+  riv([[2.2200,48.8650],[2.2150,48.8450],[2.2250,48.8300],[2.2380,48.8250],[2.2550,48.8300]].concat(RIV[0]),13);RIV.slice(1).forEach(r=>riv(r,13));
+  [[[2.1100,48.8045],[2.0905,48.8045]],[[2.0978,48.8002],[2.0978,48.8089]]].forEach(a=>D("polyline",{points:pt(a),fill:"none",stroke:"#8cc4e8","stroke-width":6.2}));
+  el(2.1107,48.8046,5.5,4.5,"#8cc4e8");el(2.1150,48.8047,3.5,3,"#8cc4e8");
+  B(450,0,100,300,"#e2d7b8");
+  [[-15,0,90,200],[-10,-215,70,230],[-10,215,70,230],[180,100,300,40],[180,-100,300,40],[480,250,200,80],[480,-250,200,80],[-30,-440,150,80]].forEach(b=>B(...b,"#d8c9a0"));
+  B(60,0,60,100,"#e8d9a8");o.bd(2.1040,48.8150,100,40,"#d8c9a0");
+  BX.forEach(b=>o.bd(...b));PS.concat(VS).forEach(s=>o.bd(s[1],s[2],s[5],s[6],s[9]))}});
+/* ---- Denker ---- */
+const PHN=["John Locke","Montesquieu","Voltaire","Jean-Jacques Rousseau","Immanuel Kant"];
+const PHX={
+"John Locke":{i:"Naturrechte und Herrschaft auf Zeit",q:"Niemand soll einem anderen an Leben, Gesundheit, Freiheit oder Besitz schaden.",s:"Zwei Abhandlungen über die Regierung (1689), § 6, sinngemäß übersetzt",n:"Rechte gehören dem Menschen von Natur aus und bestehen schon vor jedem Staat. Der Herrscher ist kein König von Gottes Gnaden, sondern Beauftragter des Volkes. Verletzt er die Rechte, darf man ihn absetzen.",w:"Quelle der Idee unveräußerlicher Rechte: Artikel 2 der Erklärung von 1789 nennt Freiheit, Eigentum, Sicherheit und Widerstand gegen Unterdrückung."},
+"Montesquieu":{i:"Gewaltenteilung",q:"Damit man die Macht nicht missbrauchen kann, muss die Macht die Macht bremsen.",s:"Vom Geist der Gesetze (1748), XI, 4, sinngemäß übersetzt",n:"Freiheit schützt nicht ein guter Fürst, sondern die Einrichtung des Staates: Gesetzgebung, Regierung und Rechtsprechung liegen in verschiedenen Händen und kontrollieren sich gegenseitig.",w:"Artikel 16 der Erklärung von 1789: Eine Gesellschaft ohne Gewaltenteilung hat keine Verfassung. Die Verfassung von 1791 trennte die Gewalten."},
+"Voltaire":{i:"Toleranz und Vernunft gegen Fanatismus",q:"Das Recht der Intoleranz ist absurd und barbarisch.",s:"Abhandlung über die Toleranz (1763), Kap. 6, übersetzt",n:"Kritik an Kirche und Justiz wird zur Sache der öffentlichen Meinung: Mit Flugschriften, Briefen und Spott machte Voltaire Fälle wie den Justizmord an Jean Calas bekannt. Religionsfreiheit und faire Verfahren wurden Forderungen einer breiten Öffentlichkeit.",w:"Artikel 10 der Erklärung von 1789: Niemand soll wegen seiner Meinungen, auch religiöser, belangt werden."},
+"Jean-Jacques Rousseau":{i:"Volkssouveränität und Gemeinwille",q:"Der Mensch wird frei geboren, und überall liegt er in Ketten.",s:"Der Gesellschaftsvertrag (1762), Buch I, Kap. 1, übersetzt",n:"Rechtmäßige Herrschaft kommt nicht von Gott oder Herkunft, sondern aus dem Willen aller. Gesetze sind Ausdruck des Gemeinwillens (volonté générale), vor ihnen sind alle gleich.",w:"Artikel 6 der Erklärung von 1789: Das Gesetz ist Ausdruck des Gemeinwillens. 1792 wurde die Republik ausgerufen; Jakobiner beriefen sich auf Rousseau."},
+"Immanuel Kant":{i:"Mündigkeit: selbst denken",q:"Aufklärung ist der Ausgang des Menschen aus seiner selbstverschuldeten Unmündigkeit.",s:"Beantwortung der Frage: Was ist Aufklärung? (1784)",n:"Nicht Bildung für wenige: Jeder soll es wagen, seinen eigenen Verstand zu gebrauchen („Sapere aude“), statt sich von Autoritäten leiten zu lassen. Daraus folgt die Würde jedes Menschen als Vernunftwesen.",w:"Kant begrüßte die Revolution als Zeichen des Fortschritts, lehnte aber gewaltsamen Umsturz als Rechtsbruch ab."}};
+const phBox=()=>`<div class="box"><h4>Denker auf der Karte</h4>${PHN.map(n=>`<button onclick="phil('${n}')" style="margin:3px">🖋️ ${n}</button>`).join("")}</div>`;
+const phil=n=>showCity(CI.find(c=>c[0]==n));
+function snavHide(){$("snav").style.display="none"}
+function snav(o,i){const e=$("snav"),n=o.S.length;e.style.display="flex";e.innerHTML=`<button id="snv1">◀ ${o.S[(i+n-1)%n][0]}</button><button id="snv2">🗺 Übersicht</button><button id="snv3">← Station</button><button id="snv4">${o.S[(i+1)%n][0]} ▶</button>`;
+ $("snv1").onclick=()=>o.show((i+n-1)%n);$("snv4").onclick=()=>o.show((i+1)%n);$("snv2").onclick=()=>{o.OV();o.showIntro()};$("snv3").onclick=()=>showS(cur)}
+const dw=$("drawer");
+$("ob").onclick=()=>{if(!dw.classList.toggle("on"))return;const o=LVS.p;let h=`<h3>📍 Orte der Revolution</h3><button id="dpl">${mode=="p"?"← Frankreich-Karte":"🏙 Stadtplan öffnen"}</button>`,g="";
+ o.S.forEach((p,n)=>{if(p[11]!=g){g=p[11];h+=`<div class="dg">${g}</div>`}h+=`<a href="#" data-n="${n}">${p[3]} ${p[0]}<small> · ${p[4]}</small></a>`});
+ h+=`<div class="dg">Denker der Aufklärung</div>`+PHN.map(n=>`<a href="#" data-ph="${n}">💡 ${n}</a>`).join("");dw.innerHTML=h;
+ $("dpl").onclick=()=>{dw.classList.remove("on");mode=="p"?backF():enterLevel("p",null)};
+ dw.querySelectorAll("a").forEach(a=>a.onclick=e=>{e.preventDefault();dw.classList.remove("on");if(a.dataset.ph){if(mode!="f")exitLevel();go(1);phil(a.dataset.ph)}else{const n=+a.dataset.n;mode=="p"?LVS.p.show(n):enterLevel("p",n)}})};
+$("rp").onclick=()=>applyFx(0);
+const RES={
+ps:["📝 planet-schule: Arbeitsblatt zum Film „Wie kam es zur Französischen Revolution?“","https://www.planet-schule.de/x/spickzettel-frz-revolution"],
+bpb:["📄 bpb: Frankreichs erste Verfassung (Ballhausschwur, Bastille, Menschenrechte)","https://www.bpb.de/kurz-knapp/hintergrund-aktuell/233139/vor-225-jahren-frankreichs-erste-verfassung/"],
+zdf:["🎬 Terra X: „Ein Moment in der Geschichte – Der Sturm auf die Bastille“ (ZDF)","https://www.zdf.de/video/dokus/terra-x-ein-moment-in-der-geschichte-mit-mirko-drotschmann-100/ein-moment-in-der-geschichte-mit-mirko-drotschmann-der-sturm-auf-die-bastille-100"],
+sf:["🎬 StudyFlix: Sturm auf die Bastille (Video und Text)","https://studyflix.de/geschichte/sturm-auf-die-bastille-3900"],
+tu:["📝 tutory: Arbeitsblatt „Beginn der französischen Revolution“ (Video, Kausalkette)","https://www.tutory.de/entdecken/dokument/beginn-der-franzosischen-revolution"],
+la:["🧩 LearningApps: Ereignisse der Revolution in die richtige Reihenfolge bringen (französisch)","https://learningapps.org/display?v=pnb5c5kzc20"],
+ab:["🧩 Actionbound: „Die Französische Revolution“ (Videos, Quiz, Aufträge)","https://en.actionbound.com/bound/franzoesischerevolution"],
+pw:["📄 planet-wissen: Die Französische Revolution im Überblick","https://www.planet-wissen.de/geschichte/neuzeit/die_franzoesische_revolution/index.html"],
+pt:["📄 planet-wissen: Terrorherrschaft in Frankreich 1793/94","https://www.planet-wissen.de/geschichte/neuzeit/die_franzoesische_revolution/franzoesische-revolution-terrorherrschaft-100.html"],
+wl:["📄 wissen.de: Hinrichtung Ludwigs XVI. am 21.1.1793","https://www.wissen.de/ddwg/hinrichtung-ludwig-xvi-21-1-1793"],
+ch:["📜 Augenzeugenbericht zum Frauenmarsch (Maillard, englisch)","https://revolution.chnm.org/d/473"],
+c2:["🧩 card2brain: Lernkarten „Aufklärung – Grundbegriffe“","https://card2brain.ch/box/20180909_aufklaerung"],
+oe:["📝 Arbeitsblatt „Die Aufklärung“ mit Zitaten und Aufgaben (ÖBV)","https://www.oebv.at/internal/0d4b7207-dade-48f1-9d51-193759c15629"],
+wh:["📄 World History Encyclopedia: Französische Revolution (mit Kriegskarte)","https://www.worldhistory.org/trans/de/1-19568/franzosische-revolution/"]};
+[[RES.ps,RES.pw],[RES.c2,RES.oe],[RES.tu,RES.ps],[RES.bpb,RES.pw],[RES.zdf,RES.sf],[RES.bpb,RES.la],[RES.ch,RES.pw],[RES.ab,RES.pw],[RES.wh,RES.la],[RES.pt,RES.wl],[RES.pt,RES.ab],[RES.pt,RES.wh]].forEach((m,i)=>ST[i].mat=m);
+$("pback").onclick=backF;
+$("pk").onclick=()=>mode=="p"?backF():enterLevel("p",null);
+$("zi").onclick=()=>lvl?lvl.zoom(450,340,1.5):zoomAt(450,340,1.5);
+$("zo").onclick=()=>lvl?lvl.zoom(450,340,1/1.5):zoomAt(450,340,1/1.5);
+$("zr").onclick=()=>{if(lvl){lvl.OV();lvl.showIntro()}else{cam.classList.remove("drag");focus(17,49,1)}};
+$("gb").onclick=()=>{if(!dw.classList.toggle("on"))return;dw.innerHTML=`<h3>📚 Glossar</h3><small>Diese Begriffe sind im Text gepunktet unterstrichen.</small><dl>`+[...GL].sort((a,b)=>a[0].localeCompare(b[0],"de")).map(g=>`<dt>${g[0]}</dt><dd>${g[2]}</dd>`).join("")+`</dl>`};
+/* Startbildschirm */
+const intro=$("intro");
+function closeIntro(){intro.classList.add("out")}
+function openIntro(){const n=SV.done.length;$("iprog").innerHTML=n?`<div class="prog"><span>Dein Fortschritt: ${n} / ${ST.length} Stationen geschafft</span><div class="qbar"><i style="width:${n/ST.length*100}%"></i></div></div>`:"";
+ const c=$("icont");if(SV.last>0){c.style.display="";c.textContent=`Weiter bei Station ${SV.last+1}: ${ST[SV.last].t} ▶`}else c.style.display="none";intro.classList.remove("out");$("istart").focus()}
+$("istart").onclick=()=>{closeIntro();go(0)};$("icont").onclick=()=>{closeIntro();go(SV.last)};$("hl").onclick=openIntro;
+const L0=SV.last;go(0);SV.last=L0;save();openIntro();
+</script></body></html>
