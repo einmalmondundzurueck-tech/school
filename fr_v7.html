@@ -26,6 +26,9 @@ svg[data-z="2"] #rel{display:none}
 svg[data-z="1"] .cl,svg[data-z="2"] .cl{display:none}
 .ct{cursor:pointer}.ct circle{fill:#fffaf0;stroke:#3a3326;stroke-width:1.5;vector-effect:non-scaling-stroke;filter:drop-shadow(0 1px 2px #0005)}
 .ct text{font:700 11.5px var(--sans);fill:#221d14;paint-order:stroke;stroke:#fbf6ea;stroke-width:3.5px}.ct:hover circle{fill:var(--ac2)}
+.thk{cursor:pointer}.thk .ring{fill:none;stroke:#f0c56e;stroke-width:3;animation:pulse 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}@keyframes pulse{from{transform:scale(1);opacity:.95}to{transform:scale(1.8);opacity:0}}
+.thk .disc{fill:url(#thg);stroke:#fff;stroke-width:3;filter:drop-shadow(0 2px 4px #0007)}.thk .pill{fill:#14192aee;stroke:#d9a64a;stroke-width:1.5;filter:drop-shadow(0 3px 6px #0006)}
+.thk text.nm{font:700 15px var(--serif);fill:#fff;stroke:none}.thk text.id{font:600 11.5px var(--sans);fill:#f0c56e;stroke:none}.thk:hover .pill{fill:#2a3350}.thk:hover .disc{stroke:#f0c56e}
 .ln{fill:none;stroke:#1a1a1a;stroke-width:3;stroke-dasharray:9 6;opacity:0;transition:opacity .6s;vector-effect:non-scaling-stroke;animation:fl 1s linear infinite;pointer-events:none}
 .ln.on{opacity:1}.ln.en{stroke:#1d4f93}.ln.mp{stroke:#9c2a14}
 @keyframes fl{to{stroke-dashoffset:-15}}
@@ -59,6 +62,11 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:
 .hd{padding:20px 22px 0;background:linear-gradient(180deg,#1d2433,var(--p));border-bottom:1px solid var(--ln)}
 .hd .kick{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--m)}
 .chip{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.03em;border:1px solid}
+.thg{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0 16px}
+.thc{display:grid;grid-template-columns:auto 1fr;gap:1px 12px;align-items:center;text-align:left;padding:12px 14px;background:var(--p2);border:1px solid var(--ln);border-radius:14px}
+.thc .em{grid-row:span 3;width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f7dc95,#c4922f);display:grid;place-items:center;font-size:23px;box-shadow:0 0 0 3px #ffffff30,0 3px 8px #0006}
+.thc b{font:600 17px/1.15 var(--serif);color:#fff}.thc small{color:var(--m);font-size:12px}.thc .id{color:var(--ac2);font-size:13.5px;font-weight:600;line-height:1.3}
+.thc:hover{border-color:var(--ac);background:var(--p3);transform:translateY(-2px)}
 .goal{display:flex;gap:10px;align-items:flex-start;background:#d9a64a14;border:1px solid #d9a64a40;border-radius:10px;padding:9px 12px;margin:4px 0 14px;font-size:14px}.goal b{color:var(--ac2)}
 .tabs{display:flex;gap:2px;position:sticky;top:0;z-index:2;background:var(--p);padding:0 12px;border-bottom:1px solid var(--ln);box-shadow:0 6px 12px -8px #0008}
 .tabs button{background:none;border-radius:0;padding:10px 10px 9px;color:var(--m);font-weight:600;font-size:14px;border-bottom:3px solid transparent;flex:1;white-space:nowrap}
@@ -147,24 +155,29 @@ const pts=a=>a.map(p=>P(p[0],p[1]).map(v=>v.toFixed(1)).join(",")).join(" ");
 /* Staaten um 1789: id, Name, Polygone [lon,lat], Labelposition, Info */
 const C=[
 ["fr","Königreich Frankreich",[[[-4.7,48.3],[-1.5,48.7],[-1.5,49.7],[2,51],[4,50],[6,49.5],[8.2,49],[7.6,47.6],[6,46.2],[5.8,45.5],[6.8,44.2],[7.2,43.7],[3,42.5],[-1.8,43.4],[-1.2,45.5],[-2.5,47.3]],[[8.6,42.5],[9.4,43],[9.5,41.9],[8.8,41.4]]],[2.5,46.8],"Mit ca. 28 Mio. Einwohnern das bevölkerungsreichste Land Europas, aber hoch verschuldet. Absolutistische Monarchie unter Ludwig XVI., ab 1791 konstitutionelle Monarchie, ab 22.9.1792 Republik."],
-["gb","Großbritannien",[[[-5.5,50],[1.5,51],[1.7,53],[-0.5,55],[-2,57.5],[-3,58.6],[-5.5,58.5],[-6,56],[-5,54.8],[-3.2,54],[-4.5,53],[-5,51.7]],[[-10,51.5],[-6,52],[-6,54.5],[-8,55.2],[-10,54]]],[-2.6,53.5],"Parlamentarische Monarchie, Rivale Frankreichs. Schloss sich 1793 der Ersten Koalition an."],
-["es","Spanien",[[[-9.2,43.2],[-1.8,43.4],[3,42.5],[0.5,40.5],[-0.5,38.5],[-2,36.7],[-5.6,36],[-7.4,37.2],[-7,39],[-6.9,42],[-8.8,42]]],[-3.5,40],"Bourbonenmonarchie, trat 1793 gegen Frankreich in den Krieg ein, wechselte aber 1795 die Seite."],
+["gb","Großbritannien & Irland",[[[-5.5,50],[1.5,51],[1.7,53],[-0.5,55],[-2,57.5],[-3,58.6],[-5.5,58.5],[-6,56],[-5,54.8],[-3.2,54],[-4.5,53],[-5,51.7]],[[-10,51.5],[-6,52],[-6,54.5],[-8,55.2],[-10,54]]],[-2.6,53.5],"Parlamentarische Monarchie, Rivale Frankreichs. Schloss sich 1793 der Ersten Koalition an. Irland war ein eigenes Königreich unter dem britischen König; 1798 scheiterte dort ein Aufstand, den Frankreich mit Truppen unterstützte. 1801 wurden beide Länder vereinigt.","Großbritannien"],
+["es","Spanien",[[[-9.2,43.2],[-1.8,43.4],[3,42.5],[0.5,40.5],[-0.5,38.5],[-2,36.7],[-5.6,36],[-7.4,37.2],[-7,39],[-6.9,42],[-8.8,42]],[[2.3,39.6],[3.1,39.9],[3.5,39.7],[3,39.3]],[[3.8,40],[4.3,40.05],[4.2,39.85]]],[-3.5,40],"Bourbonenmonarchie, trat 1793 gegen Frankreich in den Krieg ein, wechselte aber 1795 die Seite."],
 ["pt","Portugal",[[[-9.5,42],[-6.9,42],[-7,39],[-7.4,37.2],[-9,37],[-9.5,39]]],[-8,39.8],"Traditionell eng an Großbritannien gebunden."],
-["it","Italien (Kleinstaaten)",[[[7,44],[6.8,45.9],[8.5,46],[10.4,46.5],[12.2,47],[13.7,46.5],[13.7,45.6],[12.3,45.3],[13.6,43.6],[16,41.9],[18.5,40.2],[16.5,39.5],[17,38.9],[15.7,37.9],[15.8,38.7],[15.6,40],[13,41.3],[10.5,43],[8.5,44.4]],[[12.5,38],[15.6,38.2],[15.2,36.7],[12.5,37.6]]],[12,43.3],"Zersplittert in viele Staaten (Piemont-Sardinien, Kirchenstaat, Neapel …). Ab 1796 Schauplatz von Bonapartes Italienfeldzug."],
+["it","Italien (Kleinstaaten)",[[[7,44],[6.8,45.9],[8.5,46],[10.4,46.5],[12.2,47],[13.7,46.5],[13.7,45.6],[12.3,45.3],[13.6,43.6],[16,41.9],[18.5,40.2],[16.5,39.5],[17,38.9],[15.7,37.9],[15.8,38.7],[15.6,40],[13,41.3],[10.5,43],[8.5,44.4]],[[12.5,38],[15.6,38.2],[15.2,36.7],[12.5,37.6]],[[8.4,41],[9.8,41.1],[9.7,39.2],[9,38.9],[8.4,39],[8.5,40]]],[12,43.3],"Zersplittert in viele Staaten (Piemont-Sardinien mit der Insel Sardinien, Republik Venedig, Kirchenstaat, Neapel-Sizilien …). Ab 1796 Schauplatz von Bonapartes Italienfeldzug."],
 ["ch","Schweiz",[[[6,46.2],[7.6,47.6],[10,47.5],[10.4,46.5],[8.5,46],[7,45.9]]],[8.2,46.8],"Eidgenossenschaft; 1798 von Frankreich zur Helvetischen Republik gemacht."],
 ["be","Österr. Niederlande",[[[2.5,51.1],[4,51.4],[6,50.5],[6,49.5],[4,50],[2.5,50.8]]],[4.4,50.4],"Habsburgisch; 1792/93 von Frankreich erobert, 1795 annektiert."],
 ["nl","Niederlande",[[[3.5,51.4],[5,53.4],[7,53.3],[7,51.8],[6,50.8],[4,51.4]]],[5.5,52.4],"Republik der Vereinigten Provinzen; 1795 als „Batavische Republik“ französischer Satellitenstaat."],
 ["de","Preußen & Hl. Röm. Reich",[[[6,51.8],[7,53.5],[8.5,54],[8.6,55],[10,54.8],[11,54],[14,54],[18.5,54.8],[22.8,54.4],[22.8,53.8],[18.5,53],[18,51.5],[15,51],[12.5,50.2],[13.5,48.8],[13,47.7],[10,47.5],[7.6,47.6],[8.2,49],[6,49.5],[6,50.5],[6,51.2]]],[10.5,51.8],"Preußen (Friedrich Wilhelm II.) und viele deutsche Fürstentümer. Preußen führte 1792 die Invasion an, die bei Valmy scheiterte."],
 ["at","Habsburgermonarchie",[[[10,47.5],[13,47.7],[13.5,48.8],[12.5,50.2],[15,51],[16.5,50.5],[18.5,50.4],[21,50.5],[23,50.4],[24,50.8],[26.3,50.2],[26.5,48.3],[26.5,47.5],[25.5,45.8],[24,45.7],[22.7,45.3],[22.5,44.7],[20.3,44.9],[19.2,44.5],[19.2,43.5],[18.5,42.4],[17.5,42.7],[16,43.5],[14.5,44.8],[13.7,45.6],[13.7,46.5],[12.2,47],[10.4,46.5]]],[19,47.6],"Kaiser Leopold II., ab 1792 Franz II. Marie Antoinette war Tochter Maria Theresias. Österreich erklärte Frankreich nicht den Krieg, wurde aber 1792 angegriffen."],
-["ru","Russland (mit Polen)",[[[22.8,54.4],[21,56.2],[21.1,57.5],[24,57.2],[24,59.3],[28,59.5],[30,60],[28,62],[45,62],[45,45],[38,45.2],[35,45],[33.5,46],[31,46.6],[30,45.5],[28.2,45.5],[26.5,48.3],[26.3,50.2],[24,50.8],[23,50.4],[21,50.5],[18.5,50.4],[18,51.5],[18.5,53],[22.8,53.8]]],[36,56],"Zarin Katharina II., ab 1796 Paul I. Griff erst 1798/99 in die Koalitionskriege ein."]
+["ru","Russisches Reich",[[[22.5,57.6],[24,57.2],[24,59.3],[28,59.5],[30,60],[28.6,60.6],[29.6,61.5],[30.5,63.5],[45.5,63.5],[45.5,43],[42,43.2],[39.5,44.4],[38,45.2],[35,45],[33.5,46],[31.6,46.6],[30.6,48],[29.8,49],[30.3,50.6],[30.6,51.8],[30,53.2],[28.5,54.7],[26.5,55.8],[24,56.9]]],[37,56.5],"Zarin Katharina II., ab 1796 Paul I. Russland hatte 1783 die Krim erobert und teilte 1793 und 1795 mit Preußen und Österreich Polen-Litauen unter sich auf. In die Koalitionskriege griff es erst 1798/99 ein.","Russland"],
+["pl","Polen-Litauen",[[[18.5,53],[22.8,53.8],[22.8,54.4],[21,56.2],[21.1,57.5],[22.5,57.6],[24,56.9],[26.5,55.8],[28.5,54.7],[30,53.2],[30.6,51.8],[30.3,50.6],[29.8,49],[28.5,48.2],[26.5,48.3],[26.3,50.2],[24,50.8],[23,50.4],[21,50.5],[18.5,50.4],[18,51.5]]],[25,52.8],"Wahlkönigreich unter Stanisław August Poniatowski. Die Verfassung vom 3. Mai 1791 war die erste geschriebene Verfassung Europas, noch vor der französischen. Russland, Preußen und Österreich teilten das Land 1772, 1793 und 1795 auf; danach existierte Polen bis 1918 nicht mehr als Staat.","Polen-Litauen"],
+["tr","Osmanisches Reich",[[[26.5,48.3],[28.5,48.2],[29.8,47],[30.3,46.3],[31.6,46.6],[30.5,46],[29.7,45.2],[28.6,44],[28,43.2],[27.9,42],[29,41.2],[31,41.1],[35,42],[38,41],[41.5,41.5],[42,43.2],[45.5,43],[45.5,34.5],[36,34.5],[36,36.7],[35.9,36.2],[34.6,36.8],[32,36.5],[30,36.2],[28,36.8],[27.3,37.5],[26.3,38.3],[26.6,39.5],[26.2,40.1],[26.4,40.4],[25.5,40.9],[24,40.7],[22.9,40.6],[23.2,39.5],[22.8,38.9],[23.5,38.1],[24,38],[23.1,37.4],[23.2,37],[22.5,36.4],[21.7,36.8],[21.3,37.6],[21.8,38.3],[21.1,38.4],[20.7,39.3],[19.6,40],[19.4,41.5],[19.2,42],[18.5,42.4],[19.2,43.5],[19.2,44.5],[20.3,44.9],[22.5,44.7],[22.7,45.3],[24,45.7],[25.5,45.8],[26.5,47.5]],[[23.5,35.3],[26.3,35.1],[26.2,35.3],[24,35.6]],[[32.3,35],[34.6,35.6],[33.9,35.2],[32.8,34.6]]],[33,39.3],"Großreich des Sultans mit Hauptstadt Konstantinopel (Istanbul). Es beherrschte den Balkan, Griechenland, Kleinasien und den Nahen Osten. 1787–1792 führte es Krieg gegen Russland und Österreich. 1798 griff Bonaparte die osmanische Provinz Ägypten an.","Osmanisches Reich"],
+["se","Schweden (mit Finnland)",[[[11.2,58.4],[11.9,57.6],[12.5,56.6],[12.9,55.5],[14.2,55.4],[14.6,56.2],[16,56.2],[16.6,57.5],[16.5,58.5],[18.2,59.3],[18.6,60.2],[17.4,60.7],[17.3,62.3],[18,63.5],[12,63.5],[12.1,62],[12.4,61.5],[12.3,60.5],[11.4,59.1]],[[21.3,63.5],[21.5,61.5],[21.4,60.6],[22.5,59.9],[24.5,60.1],[26.5,60.4],[27.2,60.6],[28.5,61.8],[29.6,61.5],[30.5,63.5]],[[18.1,57.3],[18.8,57.9],[18.9,57.4],[18.3,56.9]]],[15,61.2],"Königreich unter Gustav III., zu dem auch Finnland gehörte. Gustav III. wollte gegen die Revolution vorgehen, wurde aber 1792 ermordet. Schweden blieb in den ersten Revolutionskriegen neutral.","Schweden"],
+["dk","Dänemark-Norwegen",[[[8.6,55],[8.1,55.6],[8.1,56.8],[8.6,57.1],[10.6,57.7],[10.5,57.2],[10.3,56.4],[10.9,56.4],[10.2,55.6],[9.8,55]],[[11,55.4],[12,54.95],[12.6,55.6],[12.3,56.1],[11.2,55.9]],[[9.8,55.3],[10.8,55.3],[10.6,55],[10,55.1]],[[5,59],[5.5,58.1],[7,58],[8.5,58.3],[10.5,59.2],[11.4,59.1],[12.3,60.5],[12.4,61.5],[12.1,62],[12,63.5],[5,63.5],[4.9,61.5],[5.2,60.2]]],[9,61],"Gesamtstaat des dänischen Königs mit Norwegen, Schleswig und Holstein. Unter dem Reformminister Bernstorff blieb Dänemark in den Revolutionskriegen neutral und verdiente am Seehandel.","Dänemark-Norwegen"],
+["af","Nordafrika",[[[-6.9,34.4],[-6,35.8],[-5.3,35.9],[-2,35.1],[1,36.5],[3,36.8],[5,36.8],[8.6,36.9],[10,37.3],[11,37],[10.5,36.4],[11.1,35.5],[10.8,34.4]]],[2,35.6],"Das Sultanat Marokko sowie Algier und Tunis, die formal zum Osmanischen Reich gehörten. Von hier aus kaperten Korsaren europäische Handelsschiffe.","Nordafrika"]
 ];
 const CI=[
 ["Paris",2.3522,48.8566,0,"Hauptstadt und mit ca. 600.000 Einwohnern eine der größten Städte Europas. Hier fielen die entscheidenden Schläge der Revolution; ab Oktober 1789 residierten König und Nationalversammlung in der Stadt. Klicke auf das Symbol und öffne den Stadtplan mit den Orten der Revolution.",null,"🏙️"],
 ["Menschenrechte",2.1325,48.8062,0,"Am 26. August 1789 verabschiedete die Nationalversammlung in Versailles die Erklärung der Menschen- und Bürgerrechte.",[5],"📖"],
 ["John Locke",-2.76,51.36,0,"(1632–1704) Geboren in Wrington bei Bristol. In den „Zwei Abhandlungen über die Regierung“ (1689) begründete er natürliche Rechte auf Leben, Freiheit und Eigentum, die Herrschaft nur mit Zustimmung der Regierten und ein Widerstandsrecht. Seine Ideen prägten die Amerikanische Revolution und die Menschenrechtserklärung von 1789.",[1],"💡",[-34,24],"John_Locke"],
 ["Montesquieu",-0.53,44.68,0,"(1689–1755) Parlamentspräsident in Bordeaux, Schloss La Brède. In „Vom Geist der Gesetze“ (1748) forderte er die Gewaltenteilung in Gesetzgebung, Regierung und Rechtsprechung. Artikel 16 der Erklärung von 1789 greift den Gedanken auf.",[1],"💡",[0,0],"Montesquieu"],
-["Voltaire",6.11,46.26,0,"(1694–1778) Geboren in Paris, lebte ab 1759 auf seinem Gut in Ferney nahe Genf. Er kämpfte gegen religiösen Fanatismus und Justizwillkür (Fall Calas) und für Toleranz und freie Meinung. 1791 wurde sein Leichnam in das Panthéon überführt.",[1],"💡",[34,-24],"Voltaire"],
-["Jean-Jacques Rousseau",6.15,46.2,0,"(1712–1778) Geboren in Genf. Im „Gesellschaftsvertrag“ (1762) beschrieb er die Volkssouveränität und den allgemeinen Willen (volonté générale). Die Jakobiner beriefen sich auf ihn. 1794 wurde er ins Panthéon überführt.",[1],"💡",[-30,22],"Jean-Jacques_Rousseau"],
+["Voltaire",6.11,46.26,0,"(1694–1778) Geboren in Paris, lebte ab 1759 auf seinem Gut in Ferney nahe Genf. Er kämpfte gegen religiösen Fanatismus und Justizwillkür (Fall Calas) und für Toleranz und freie Meinung. 1791 wurde sein Leichnam in das Panthéon überführt.",[1],"💡",[30,-42],"Voltaire"],
+["Jean-Jacques Rousseau",6.15,46.2,0,"(1712–1778) Geboren in Genf. Im „Gesellschaftsvertrag“ (1762) beschrieb er die Volkssouveränität und den allgemeinen Willen (volonté générale). Die Jakobiner beriefen sich auf ihn. 1794 wurde er ins Panthéon überführt.",[1],"💡",[16,48],"Jean-Jacques_Rousseau"],
 ["Immanuel Kant",20.51,54.71,0,"(1724–1804) Professor in Königsberg (Preußen), der kaum je verreiste. 1784 beantwortete er die Frage „Was ist Aufklärung?“: der Ausgang aus selbstverschuldeter Unmündigkeit, Wahlspruch „Sapere aude“. Die Revolution begrüßte er zunächst, ein Recht auf gewaltsamen Umsturz lehnte er aber ab.",[1],"💡",[0,0],"Immanuel_Kant"],
 ["Jemappes",3.89,50.45,0,"6. November 1792: Das französische Revolutionsheer schlägt die Österreicher und erobert danach die Österreichischen Niederlande (Belgien).",[8],"⚔️",[-34,-24]],
 ["Longwy & Verdun",5.55,49.36,0,"Im August und September 1792 fielen die Festungen Longwy und Verdun an die Preußen, der Weg nach Paris schien offen.",[8],"🔥",[34,6]],
@@ -186,6 +199,11 @@ const CI=[
 ["Berlin",13.4,52.5,0,"Hauptstadt Preußens; 1806 nach Jena und Auerstedt von Napoleon besetzt."],
 ["London",-0.1,51.5,0,"Hauptfeind Frankreichs; finanzierte fast alle Koalitionen."],
 ["Madrid",-3.7,40.4,0,"1808 besetzte Napoleon Spanien: Beginn des zermürbenden Guerillakrieges."],
+["Warschau",21.01,52.23,0,"Hauptstadt Polen-Litauens. Hier wurde am 3. Mai 1791 die erste geschriebene Verfassung Europas beschlossen. 1795 fiel Warschau an Preußen."],
+["Stockholm",18.07,59.33,0,"Hauptstadt Schwedens. König Gustav III. wurde hier 1792 auf einem Maskenball erschossen."],
+["Kopenhagen",12.57,55.68,0,"Hauptstadt Dänemark-Norwegens, ein wichtiger Handelshafen der neutralen Staaten."],
+["St. Petersburg",30.32,59.94,0,"Hauptstadt des Russischen Reiches und Residenz Katharinas II."],
+["Konstantinopel",28.98,41.01,0,"Hauptstadt des Osmanischen Reiches (heute Istanbul), Sitz des Sultans."],
 ["Moskau",37.6,55.75,0,"Ziel von Napoleons Russlandfeldzug 1812, dessen Scheitern sein Ende einleitete.",[99],"❄️"],
 ["Mailand",9.2,45.5,2,"Hauptstadt von Bonapartes Italienfeldzug 1796/97.",[99]]
 ];
@@ -295,18 +313,18 @@ const NS="http://www.w3.org/2000/svg";
 const E=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
 const CM={},paths={};
 C.forEach(c=>{CM[c[0]]=c;const g=E("g",{},$("cs"));c[2].forEach(pl=>{const p=E("polygon",{points:pts(pl)},g);p.onclick=()=>{if(!moved)showC(c[0])};(paths[c[0]]=paths[c[0]]||[]).push(p);E("title",{},p).textContent=c[1]});
- const [x,y]=P(c[3][0],c[3][1]);E("text",{x,y,class:"cl"},$("cs")).textContent=c[1].split(" ")[0]});
+ const [x,y]=P(c[3][0],c[3][1]);E("text",{x,y,class:"cl"},$("cs")).textContent=c[5]||c[1].split(" ")[0]});
 /* 2,5D: Küstenwellen, Schatten, Seitenkanten, Glanz */
 const camG=$("cam"),csG=$("cs"),mkG=(id,before)=>{const g=E("g",{id});camG.insertBefore(g,before);return g};
 const seaG=mkG("sea",csG),shdG=mkG("shd",csG),exG=[1,2,3,4,5].map(j=>mkG("ex"+j,csG)),sides={};
 const sheenG=E("g",{style:"pointer-events:none"});camG.insertBefore(sheenG,$("ls"));
-const DEF=E("defs",{},$("svg"));DEF.innerHTML=`<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>`;
+const DEF=E("defs",{},$("svg"));DEF.innerHTML=`<radialGradient id="thg" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fbe3a2"/><stop offset="1" stop-color="#b8862a"/></radialGradient><linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>`;
 C.forEach(c=>c[2].forEach(pl=>{const q=pts(pl);[[18,.12],[9,.22],[3,.35]].forEach(w=>E("polygon",{points:q,"stroke-width":w[0],"stroke-opacity":w[1]},seaG));
  E("polygon",{points:q},shdG);exG.forEach(g=>(sides[c[0]]=sides[c[0]]||[]).push(E("polygon",{points:q,class:"sd ne"},g)));E("polygon",{points:q,fill:"url(#sheen)"},sheenG)}));
 const setSt=(id,st)=>{paths[id].forEach(p=>p.setAttribute("class","c "+st));sides[id].forEach(p=>p.setAttribute("class","sd "+st))};
 /* Flüsse und Seen */
 const rivG=E("g",{id:"riv"});camG.insertBefore(rivG,sheenG.nextSibling);
-const RV=[[[0.1,49.45],[1,49.3],[1.6,49.1],[2.35,48.85],[3,48.6],[3.7,48.4],[4.1,48.2],[4.6,47.8]],[[-2.2,47.28],[-1.55,47.22],[-0.5,47.4],[0.7,47.4],[1.9,47.9],[2.5,47.4],[3,46.9],[4,46.1],[4.1,45.2],[4,44.9]],
+const RV=[[[30.3,46.3],[29.3,47.2],[28,48.4],[26,48.7],[24.5,49.3],[23.5,49.4]],[[24.1,57],[25.5,56.3],[27.5,55.6],[30,55.3]],[[21.2,55.3],[23.9,54.9],[24,54],[26,53.6]],[[31.9,46.9],[31.3,47.9],[29,49.2],[27.5,49.5]],[[0.1,49.45],[1,49.3],[1.6,49.1],[2.35,48.85],[3,48.6],[3.7,48.4],[4.1,48.2],[4.6,47.8]],[[-2.2,47.28],[-1.55,47.22],[-0.5,47.4],[0.7,47.4],[1.9,47.9],[2.5,47.4],[3,46.9],[4,46.1],[4.1,45.2],[4,44.9]],
 [[-1.1,45.6],[-0.55,44.85],[0.6,44.2],[1.44,43.6],[0.9,43]],[[6.15,46.2],[5.6,45.9],[4.84,45.76],[4.8,44.9],[4.8,44],[4.6,43.4]],[[4.84,45.76],[4.85,46.8],[5.5,47.6]],
 [[9.6,47.6],[8.6,47.6],[7.6,47.6],[7.7,48.5],[8.4,49.2],[8.3,50],[7.6,50.35],[7,50.9],[6.6,51.6],[6,51.9],[5.2,51.9],[4.2,51.9]],[[7.6,50.35],[6.6,49.8],[6.1,49.1],[6.2,48.4]],
 [[5.6,48.1],[5.4,49.15],[4.8,49.8],[5.6,50.6],[5.8,51.1],[5.6,51.8],[4.6,51.75]],[[8.9,53.9],[10,53.55],[11.6,52.9],[12,52],[13.7,51.05],[14.5,50.5]],[[14.5,53.5],[14.6,52.3],[15.7,51.6],[17,51.1],[18.2,50.1]],
@@ -314,11 +332,11 @@ const RV=[[[0.1,49.45],[1,49.3],[1.6,49.1],[2.35,48.85],[3,48.6],[3.7,48.4],[4.1
 [[18.6,54.4],[18.8,53.1],[19.5,52.6],[21,52.2],[21.6,51.5],[21.8,50.7],[19.9,50.05]],[[7.6,45.1],[9.1,45.1],[10.5,45],[12.3,44.95]],[[-1.5,51.7],[-0.1,51.5],[0.7,51.5]],
 [[-9.2,38.7],[-8.5,39.3],[-6.5,39.7],[-4,39.9],[-2,40.4]],[[0.8,40.7],[-0.9,41.65],[-2.4,42.4],[-4,43]],[[32.6,46.6],[34,47.5],[35,48.4],[33,49.1],[30.5,50.45],[30.5,52],[30.9,54.5]]];
 const smooth=a=>{const q=a.map(p=>P(p[0],p[1]));let d=`M${q[0][0].toFixed(1)},${q[0][1].toFixed(1)}`;for(let i=1;i<q.length;i++){const m=[(q[i-1][0]+q[i][0])/2,(q[i-1][1]+q[i][1])/2];d+=` Q${q[i-1][0].toFixed(1)},${q[i-1][1].toFixed(1)} ${m[0].toFixed(1)},${m[1].toFixed(1)}`}const z=q[q.length-1];return d+` L${z[0].toFixed(1)},${z[1].toFixed(1)}`};
-RV.forEach((r,n)=>E("path",{d:smooth(r),"stroke-width":n==10||n==5?1.9:1.4},rivG));
+RV.forEach((r,n)=>E("path",{d:smooth(r),"stroke-width":n==14||n==9?1.9:1.4},rivG));
 [[6.55,46.42,13,4],[9.35,47.6,6,3]].forEach(l=>{const q=P(l[0],l[1]);E("ellipse",{cx:q[0],cy:q[1],rx:l[2],ry:l[3]},rivG)});
 /* Gebirge als schattierte Bergsymbole */
 const relG=E("g",{id:"rel"});camG.insertBefore(relG,rivG);const RL=[];
-const MT=[[[6.8,44.2],[7,45.2],[7.8,45.9],[9,46.4],[10.5,46.6],[12,47],[13.5,47.2],[15.5,47.4]],[[-1.6,43.1],[0,42.8],[1.5,42.6],[2.6,42.5]],[[2.6,45.7],[3,45],[3.5,44.5]],[[5.9,46.3],[6.6,46.9],[7.2,47.3]],[[7.1,47.9],[7.2,48.6]],[[8.15,47.9],[8.3,48.6]],
+const MT=[[[6.3,59.6],[7.6,60.8],[9.5,61.9],[11,62.9]],[[22.5,43.2],[25,42.8],[27,42.7]],[[21,40.6],[21.6,39.2]],[[30,37.3],[33,37],[35.5,37.5]],[[36,40.7],[40,40.5]],[[40,43.5],[42.5,43],[45,42.4]],[[42,39.8],[44.5,39.5]],[[6.8,44.2],[7,45.2],[7.8,45.9],[9,46.4],[10.5,46.6],[12,47],[13.5,47.2],[15.5,47.4]],[[-1.6,43.1],[0,42.8],[1.5,42.6],[2.6,42.5]],[[2.6,45.7],[3,45],[3.5,44.5]],[[5.9,46.3],[6.6,46.9],[7.2,47.3]],[[7.1,47.9],[7.2,48.6]],[[8.15,47.9],[8.3,48.6]],
 [[8.9,44.4],[10.5,44.1],[12,43.3],[13.4,42.4],[14.5,41.5],[15.6,40.5],[16.2,39.4]],[[17.5,49.3],[19.5,49.4],[21.8,49.2],[24,48.2],[25,47.2],[25.6,46],[24.5,45.5],[22.5,45.4]],[[12.4,50.3],[14.5,50.8],[16.2,50.4]],[[13.6,49.2],[12.6,49.6]],
 [[-5,56.6],[-4.2,57.2],[-3.4,57]],[[-6.4,40.3],[-4,40.7],[-2.6,41.2]],[[-3.8,37.1],[-2.8,37.2]],[[-7,43],[-4.5,43.1]],[[15.5,44.6],[17,43.8],[18.5,43]],[[10.4,51.8],[10.8,51.75]]];
 MT.forEach(r=>{const q=r.map(p=>P(p[0],p[1]));for(let i=0;i<q.length;i++){const a=q[i],b=q[i+1];const n=b?Math.max(1,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/11)):1;
@@ -326,16 +344,24 @@ MT.forEach(r=>{const q=r.map(p=>P(p[0],p[1]));for(let i=0;i<q.length;i++){const 
   g.innerHTML=`<path d="M-7,3 L0,-6 L7,3Z" fill="#8f7d58" opacity=".55"/><path d="M-7,3 L0,-6 L0,3Z" fill="#fffaf0" opacity=".75"/><path d="M0,-6 L7,3 L0,3Z" fill="#5b4a2c" opacity=".55"/><path d="M-2.6,-2.6 L0,-6 L2.6,-2.6 L1,-3.4 L0,-2.4 L-1,-3.4Z" fill="#fff" opacity=".9"/>`;RL.push([g,x,y,sz])}}});
 const lines={};
 for(const id in LN){const l=LN[id],a=P(...CP[l[0]]),b=P(...CP[l[1]]),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2-Math.hypot(b[0]-a[0],b[1]-a[1])*.12;lines[id]=E("path",{d:`M${a} Q${mx},${my} ${b}`,class:"ln "+l[2]},$("ls"))}
+const TH={"John Locke":"Naturrechte","Montesquieu":"Gewaltenteilung","Voltaire":"Toleranz","Jean-Jacques Rousseau":"Volkssouveränität","Immanuel Kant":"Mündigkeit"};
 const cg=CI.map(c=>{const g=E("g",{class:"ct"},$("ts"));
- if(c[6]){E("circle",{r:12},g);E("text",{x:0,y:5,"text-anchor":"middle",style:"font-size:15px;stroke:none"},g).textContent=c[6];E("text",{x:17,y:4},g).textContent=c[0]}
+ if(TH[c[0]]){g.setAttribute("class","ct thk");const o=c[7]||[0,0],L=c[9]=="l";
+  if(o[0]||o[1]){E("line",{x1:-o[0],y1:-o[1],x2:0,y2:0,stroke:"#14192a","stroke-width":2,"stroke-dasharray":"4 3"},g);E("circle",{cx:-o[0],cy:-o[1],r:4,fill:"#14192a",stroke:"#fff","stroke-width":1.5},g)}
+  const pill=E("rect",{class:"pill",y:-21,height:42,rx:21},g);E("circle",{class:"ring",r:21},g);E("circle",{class:"disc",r:21},g);E("text",{x:0,y:7,"text-anchor":"middle",style:"font-size:21px;stroke:none"},g).textContent="💡";
+  const t1=E("text",{class:"nm",y:-3},g),t2=E("text",{class:"id",y:13},g);t1.textContent=c[0];t2.textContent=TH[c[0]];
+  const w=Math.max(t1.getComputedTextLength?t1.getComputedTextLength():c[0].length*8,t2.getComputedTextLength?t2.getComputedTextLength():90)||c[0].length*8;
+  if(L){[t1,t2].forEach(t=>{t.setAttribute("x",-30);t.setAttribute("text-anchor","end")});pill.setAttribute("x",-w-44);pill.setAttribute("width",w+44)}else{[t1,t2].forEach(t=>t.setAttribute("x",30));pill.setAttribute("x",0);pill.setAttribute("width",w+44)}}
+ else if(c[6]){E("circle",{r:12},g);E("text",{x:0,y:5,"text-anchor":"middle",style:"font-size:15px;stroke:none"},g).textContent=c[6];E("text",{x:17,y:4},g).textContent=c[0]}
  else{E("circle",{r:4},g);E("text",{x:7,y:4},g).textContent=c[0]}g.onclick=()=>{if(!moved)showCity(c)};return[g,c]});
 /* ---------- Kamera ---------- */
 const svg=$("svg"),cam=$("cam");let X=0,Y=0,K=1,moved=0;
 let cur=0;
+const MS=()=>{const w=svg.clientWidth,h=svg.clientHeight;return w?Math.min(1.9,Math.max(1,Math.max(900/w,680/h)*.6)):1};addEventListener("resize",()=>setCam(X,Y,K));
 function setCam(x,y,k){X=x;Y=y;K=k;cam.style.transform=`translate(${x}px,${y}px) scale(${k})`;svg.dataset.z=k>14?2:k>5?1:0;
  exG.forEach((g,j)=>g.setAttribute("transform",`translate(${(j+1)*.45/k} ${(j+1)*1.35/k})`));shdG.setAttribute("transform",`translate(${9/k} ${14/k})`);
  const rs=1/Math.pow(k,.75);RL.forEach(r=>r[0].setAttribute("transform",`translate(${r[1]} ${r[2]}) scale(${r[3]*rs})`));
- cg.forEach(([g,c])=>{const p=P(c[1],c[2]);g.setAttribute("transform",`translate(${p[0]} ${p[1]}) scale(${1/k}) translate(${c[7]?c[7][0]:0} ${c[7]?c[7][1]:0})`);g.style.display=(c[5]?c[5].includes(cur):k>=c[3])?"":"none"})}
+ const ms=MS();cg.forEach(([g,c])=>{const p=P(c[1],c[2]);g.setAttribute("transform",`translate(${p[0]} ${p[1]}) scale(${ms/k}) translate(${c[7]?c[7][0]:0} ${c[7]?c[7][1]:0})`);g.style.display=(c[5]?c[5].includes(cur):k>=c[3])?"":"none"})}
 const focus=(lo,la,k)=>{const p=P(lo,la);setCam(450-p[0]*k,340-p[1]*k,k)};
 const zoomAt=(sx,sy,f)=>{const nk=Math.min(70,Math.max(.8,K*f)),nx=sx-(sx-X)*nk/K,ny=sy-(sy-Y)*nk/K;
  if(mode=="f"&&f>1&&nk>=55){let b=null,bd=160;for(const id in LVS){const o=LVS[id],q=P(o.fr[0],o.fr[1]),d=Math.hypot(nx+q[0]*nk-450,ny+q[1]*nk-340);if(d<bd){bd=d;b=id}}if(b){enterLevel(b,null);return}}
@@ -381,7 +407,7 @@ function showC(id){const c=CM[id];Object.values(paths).flat().forEach(p=>p.class
  PN.h=`<span class="tag" style="background:${id=="fr"?"#4d86cf":"#cfc9ad"}">${id=="fr"?"Frankreich":"Nachbar/Gegner"}</span><h2>${c[1]}</h2><p>${c[4]}</p><p><button onclick="showS(cur)">← Zurück zur Station</button></p>`;pn.scrollTop=0}
 const LK={"Paris":["p",null],"Schloss Versailles":["p",11],"Generalstände":["p",13],"Ballhaus (Jeu de Paume)":["p",14],"Menschenrechte":["p",13]};
 function showCity(c){const k=LK[c[0]],x=PHX[c[0]];if(k){enterLevel(k[0],k[1]);return}
- PN.h=`<h2>${c[0]}</h2><p>${c[4]}</p>${x?`<div class="box"><h4>Wichtigste Idee: ${x.i}</h4><p style="font-style:italic;margin:4px 0">„${x.q}“</p><div style="color:var(--m);font-size:12px">${x.s}</div></div><div class="box"><h4>Das Neue daran</h4>${x.n}</div><div class="box"><h4>Wirkung auf die Revolution</h4>${x.w}</div>`:""}${c[8]?imgs([[c[8],c[0]]]):""}${mats([["📄 Wikipedia: "+c[0],"https://de.wikipedia.org/w/index.php?search="+encodeURIComponent(c[0])]])}`;snavHide();fix();pn.scrollTop=0}
+ PN.h=`${x?`<div class="date">Denker der Aufklärung · ${PHN.indexOf(c[0])+1} / ${PHN.length}</div>`:""}<h2>${x?"💡 ":""}${c[0]}</h2><p>${c[4]}</p>${x?`<div class="box"><h4>Wichtigste Idee: ${x.i}</h4><p style="font-style:italic;margin:4px 0">„${x.q}“</p><div style="color:var(--m);font-size:12px">${x.s}</div></div><div class="box"><h4>Das Neue daran</h4>${x.n}</div><div class="box"><h4>Wirkung auf die Revolution</h4>${x.w}</div>`:""}${c[8]?imgs([[c[8],c[0]]]):""}${mats([["📄 Wikipedia: "+c[0],"https://de.wikipedia.org/w/index.php?search="+encodeURIComponent(c[0])]])}${x?(()=>{const n=PHN.indexOf(c[0]),N=PHN.length;return `<p><button onclick="phil('${PHN[(n+N-1)%N]}')">◀ ${PHN[(n+N-1)%N]}</button> <button onclick="phil('${PHN[(n+1)%N]}')">${PHN[(n+1)%N]} ▶</button></p>`})():""}<p><button class="prim" onclick="cam.classList.remove('drag');focus(...ST[cur].cam);showS(cur)">← Zurück zur Station</button></p>`;snavHide();fix();pn.scrollTop=0}
 /* ---------- Zeitleiste ---------- */
 const sb=$("steps");
 ST.forEach((s,i)=>{const b=document.createElement("button");b.innerHTML=`<span class="nd">${s.ic}</span><span class="nl">${s.t}</span>`;b.title=s.t+" ("+s.d+")";b.onclick=()=>go(i);sb.appendChild(b)});
@@ -508,9 +534,9 @@ function showS(i){const s=ST[i],ph=phOf(i),q=QU[i],a=AF[i],done=SV.done.includes
  PN.h=`<div class="hd"><div class="kick"><span>Station ${i+1} / ${ST.length}</span><span class="chip" style="color:${ph[2]};border-color:${ph[2]}">${ph[0]} · ${ph[1]}</span>${done?'<span class="chip" style="color:var(--ok);border-color:var(--ok)">✓ geschafft</span>':""}</div>
  <div class="date" style="margin-top:10px">${s.d}</div><h2>${s.t}</h2><div class="goal"><span>🎯</span><div><b>Lernziel:</b> Ich kann ${LZ[i]}</div></div></div>
  <div class="tabs" role="tablist">${TABS.map(t=>`<button role="tab" data-t="${t[0]}">${t[0]=="c"&&done?"✅ Check":t[1]}</button>`).join("")}</div>
- <div class="pane" data-p="d">${GLX(s.tx).map(p=>`<p>${p}</p>`).join("")}
+ <div class="pane" data-p="d">${GLX(s.tx).map(p=>`<p>${p}</p>`).join("")}${i==1?phBox():""}
   <div class="facts">${s.f.map(f=>`<div class="fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join("")}</div>
-  ${i==0?standChart():""}${i==1?phBox():""}${imgs(IM[i])}${curveChart(i)}${mode!="f"?`<details class="box"><summary style="cursor:pointer;color:var(--ac2);font-weight:700">${LVS[mode].ic} Alle Orte auf dem Stadtplan</summary>${parisBox(i)}</details>`:parisBox(i)}
+  ${i==0?standChart():""}${imgs(IM[i])}${curveChart(i)}${mode!="f"?`<details class="box"><summary style="cursor:pointer;color:var(--ac2);font-weight:700">${LVS[mode].ic} Alle Orte auf dem Stadtplan</summary>${parisBox(i)}</details>`:parisBox(i)}
   <p class="noprint"><button class="prim" onclick="setTab('q')">Weiter zur Quelle ▶</button></p></div>
  <div class="pane" data-p="q"><h3 class="sec">📜 Historische Quelle</h3><div class="src"${q[4]?' style="font-style:normal"':""}>${q[0]}<cite>${q[1]}</cite></div>
   <p class="ctx"><b style="color:var(--t)">Hintergrund:</b> ${q[2]}</p>
@@ -762,8 +788,8 @@ const PHX={
 "Voltaire":{i:"Toleranz und Vernunft gegen Fanatismus",q:"Das Recht der Intoleranz ist absurd und barbarisch.",s:"Abhandlung über die Toleranz (1763), Kap. 6, übersetzt",n:"Kritik an Kirche und Justiz wird zur Sache der öffentlichen Meinung: Mit Flugschriften, Briefen und Spott machte Voltaire Fälle wie den Justizmord an Jean Calas bekannt. Religionsfreiheit und faire Verfahren wurden Forderungen einer breiten Öffentlichkeit.",w:"Artikel 10 der Erklärung von 1789: Niemand soll wegen seiner Meinungen, auch religiöser, belangt werden."},
 "Jean-Jacques Rousseau":{i:"Volkssouveränität und Gemeinwille",q:"Der Mensch wird frei geboren, und überall liegt er in Ketten.",s:"Der Gesellschaftsvertrag (1762), Buch I, Kap. 1, übersetzt",n:"Rechtmäßige Herrschaft kommt nicht von Gott oder Herkunft, sondern aus dem Willen aller. Gesetze sind Ausdruck des Gemeinwillens (volonté générale), vor ihnen sind alle gleich.",w:"Artikel 6 der Erklärung von 1789: Das Gesetz ist Ausdruck des Gemeinwillens. 1792 wurde die Republik ausgerufen; Jakobiner beriefen sich auf Rousseau."},
 "Immanuel Kant":{i:"Mündigkeit: selbst denken",q:"Aufklärung ist der Ausgang des Menschen aus seiner selbstverschuldeten Unmündigkeit.",s:"Beantwortung der Frage: Was ist Aufklärung? (1784)",n:"Nicht Bildung für wenige: Jeder soll es wagen, seinen eigenen Verstand zu gebrauchen („Sapere aude“), statt sich von Autoritäten leiten zu lassen. Daraus folgt die Würde jedes Menschen als Vernunftwesen.",w:"Kant begrüßte die Revolution als Zeichen des Fortschritts, lehnte aber gewaltsamen Umsturz als Rechtsbruch ab."}};
-const phBox=()=>`<div class="box"><h4>Denker auf der Karte</h4>${PHN.map(n=>`<button onclick="phil('${n}')" style="margin:3px">🖋️ ${n}</button>`).join("")}</div>`;
-const phil=n=>showCity(CI.find(c=>c[0]==n));
+const phBox=()=>`<h3 class="sec">💡 Die Denker der Aufklärung</h3><p class="ctx" style="margin-top:0">Klicke einen Denker an: Die Karte fliegt zu seinem Wirkungsort, rechts erscheinen seine Ideen.</p><div class="thg">${PHN.map(n=>{const c=CI.find(x=>x[0]==n),d=(c[4].match(/\((\d{4}–\d{4})\)/)||[])[1]||"";return `<button class="thc" onclick="phil('${n}')"><span class="em">💡</span><b>${n} <small>${d}</small></b><span class="id">${PHX[n].i}</span><small>Ort auf der Karte zeigen ›</small></button>`}).join("")}</div>`;
+const phil=n=>{const c=CI.find(x=>x[0]==n);if(mode!="f")exitLevel();cam.classList.remove("drag");focus(c[1],c[2],3.2);showCity(c)};
 function snavHide(){$("snav").style.display="none"}
 function snav(o,i){const e=$("snav"),n=o.S.length;e.style.display="flex";e.innerHTML=`<button id="snv1">◀ ${o.S[(i+n-1)%n][0]}</button><button id="snv2">🗺 Übersicht</button><button id="snv3">← Station</button><button id="snv4">${o.S[(i+1)%n][0]} ▶</button>`;
  $("snv1").onclick=()=>o.show((i+n-1)%n);$("snv4").onclick=()=>o.show((i+1)%n);$("snv2").onclick=()=>{o.OV();o.showIntro()};$("snv3").onclick=()=>showS(cur)}
