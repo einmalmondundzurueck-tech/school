@@ -17,9 +17,13 @@ html,body{height:100%;margin:0;font:15px/1.6 var(--sans);background:var(--bg);co
 svg{width:100%;height:100%;display:block;touch-action:none;user-select:none}
 #cam{transition:transform 1.2s cubic-bezier(.4,0,.2,1)}#cam.drag{transition:none}
 .c{stroke:#fbf6ea;stroke-width:1.2;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .6s}.c:hover{filter:brightness(1.08)}.c.sel{stroke:#1a1a1a;stroke-width:2.5}
+.sd{pointer-events:none;stroke-width:1.2;vector-effect:non-scaling-stroke;transition:fill .6s,stroke .6s}.sd.fr{fill:#22457e;stroke:#22457e}.sd.ne{fill:#a99a72;stroke:#a99a72}.sd.oc{fill:#5a7fab;stroke:#5a7fab}.sd.mp{fill:#842615;stroke:#842615}
+#sea polygon{fill:none;stroke:#eef7f8;vector-effect:non-scaling-stroke;pointer-events:none}#shd polygon{fill:#1b3340;opacity:.28;pointer-events:none}
+#rel,#riv{pointer-events:none}#riv path{fill:none;stroke:#5f9cc2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}#riv ellipse{fill:#7fb4d2}
+svg[data-z="2"] #rel{display:none}
 .fr{fill:#3f6fb5}.ne{fill:#e8dfc4}.oc{fill:#8db0d9}.mp{fill:#d6452f;animation:glow 1.5s ease-in-out infinite alternate}@keyframes glow{from{filter:drop-shadow(0 0 2px #ff5a3c)}to{filter:drop-shadow(0 0 10px #ff1a00) brightness(1.1)}}
 .cl{font:italic 600 10px var(--serif);fill:#3a3326;opacity:.7;pointer-events:none;text-anchor:middle;letter-spacing:.04em}
-svg[data-z="1"] .cl{display:none}
+svg[data-z="1"] .cl,svg[data-z="2"] .cl{display:none}
 .ct{cursor:pointer}.ct circle{fill:#fffaf0;stroke:#3a3326;stroke-width:1.5;vector-effect:non-scaling-stroke;filter:drop-shadow(0 1px 2px #0005)}
 .ct text{font:700 11.5px var(--sans);fill:#221d14;paint-order:stroke;stroke:#fbf6ea;stroke-width:3.5px}.ct:hover circle{fill:var(--ac2)}
 .ln{fill:none;stroke:#1a1a1a;stroke-width:3;stroke-dasharray:9 6;opacity:0;transition:opacity .6s;vector-effect:non-scaling-stroke;animation:fl 1s linear infinite;pointer-events:none}
@@ -292,6 +296,34 @@ const E=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setA
 const CM={},paths={};
 C.forEach(c=>{CM[c[0]]=c;const g=E("g",{},$("cs"));c[2].forEach(pl=>{const p=E("polygon",{points:pts(pl)},g);p.onclick=()=>{if(!moved)showC(c[0])};(paths[c[0]]=paths[c[0]]||[]).push(p);E("title",{},p).textContent=c[1]});
  const [x,y]=P(c[3][0],c[3][1]);E("text",{x,y,class:"cl"},$("cs")).textContent=c[1].split(" ")[0]});
+/* 2,5D: Küstenwellen, Schatten, Seitenkanten, Glanz */
+const camG=$("cam"),csG=$("cs"),mkG=(id,before)=>{const g=E("g",{id});camG.insertBefore(g,before);return g};
+const seaG=mkG("sea",csG),shdG=mkG("shd",csG),exG=[1,2,3,4,5].map(j=>mkG("ex"+j,csG)),sides={};
+const sheenG=E("g",{style:"pointer-events:none"});camG.insertBefore(sheenG,$("ls"));
+const DEF=E("defs",{},$("svg"));DEF.innerHTML=`<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>`;
+C.forEach(c=>c[2].forEach(pl=>{const q=pts(pl);[[18,.12],[9,.22],[3,.35]].forEach(w=>E("polygon",{points:q,"stroke-width":w[0],"stroke-opacity":w[1]},seaG));
+ E("polygon",{points:q},shdG);exG.forEach(g=>(sides[c[0]]=sides[c[0]]||[]).push(E("polygon",{points:q,class:"sd ne"},g)));E("polygon",{points:q,fill:"url(#sheen)"},sheenG)}));
+const setSt=(id,st)=>{paths[id].forEach(p=>p.setAttribute("class","c "+st));sides[id].forEach(p=>p.setAttribute("class","sd "+st))};
+/* Flüsse und Seen */
+const rivG=E("g",{id:"riv"});camG.insertBefore(rivG,sheenG.nextSibling);
+const RV=[[[0.1,49.45],[1,49.3],[1.6,49.1],[2.35,48.85],[3,48.6],[3.7,48.4],[4.1,48.2],[4.6,47.8]],[[-2.2,47.28],[-1.55,47.22],[-0.5,47.4],[0.7,47.4],[1.9,47.9],[2.5,47.4],[3,46.9],[4,46.1],[4.1,45.2],[4,44.9]],
+[[-1.1,45.6],[-0.55,44.85],[0.6,44.2],[1.44,43.6],[0.9,43]],[[6.15,46.2],[5.6,45.9],[4.84,45.76],[4.8,44.9],[4.8,44],[4.6,43.4]],[[4.84,45.76],[4.85,46.8],[5.5,47.6]],
+[[9.6,47.6],[8.6,47.6],[7.6,47.6],[7.7,48.5],[8.4,49.2],[8.3,50],[7.6,50.35],[7,50.9],[6.6,51.6],[6,51.9],[5.2,51.9],[4.2,51.9]],[[7.6,50.35],[6.6,49.8],[6.1,49.1],[6.2,48.4]],
+[[5.6,48.1],[5.4,49.15],[4.8,49.8],[5.6,50.6],[5.8,51.1],[5.6,51.8],[4.6,51.75]],[[8.9,53.9],[10,53.55],[11.6,52.9],[12,52],[13.7,51.05],[14.5,50.5]],[[14.5,53.5],[14.6,52.3],[15.7,51.6],[17,51.1],[18.2,50.1]],
+[[8.5,48],[10,48.4],[11.4,48.75],[12.1,49],[13.5,48.57],[14.3,48.3],[16.4,48.2],[17.1,48.1],[18.8,47.8],[19.05,47.5],[18.9,46.2],[19.3,45.3],[20.4,44.8],[21.5,44.7],[22.6,44.6],[22.9,43.8],[25,43.6],[27,44.1],[28,45.2],[29.6,45.2]],
+[[18.6,54.4],[18.8,53.1],[19.5,52.6],[21,52.2],[21.6,51.5],[21.8,50.7],[19.9,50.05]],[[7.6,45.1],[9.1,45.1],[10.5,45],[12.3,44.95]],[[-1.5,51.7],[-0.1,51.5],[0.7,51.5]],
+[[-9.2,38.7],[-8.5,39.3],[-6.5,39.7],[-4,39.9],[-2,40.4]],[[0.8,40.7],[-0.9,41.65],[-2.4,42.4],[-4,43]],[[32.6,46.6],[34,47.5],[35,48.4],[33,49.1],[30.5,50.45],[30.5,52],[30.9,54.5]]];
+const smooth=a=>{const q=a.map(p=>P(p[0],p[1]));let d=`M${q[0][0].toFixed(1)},${q[0][1].toFixed(1)}`;for(let i=1;i<q.length;i++){const m=[(q[i-1][0]+q[i][0])/2,(q[i-1][1]+q[i][1])/2];d+=` Q${q[i-1][0].toFixed(1)},${q[i-1][1].toFixed(1)} ${m[0].toFixed(1)},${m[1].toFixed(1)}`}const z=q[q.length-1];return d+` L${z[0].toFixed(1)},${z[1].toFixed(1)}`};
+RV.forEach((r,n)=>E("path",{d:smooth(r),"stroke-width":n==10||n==5?1.9:1.4},rivG));
+[[6.55,46.42,13,4],[9.35,47.6,6,3]].forEach(l=>{const q=P(l[0],l[1]);E("ellipse",{cx:q[0],cy:q[1],rx:l[2],ry:l[3]},rivG)});
+/* Gebirge als schattierte Bergsymbole */
+const relG=E("g",{id:"rel"});camG.insertBefore(relG,rivG);const RL=[];
+const MT=[[[6.8,44.2],[7,45.2],[7.8,45.9],[9,46.4],[10.5,46.6],[12,47],[13.5,47.2],[15.5,47.4]],[[-1.6,43.1],[0,42.8],[1.5,42.6],[2.6,42.5]],[[2.6,45.7],[3,45],[3.5,44.5]],[[5.9,46.3],[6.6,46.9],[7.2,47.3]],[[7.1,47.9],[7.2,48.6]],[[8.15,47.9],[8.3,48.6]],
+[[8.9,44.4],[10.5,44.1],[12,43.3],[13.4,42.4],[14.5,41.5],[15.6,40.5],[16.2,39.4]],[[17.5,49.3],[19.5,49.4],[21.8,49.2],[24,48.2],[25,47.2],[25.6,46],[24.5,45.5],[22.5,45.4]],[[12.4,50.3],[14.5,50.8],[16.2,50.4]],[[13.6,49.2],[12.6,49.6]],
+[[-5,56.6],[-4.2,57.2],[-3.4,57]],[[-6.4,40.3],[-4,40.7],[-2.6,41.2]],[[-3.8,37.1],[-2.8,37.2]],[[-7,43],[-4.5,43.1]],[[15.5,44.6],[17,43.8],[18.5,43]],[[10.4,51.8],[10.8,51.75]]];
+MT.forEach(r=>{const q=r.map(p=>P(p[0],p[1]));for(let i=0;i<q.length;i++){const a=q[i],b=q[i+1];const n=b?Math.max(1,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/11)):1;
+ for(let t=0;t<n;t++){const x=b?a[0]+(b[0]-a[0])*t/n:a[0],y=b?a[1]+(b[1]-a[1])*t/n:a[1],g=E("g",{},relG),sz=1.15+((x*7+y*13)%10)/22;
+  g.innerHTML=`<path d="M-7,3 L0,-6 L7,3Z" fill="#8f7d58" opacity=".55"/><path d="M-7,3 L0,-6 L0,3Z" fill="#fffaf0" opacity=".75"/><path d="M0,-6 L7,3 L0,3Z" fill="#5b4a2c" opacity=".55"/><path d="M-2.6,-2.6 L0,-6 L2.6,-2.6 L1,-3.4 L0,-2.4 L-1,-3.4Z" fill="#fff" opacity=".9"/>`;RL.push([g,x,y,sz])}}});
 const lines={};
 for(const id in LN){const l=LN[id],a=P(...CP[l[0]]),b=P(...CP[l[1]]),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2-Math.hypot(b[0]-a[0],b[1]-a[1])*.12;lines[id]=E("path",{d:`M${a} Q${mx},${my} ${b}`,class:"ln "+l[2]},$("ls"))}
 const cg=CI.map(c=>{const g=E("g",{class:"ct"},$("ts"));
@@ -300,7 +332,9 @@ const cg=CI.map(c=>{const g=E("g",{class:"ct"},$("ts"));
 /* ---------- Kamera ---------- */
 const svg=$("svg"),cam=$("cam");let X=0,Y=0,K=1,moved=0;
 let cur=0;
-function setCam(x,y,k){X=x;Y=y;K=k;cam.style.transform=`translate(${x}px,${y}px) scale(${k})`;svg.dataset.z=k>5?1:0;
+function setCam(x,y,k){X=x;Y=y;K=k;cam.style.transform=`translate(${x}px,${y}px) scale(${k})`;svg.dataset.z=k>14?2:k>5?1:0;
+ exG.forEach((g,j)=>g.setAttribute("transform",`translate(${(j+1)*.45/k} ${(j+1)*1.35/k})`));shdG.setAttribute("transform",`translate(${9/k} ${14/k})`);
+ const rs=1/Math.pow(k,.75);RL.forEach(r=>r[0].setAttribute("transform",`translate(${r[1]} ${r[2]}) scale(${r[3]*rs})`));
  cg.forEach(([g,c])=>{const p=P(c[1],c[2]);g.setAttribute("transform",`translate(${p[0]} ${p[1]}) scale(${1/k}) translate(${c[7]?c[7][0]:0} ${c[7]?c[7][1]:0})`);g.style.display=(c[5]?c[5].includes(cur):k>=c[3])?"":"none"})}
 const focus=(lo,la,k)=>{const p=P(lo,la);setCam(450-p[0]*k,340-p[1]*k,k)};
 const zoomAt=(sx,sy,f)=>{const nk=Math.min(70,Math.max(.8,K*f)),nx=sx-(sx-X)*nk/K,ny=sy-(sy-Y)*nk/K;
@@ -508,8 +542,8 @@ function go(i){cur=Math.max(0,Math.min(ST.length-1,i));tab="d";SV.last=cur;save(
  $("fill").style.width=(cur/(ST.length-1)*100)+"%";
  for(const id in lines)lines[id].classList.toggle("on",s.ln.includes(id));
  wt.forEach(clearTimeout);wt=[];const en=s.waves?[]:s.en;
- for(const id in paths)paths[id].forEach(p=>p.setAttribute("class","c "+(id=="fr"?"fr":(s.oc||[]).includes(id)?"oc":en.includes(id)?"mp":"ne")));
- cap(s.cap||"");if(s.waves)s.waves.forEach(w=>wt.push(setTimeout(()=>{w[1].forEach(id=>paths[id].forEach(p=>p.setAttribute("class","c mp")));cap(w[2])},w[0])));
+ for(const id in paths)setSt(id,id=="fr"?"fr":(s.oc||[]).includes(id)?"oc":en.includes(id)?"mp":"ne");
+ cap(s.cap||"");if(s.waves)s.waves.forEach(w=>wt.push(setTimeout(()=>{w[1].forEach(id=>setSt(id,"mp"));cap(w[2])},w[0])));
  if(lvl)lvl.clearFx();$("rp").style.display="none";
  cam.classList.remove("drag");focus(...s.cam);if(au){const same=mode==au[0];enterLevel(au[0],au[1],1);if(same)applyFx(1400)}showS(cur);$("pv").disabled=cur===0;$("nx").disabled=cur===ST.length-1}
 $("pv").onclick=()=>go(cur-1);$("nx").onclick=()=>go(cur+1);
@@ -565,8 +599,44 @@ function mkLevel(id,c){
  o.L=(lo,la)=>[450+(lo-o.o[0])*73300/o.u,340-(la-o.o[1])*111200/o.u];
  o.pt=a=>a.map(p=>o.L(p[0],p[1]).map(v=>v.toFixed(2)).join(",")).join(" ");
  o.D=(t,a)=>E(t,a,o.pb);
- o.bd=(lo,la,w,h,fill)=>{if(!w)return;const p=o.L(lo,la);o.D("rect",{x:p[0]-w/o.u/2,y:p[1]-h/o.u/2,width:w/o.u,height:h/o.u,fill,stroke:"#6e5a3a","stroke-width":1,"vector-effect":"non-scaling-stroke"})};
+ o.bq=[];o.bd=(lo,la,w,h,fill,H)=>{if(!w)return;const p=o.L(lo,la);o.bq.push([p[0]-w/o.u/2,p[1]-h/o.u/2,w/o.u,h/o.u,fill,H==null?2.8:H])};
+ sv.insertAdjacentHTML("afterbegin",`<defs><radialGradient id="tr${id}" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#a9cf7a"/><stop offset=".6" stop-color="#5f9442"/><stop offset="1" stop-color="#3d6b2c"/></radialGradient>
+  <radialGradient id="hl${id}"><stop offset="0" stop-color="#fffbe8" stop-opacity=".3"/><stop offset="1" stop-color="#fffbe8" stop-opacity="0"/></radialGradient><radialGradient id="hd${id}"><stop offset="0" stop-color="#5a4626" stop-opacity=".3"/><stop offset="1" stop-color="#5a4626" stop-opacity="0"/></radialGradient>
+  <linearGradient id="rf${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`);
+ /* Gelände: Hügel als weiche Licht-/Schattenflecken */
+ o.hill=(lo,la,r)=>{const p=o.L(lo,la);o.D("ellipse",{cx:p[0]+r*.25,cy:p[1]+r*.22,rx:r,ry:r*.75,fill:`url(#hd${id})`});[1,.68,.38].forEach((f,n)=>o.D("ellipse",{cx:p[0]-(1-f)*r*.12,cy:p[1]-(1-f)*r*.12,rx:r*f*.9,ry:r*f*.68,fill:n==2?`url(#hl${id})`:"none",stroke:"#8a7650","stroke-opacity":.35,"stroke-width":.8,"vector-effect":"non-scaling-stroke"}))};
+ /* Bäume: gestreut in Polygonen (feste Zufallsfolge), mit Schatten */
+ let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+ const inPoly=(x,y,q)=>{let c=0;for(let i=0,j=q.length-1;i<q.length;j=i++)if((q[i][1]>y)!=(q[j][1]>y)&&x<(q[j][0]-q[i][0])*(y-q[i][1])/(q[j][1]-q[i][1])+q[i][0])c=!c;return c};
+ o.trees=(poly,gap,skip)=>{const q=poly.map(p=>o.L(p[0],p[1])),xs=q.map(p=>p[0]),ys=q.map(p=>p[1]),sg=E("g",{},o.pb),tg=E("g",{},o.pb);
+  const C=(x,y,r)=>`M${(x-r).toFixed(1)},${y.toFixed(1)}a${r.toFixed(1)},${r.toFixed(1)} 0 1,0 ${(2*r).toFixed(1)},0a${r.toFixed(1)},${r.toFixed(1)} 0 1,0 ${(-2*r).toFixed(1)},0Z`;let d0="",d1="",d2="";
+  for(let y=Math.min(...ys);y<Math.max(...ys);y+=gap*.87)for(let x=Math.min(...xs);x<Math.max(...xs);x+=gap){const px=x+(rnd()-.5)*gap*.8,py=y+(rnd()-.5)*gap*.8;if(!inPoly(px,py,q)||(skip&&skip(px,py)))continue;
+   const r=gap*(.42+rnd()*.18);d0+=C(px+r*.7,py+r*.45,r*.95);d1+=C(px,py,r);d2+=C(px-r*.28,py-r*.3,r*.5)}
+  E("path",{d:d0,fill:"#2f4a1f",opacity:.22},sg);E("path",{d:d1,fill:"#5a8f3e",stroke:"#3d6b2c","stroke-width":.5,"vector-effect":"non-scaling-stroke"},tg);E("path",{d:d2,fill:"#9cc96e",opacity:.75},tg)};
  c.draw(o);
+ /* Gebäude als Blöcke: Schatten, Wände, Dach (Ansicht von Süden, Licht von Nordwesten) */
+ const dk=(h,f)=>{const n=parseInt(h.slice(1),16);return"rgb("+[n>>16,n>>8&255,n&255].map(v=>Math.round(v*f)).join(",")+")"},P4=a=>a.map(v=>v.map(n=>n.toFixed(2)).join(",")).join(" ");
+ const shG=E("g",{},o.pb),bG=E("g",{},o.pb);
+ /* Häusermeer: viele kleine Häuserblöcke als wenige Pfade (schnell beim Zoomen) */
+ const dSeg=(x,y,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy||1)));return Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy)},
+  dLine=(x,y,q)=>{let m=1e9;for(let i=1;i<q.length;i++)m=Math.min(m,dSeg(x,y,q[i-1],q[i]));return m},LQ=a=>a.map(p=>o.L(p[0],p[1]));
+ (o.towns||[]).forEach(t=>{const q=LQ(t.poly),xs=q.map(p=>p[0]),ys=q.map(p=>p[1]),c=o.L(...t.c),riv=(t.riv||[]).map(LQ),str=(t.str||[]).map(LQ),av=(t.av||[]).map(LQ),gd=(t.gd||[]).map(LQ);let sh="",w1="",w2="";const rf=["","",""];
+  for(let y=Math.min(...ys);y<Math.max(...ys);y+=t.g)for(let x=Math.min(...xs);x<Math.max(...xs);x+=t.g){const bw=t.g*(.74+rnd()*.14),bh=t.g*(.7+rnd()*.14),px=x+(rnd()-.5)*t.g*.08,py=y+(rnd()-.5)*t.g*.08,cx=px+bw/2,cy=py+bh/2;
+   if(!inPoly(cx,cy,q)||rnd()>1.25-Math.hypot(cx-c[0],cy-c[1])/t.r)continue;
+   if(riv.some(r=>dLine(cx,cy,r)<t.g*1.1)||str.some(r=>dLine(cx,cy,r)<t.g*.55)||av.some(r=>dLine(cx,cy,r)<t.g*.4)||gd.some(g=>inPoly(cx,cy,g))||o.bq.some(b=>cx>b[0]-t.g&&cx<b[0]+b[2]+t.g&&cy>b[1]-t.g&&cy<b[1]+b[3]+t.g))continue;
+   const H=1.3+rnd()*.8,ox=-H*.35,oy=-H,f=v=>v.toFixed(1);
+   sh+=`M${f(px+bw)},${f(py)}l${f(H*.9)},${f(H*.45)}v${f(bh)}h${f(-bw)}l${f(-H*.9)},${f(-H*.45)}Z`;
+   w1+=`M${f(px)},${f(py+bh)}h${f(bw)}l${f(ox)},${f(oy)}h${f(-bw)}Z`;w2+=`M${f(px)},${f(py)}v${f(bh)}l${f(ox)},${f(oy)}v${f(-bh)}Z`;const rr=rnd();rf[rr<.55?0:rr<.85?1:2]+=`M${f(px+ox)},${f(py+oy)}h${f(bw)}v${f(bh)}h${f(-bw)}Z`}
+  E("path",{d:sh,fill:"#3a3020",opacity:.22},shG);E("path",{d:w1,fill:"#b5a688"},bG);E("path",{d:w2,fill:"#cdbf9f"},bG);["#939ba6","#a7a39c","#b9876b"].forEach((c,n)=>E("path",{d:rf[n],fill:c,stroke:"#5f6670","stroke-width":.4,"vector-effect":"non-scaling-stroke"},bG))});
+ o.bq.sort((a,b)=>(a[1]+a[3])-(b[1]+b[3])).forEach(([x,y,w,h,f,H])=>{
+  if(f=="none"||!H){E("rect",{x,y,width:w,height:h,fill:f=="none"?"none":f,stroke:"#6e5a3a","stroke-width":1,"vector-effect":"non-scaling-stroke","stroke-dasharray":f=="none"?"3 3":""},bG);return}
+  const ox=-H*.35,oy=-H,sx=H*.9,sy=H*.45;
+  E("polygon",{points:P4([[x,y+h],[x+w,y+h],[x+w,y],[x+w+sx,y+sy],[x+w+sx,y+h+sy],[x+sx,y+h+sy]]),fill:"#3a3020",opacity:.28},shG);
+  const st={stroke:"#4a3a20","stroke-width":1.1,"vector-effect":"non-scaling-stroke","stroke-linejoin":"round"};
+  E("polygon",Object.assign({points:P4([[x,y+h],[x+w,y+h],[x+w+ox,y+h+oy],[x+ox,y+h+oy]]),fill:dk(f,.72)},st),bG);
+  E("polygon",Object.assign({points:P4([[x,y],[x,y+h],[x+ox,y+h+oy],[x+ox,y+oy]]),fill:dk(f,.86)},st),bG);
+  E("rect",Object.assign({x:x+ox,y:y+oy,width:w,height:h,fill:f},st),bG);E("rect",{x:x+ox,y:y+oy,width:w,height:h,fill:`url(#rf${id})`,"pointer-events":"none"},bG);
+  if(w>4&&h>4)E("rect",{x:x+ox+Math.min(w,h)*.18,y:y+oy+Math.min(w,h)*.18,width:w-Math.min(w,h)*.36,height:h-Math.min(w,h)*.36,fill:"none",stroke:dk(f,.8),"stroke-width":.6,"vector-effect":"non-scaling-stroke"},bG)});
  o.PL.forEach(l=>{const p=o.L(l[1],l[2]),g=E("g",{class:"pl"},pmg);E("text",{x:0,y:0,"text-anchor":"middle"},g).textContent=l[0];o.pm.push([g,p[0],p[1],l[3],0])});
  const mkm=(sym,name,lo,la,mk,mx,left,fn)=>{const p=o.L(lo,la),g=E("g",{class:"ct"},pmg);E("circle",{r:12},g);E("text",{x:0,y:5,"text-anchor":"middle",style:"font-size:15px;stroke:none"},g).textContent=sym;E("text",left?{x:-17,y:4,"text-anchor":"end"}:{x:17,y:4},g).textContent=name;g.onclick=()=>{if(!moved)fn()};o.pm.push([g,p[0],p[1],mk,mx])};
  o.CL.forEach(k=>mkm(k[3],k[0],k[1],k[2],0,k[4],0,()=>{o.mt=null;o.fo(...k[5])}));
@@ -638,6 +708,7 @@ const BX=[[2.3376,48.8606,180,180,"#b89e78"],[2.3322,48.8598,650,45,"#b89e78"],[
 
 const PL=[["Seine",2.2985,48.8630,.5],["Zollmauer der Generalpächter",2.3300,48.8850,.8],["Faubourg Saint-Antoine",2.3820,48.8520,1.2],["Louvre",2.3376,48.8592,2.5],["Île de la Cité",2.3440,48.8541,3],["École Militaire",2.3057,48.8532,2.5],["Panthéon",2.3459,48.8450,2.5],["Jardin des Tuileries",2.3270,48.8636,2.5],["Bois de Boulogne",2.2540,48.8640,.6],["Sèvres",2.2260,48.8210,.7],["Saint-Cloud",2.2120,48.8480,.7],["Viroflay",2.1700,48.8005,.9]];
 /* ---- Daten Versailles ---- */
+const HT={"Notre-Dame":4.5,"Invalidendom":3.6,"Bastille":3,"Temple":3.2,"Tuilerien":2.6};
 const M=(dx,dy)=>[2.1204+dx/73400,48.8049+dy/111200];
 const VS=[
 ["Spiegelsaal",...M(-60,0),"🪞","ab 1682",0,0,"Die 73 m lange Spiegelgalerie an der Gartenfront wurde ab 1682 zum Schauplatz der Hofhaltung Ludwigs XIV. Der Adel lebte hier nach strengem Zeremoniell (etwa beim „Lever“ des Königs) und war so an den Monarchen gebunden, statt in den Provinzen eigene Macht aufzubauen. Das war der Kern des Absolutismus.","Hall_of_Mirrors",null,"l"],
@@ -655,8 +726,10 @@ mkLevel("p",{ic:"🏙",btn:"Stadtplan Paris & Versailles öffnen",h4:"Orte der R
  leg:`<div><i style="background:#8cc4e8"></i>Seine, Grand Canal</div><div><i style="background:#d8c9a0"></i>Gebäude (schematisch)</div><div><i style="background:#bcd6a0"></i>Gärten, Parks</div><div>┄ Zollmauer Paris 1789</div>`,
  S:PS.concat(VS),PL:PL.concat(PLV),
  CL:[["Paris",2.3522,48.8566,"🏙",.85,[2.3522,48.8566,1.15]],["Versailles",2.1204,48.8049,"🏰",1.3,[2.1204,48.8049,2.2]]],
- draw(o){const D=o.D,pt=o.pt,B=(dx,dy,w,h,f)=>o.bd(...M(dx,dy),w,h,f),el=(lo,la,rx,ry,f)=>{const p=o.L(lo,la);D("ellipse",{cx:p[0],cy:p[1],rx,ry,fill:f})};
+ draw(o){const D=o.D,pt=o.pt,B=(dx,dy,w,h,f,H)=>o.bd(...M(dx,dy),w,h,f,H),el=(lo,la,rx,ry,f)=>{const p=o.L(lo,la);D("ellipse",{cx:p[0],cy:p[1],rx,ry,fill:f})};
   D("rect",{x:-2400,y:-900,width:4400,height:2700,fill:"#d9e3c0"});
+  [[2.3431,48.8867,70],[2.3900,48.8720,60],[2.2900,48.8640,38],[2.3459,48.8462,30],[2.2130,48.8710,75],[2.2150,48.8330,110],[2.1150,48.7880,80],[2.1700,48.7920,70],[2.1850,48.8200,60]].forEach(h=>o.hill(...h));
+  [["Montmartre",2.3431,48.8885],["Belleville",2.3900,48.8735],["Mont Valérien",2.2130,48.8730]].forEach(l=>{const q=o.L(l[1],l[2]);o.D("text",{x:q[0],y:q[1],"text-anchor":"middle","font-size":7,"font-style":"italic",fill:"#6b5a3a",opacity:.8}).textContent=l[0]});
   D("polygon",{points:pt([[2.2400,48.8650],[2.2520,48.8760],[2.2640,48.8760],[2.2690,48.8640],[2.2640,48.8520],[2.2500,48.8480],[2.2400,48.8520]]),fill:"#bcd6a0"});
   D("polygon",{points:pt([[2.1190,48.7955],[2.1480,48.7960],[2.1500,48.8150],[2.1190,48.8200]]),fill:"#e7dfc6"});
   D("polygon",{points:pt(WALL),fill:"#ede5cf",stroke:"#8a6d3b","stroke-width":2,"stroke-dasharray":"8 5","vector-effect":"non-scaling-stroke"});
@@ -664,18 +737,23 @@ mkLevel("p",{ic:"🏙",btn:"Stadtplan Paris & Versailles öffnen",h4:"Orte der R
   D("polygon",{points:pt([[2.1180,48.7985],[2.0870,48.7985],[2.0870,48.8115],[2.1000,48.8115],[2.1000,48.8200],[2.1180,48.8200]]),fill:"#bcd6a0"});
   D("polygon",{points:pt([[2.1165,48.8075],[2.1195,48.8075],[2.1195,48.8023],[2.1165,48.8023]]),fill:"#cfe3b0"});
   D("polygon",{points:pt([[2.1110,48.8051],[2.1150,48.8051],[2.1150,48.8043],[2.1110,48.8043]]),fill:"#d5ecb8"});
+  const cv=o.L(2.0978,48.8045);o.trees([[2.1180,48.7985],[2.0870,48.7985],[2.0870,48.8115],[2.1000,48.8115],[2.1000,48.8200],[2.1180,48.8200]],7,(x,y)=>Math.abs(y-cv[1])<6&&x<o.L(2.1168,0)[0]||Math.abs(x-cv[0])<6&&Math.abs(y-cv[1])<50||x>o.L(2.1150,0)[0]&&Math.abs(y-cv[1])<35);
+  o.trees([[2.2400,48.8650],[2.2520,48.8760],[2.2640,48.8760],[2.2690,48.8640],[2.2640,48.8520],[2.2500,48.8480],[2.2400,48.8520]],7);
+  o.trees(GARD[0],4.5,(x,y)=>Math.abs(y-o.L(0,48.8640)[1])<2.5);o.trees(GARD[2],5);
   const road=(a,w)=>D("polyline",{points:pt(a),fill:"none",stroke:"#cdbf9a","stroke-width":w,"stroke-linejoin":"round","vector-effect":"non-scaling-stroke"});
   STR.forEach(s=>road(s[0],s[1]));
   [[[2.1268,48.8055],[2.1330,48.8068],[2.1450,48.8100],[2.1560,48.8135]],[[2.1268,48.8055],[2.1310,48.8110],[2.1360,48.8180]],[[2.1268,48.8055],[2.1330,48.7990],[2.1400,48.7920]]].forEach(a=>road(a,3.5));
   road(ROUTE,2.4);
-  const riv=(a,w)=>D("polyline",{points:pt(a),fill:"none",stroke:"#8cc4e8","stroke-width":w,"stroke-linecap":"round","stroke-linejoin":"round"});
+  const riv=(a,w)=>{[[w+3,"#6f9a6a",.5],[w,"#7fb9df",1],[w*.45,"#b9e0f4",.55]].forEach(v=>D("polyline",{points:pt(a),fill:"none",stroke:v[1],opacity:v[2],"stroke-width":v[0],"stroke-linecap":"round","stroke-linejoin":"round"}))};
   riv([[2.2200,48.8650],[2.2150,48.8450],[2.2250,48.8300],[2.2380,48.8250],[2.2550,48.8300]].concat(RIV[0]),13);RIV.slice(1).forEach(r=>riv(r,13));
   [[[2.1100,48.8045],[2.0905,48.8045]],[[2.0978,48.8002],[2.0978,48.8089]]].forEach(a=>D("polyline",{points:pt(a),fill:"none",stroke:"#8cc4e8","stroke-width":6.2}));
   el(2.1107,48.8046,5.5,4.5,"#8cc4e8");el(2.1150,48.8047,3.5,3,"#8cc4e8");
-  B(450,0,100,300,"#e2d7b8");
+  B(450,0,100,300,"#e2d7b8",0);
   [[-15,0,90,200],[-10,-215,70,230],[-10,215,70,230],[180,100,300,40],[180,-100,300,40],[480,250,200,80],[480,-250,200,80],[-30,-440,150,80]].forEach(b=>B(...b,"#d8c9a0"));
   B(60,0,60,100,"#e8d9a8");o.bd(2.1040,48.8150,100,40,"#d8c9a0");
-  BX.forEach(b=>o.bd(...b));PS.concat(VS).forEach(s=>o.bd(s[1],s[2],s[5],s[6],s[9]))}});
+  o.towns=[{poly:WALL,c:[2.3480,48.8580],r:560,g:15,riv:[[[2.2700,48.8420]].concat(RIV[0])].concat(RIV.slice(1)),str:STR.map(s=>s[0]),gd:GARD},
+   {poly:[[2.1215,48.7965],[2.1480,48.7960],[2.1500,48.8150],[2.1215,48.8195]],c:[2.1300,48.8060],r:280,g:12,av:[[[2.1268,48.8055],[2.1330,48.8068],[2.1450,48.8100],[2.1560,48.8135]],[[2.1268,48.8055],[2.1310,48.8110],[2.1360,48.8180]],[[2.1268,48.8055],[2.1330,48.7990],[2.1400,48.7920]],ROUTE]}];
+  BX.forEach(b=>o.bd(...b));PS.concat(VS).forEach(s=>o.bd(s[1],s[2],s[5],s[6],s[9],HT[s[0]]))}});
 /* ---- Denker ---- */
 const PHN=["John Locke","Montesquieu","Voltaire","Jean-Jacques Rousseau","Immanuel Kant"];
 const PHX={
